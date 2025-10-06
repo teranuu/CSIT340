@@ -5,16 +5,16 @@ function LoginNavbar(){
     return(
 
         <>
-            <nav className="navbar">
+            <ul className="navbar">
 
-                <div className="CoreThreads-title">
+                <div className="core-threads-title">
 
-                CoreThreads
+                <li>CoreThreads</li>
                 
                 </div>
 
                 
-            </nav>
+            </ul>
             
         </>
 

@@ -1,0 +1,45 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+
+.login-section{
+    
+    max-width: 600px;
+    max-height: 700px;
+    padding: 40px;
+    margin: 0 30px;
+    background-color:#D3D3D3;
+    text-align:center;
+    border-radius: 13px;
+
+}
+
+
+.login-section-title{
+
+    
+    margin: 0;
+    font-family: 'DM Sans', serif;
+    font-size: 45px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: #000000;
+    font-weight: bold;
+
+
+
+}
+
+.login-section-title, .login-section-subtitle, .input-username, .input-password, .button-sign-in{
+
+    padding: 20px;
+}
+
+button {
+
+    padding: 10px 30px;
+}
