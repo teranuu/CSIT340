@@ -5,41 +5,78 @@
 }
 
 
-
+/* this is for root parent for left and right section */
 .login-section{
-    
-    max-width: 600px;
-    max-height: 700px;
-    padding: 40px;
-    margin: 0 30px;
-    background-color:#D3D3D3;
-    text-align:center;
-    border-radius: 13px;
+
 
 }
 
+/* content parent for left and right section using flex rows */
+.login-section-content{
 
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+}
+
+/* section left stuff */
+
+.section-left{
+
+    display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 0 1 25rem;
+  text-align:center;
+    margin: 2rem auto;
+    background: #D3D3D3;
+    padding: 2rem;
+    width: min(90%, 25rem);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+/* adjusts gaps for section-left children */
+
+.section-left > * + *{
+
+    margin-top:2rem;
+
+}
+
+/* some styling for input and button */
+
+input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+
+    background: #007bff;
+    color: white;
+    padding: 1rem 2rem;
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+/* section-left title shit */
 .login-section-title{
 
     
     margin: 0;
     font-family: 'DM Sans', serif;
-    font-size: 45px;
-    letter-spacing: 2px;
-    word-spacing: 2px;
+    font-size: 2.8rem;
+    letter-spacing: 0.3rem;
     color: #000000;
-    font-weight: bold;
+    font-weight: 900;
 
 
 
 }
 
-.login-section-title, .login-section-subtitle, .input-username, .input-password, .button-sign-in{
-
-    padding: 20px;
-}
-
-button {
-
-    padding: 10px 30px;
-}

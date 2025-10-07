@@ -17,14 +17,14 @@
     z-index: 1000;
 
 }
-.core-threads-title{
+.core-threads-title, li{
 
     margin: 0;
     display: flex;
     font-family: 'DM Sans', serif;
     font-size: 45px;
-    letter-spacing: 2px;
-    word-spacing: 2px;
+    letter-spacing: 9px;
+    word-spacing: 1.6px;
     color: #000000;
     font-weight: bold;
 
