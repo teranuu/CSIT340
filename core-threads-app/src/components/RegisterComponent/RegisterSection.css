@@ -15,7 +15,12 @@ body {
 /* this is for root parent for left and right section */
 .login-section{
     background: #A8FFD8;
-background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 1) 76%);
+    background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 1) 76%);
+    background-image: url('../../assets/corethreads.png');
+    background-size: cover;      /* scale to fill */
+    background-position: center; /* center the image */
+    background-repeat: no-repeat;
+
 }
 
 /* content parent for left and right section using flex rows */
@@ -23,8 +28,10 @@ background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 
 
     display:flex;
     flex-direction:row;
-    align-items:center;
-    
+  align-items: flex-start; /* instead of center */
+  justify-content: space-evenly; /* ensures equal spacing */
+  flex-wrap: wrap; /* prevents overlapping on smaller screens */
+  gap:30rem;
 }
 
 /* section left stuff */
@@ -42,6 +49,8 @@ background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 
     padding: 2rem;
     width: min(90%, 25rem);
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index:1;
     
 }
 
@@ -143,22 +152,15 @@ background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 
 
     display: flex;
     flex-direction: column;
-
-    width: 100%;
-    flex: 0 0 35rem;
-    text-align:center;
-    border-radius:30px;
-    border: 4px solid #323d3b;
-    margin: 4rem auto;
-    background: #DAF1DE;
-    padding: 24rem 12rem;
+    flex: 0 0  35rem;
     width: min(90%, 25rem);
+    gap:3rem;
+    border-radius:30px;
+    border: 0;
+    background: #DAF1DE;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
-    background-image: url('../../assets/corethreads.png');
-    background-size: cover;      /* scale to fill */
-    background-position: center; /* center the image */
-    background-repeat: no-repeat;
+    position: relative;
+    z-index:2;
 
 }
 
@@ -236,33 +238,51 @@ input:checked + .slider:before {
 
 
 .input-wrapper {
-
   position: relative;
   width: 100%;
   margin: 0;
+  display: flex;
+  align-items: center;
 }
 
+/* For text inputs */
 .input-wrapper input {
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem; /* space for the icon */
+  padding: 0.9rem 1rem 0.9rem 3rem; /* space on left for the icon */
   border: 1px solid #8EB69B;
   border-radius: 10px;
   background-color: #F8F8F8;
   font-family: "DM Sans", sans-serif;
   font-size: 1rem;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* Subtle focus style */
+.input-wrapper input:focus {
+  border-color: #43B446;
+  box-shadow: 0 0 4px rgba(67, 180, 70, 0.4);
+}
+
+/* Common rule for icons (both img + FontAwesome) */
 .input-icon {
   position: absolute;
-  left: 10px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 20px;   /* controls icon size */
+  width: 20px;
   height: 20px;
+  color: #555;          /* For FontAwesome */
   opacity: 0.7;
-  pointer-events: none; /* ensures the icon doesn't block clicks */
+  pointer-events: none; /* Keeps input clickable */
 }
 
+/* FontAwesome specifically */
+.input-wrapper .svg-inline--fa.input-icon {
+  width: 20px;
+  height: 20px;
+}
 
 .gf-btn {
   display: flex;

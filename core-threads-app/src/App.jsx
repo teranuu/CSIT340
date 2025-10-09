@@ -3,12 +3,16 @@
 // import viteLogo from '/vite.svg'
 
 import LoginComponent from './components/LoginComponent/LoginComponent'
+import RegisterComponent from './components/RegisterComponent/RegisterComponent'
+
 function App() {
 
 
   return (
     <>
-      <LoginComponent/>
+      {/* <LoginComponent/> */}
+      <RegisterComponent/> 
+        
     </>
   )
 }
