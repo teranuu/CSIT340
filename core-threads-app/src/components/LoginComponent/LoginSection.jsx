@@ -23,20 +23,37 @@ function LoginSection(){
                         Enter your credentials to log-in!
                     </div>
 
-                    <div className="input-username">
-                        <input placeholder="Username"></input>
-                    </div>
+                    <div className="login-input-section">
 
-                    <div className="input-password">
-                        <input placeholder="Password"></input>
-                        
-                    </div>
+                          <div className="input-wrapper">
+                            <img 
+                                src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" 
+                                alt="user icon" 
+                                className="input-icon" 
+                            />
 
+                        <input type="text" placeholder="Username" />
+
+                        </div>
+
+                        <div className="input-wrapper">
+                            <img 
+                                src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" 
+                                alt="lock icon" 
+                                className="input-icon" 
+                            />
+
+                            <input placeholder="Password"></input>
+
+                        </div>
+
+                    </div>
+                    
                     <div className="login-section-toggle-switch-forgot-password">
                         <div className="toggle-switch">
-                            <label class="switch">
+                            <label className="switch">
                             <input type="checkbox"></input>
-                            <span class="slider round"></span>
+                            <span className="slider round"></span>
                             </label>
                         </div>
 
@@ -45,22 +62,33 @@ function LoginSection(){
                         </div>
                     </div>
 
-                    <div>
+
+                    <div className="button-sign-in-wrapper">
                         <button className="button-sign-in">Sign in</button>
                     </div>
 
+                    <div style ={{color:'#808080'}}>OR USE</div>
+
                     <div className="gf-section">
-                        <div>
 
-                            <button className="gf-section-btn">Google</button>
+                    <button className="gf-btn">
+                        <img 
+                        src="https://cdn-icons-png.flaticon.com/512/300/300221.png" 
+                        alt="Google icon" 
+                        className="gf-icon" 
+                        />
+                        Google
+                    </button>
 
-                        </div>
+                    <button className="gf-btn">
+                        <img 
+                        src="https://cdn-icons-png.flaticon.com/512/1384/1384005.png" 
+                        alt="Facebook icon" 
+                        className="gf-icon" 
+                        />
+                        Facebook
+                    </button>
 
-                        <div>
-
-                            <button className="gf-section-btn">Facebook</button>
-
-                        </div>
                     </div>
 
 
