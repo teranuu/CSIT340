@@ -26,12 +26,19 @@ body {
 /* content parent for left and right section using flex rows */
 .login-section-content{
 
-    display:flex;
-    flex-direction:row;
-  align-items: flex-start; /* instead of center */
-  justify-content: space-evenly; /* ensures equal spacing */
-  flex-wrap: wrap; /* prevents overlapping on smaller screens */
-  gap:30rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5rem;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .login-section-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
 }
 
 /* section left stuff */
@@ -86,9 +93,15 @@ body {
 
 }
 
-.button-sign-in:hover{
+.button-sign-in:hover {
+  background: var(--color-secondary);
+  color: #fff;
+}
 
-    background: #1a3d34;
+.login-section {
+  background: 
+    linear-gradient(90deg, rgba(168, 255, 216, 0.8) 0%, rgba(62, 180, 136, 0.8) 76%),
+    url('../../assets/corethreads.png') center/cover no-repeat;
 }
 
 /* section-left title shit */
@@ -145,22 +158,6 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
-}
-
-.section-right{
-
-    display: flex;
-    flex-direction: column;
-    flex: 0 0  35rem;
-    width: min(90%, 25rem);
-    gap:3rem;
-    border-radius:30px;
-    border: 0;
-    background: #DAF1DE;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    z-index:2;
 
 }
 
@@ -320,4 +317,22 @@ input:checked + .slider:before {
   align-items:center;
   justify-content:center;
   gap:1rem;
+}
+
+.or-use-wrapper{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:center;
+   gap:1rem;
+
+}
+
+.or-use-object{
+
+
+  flex: 1;
+  height: 1px;
+  border: none;
+  background-color:gray;
 }

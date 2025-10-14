@@ -33,13 +33,19 @@ function RegisterSection(){
 
                         <div className="input-wrapper">
                             <FontAwesomeIcon icon={["fas", "user"]} size="1g" color="#000" className="input-icon"/>
-                            <input type="password" placeholder="First Name"></input>
+                            <input type="text" placeholder="First Name"></input>
 
                         </div>
 
-                          <div className="input-wrapper">
+                        <div className="input-wrapper">
                             <FontAwesomeIcon icon={["fas", "user"]} size="1g" color="#000" className="input-icon"/>
-                            <input type="password" placeholder="Last Name"></input>
+                            <input type="text" placeholder="Last Name"></input>
+
+                        </div>
+
+                        <div className="input-wrapper">
+                            <FontAwesomeIcon icon={["fas", "envelope"]} size="1g" color="#000" className="input-icon"/>
+                            <input type="text" placeholder="Email Address"></input>
 
                         </div>
 
@@ -61,10 +67,22 @@ function RegisterSection(){
 
 
                     <div className="button-sign-in-wrapper">
-                        <button className="button-sign-in">Sign Up</button>
+                        <button type="button" className="button-sign-in">Sign Up</button>
                     </div>
 
+                    <div className="button-sign-in-wrapper">
+                        <button type="button" className="button-sign-in">Go Back to Log-in</button>
+                    </div>
+
+                    <div className="or-use-wrapper">
+
+                    <div className="or-use-object"></div>
+
                     <div style ={{color:'#808080', fontSize:'1.2rem'}}>OR USE</div>
+
+                      <div className="or-use-object"></div>
+
+                    </div>
 
                     <div className="gf-section">
 
@@ -93,31 +111,8 @@ function RegisterSection(){
 
 
                 </div>
-
-                <div className="section-right">
-
-                            
-                    <div className="button-sign-in-wrapper">
-                        <button className="button-sign-in">Go Back to Log-in</button>
-                    </div>
-
-
-                    <div className="button-sign-in-wrapper">
-                        <button className="button-sign-in">Sign Up</button>
-                    </div>
-
-                 
-
-
-
-                </div>
-
                 
             </div>
-
-            
-            
-
 
             
         </section>
