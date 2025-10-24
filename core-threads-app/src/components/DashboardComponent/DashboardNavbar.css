@@ -1,0 +1,78 @@
+/* .navbar-logo{
+
+    font-size: 2.8rem;
+    font-weight: bold;
+    color:black;
+}
+
+.navbar-wrapper{
+
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items:center;
+    gap:5rem;
+    padding: 0.6rem 0;
+    background: linear-gradient(90deg,rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 1) 76%);
+}
+
+.navbar-icon-wrapper{
+
+    display:flex;
+    flex-direction:row;
+    gap:1rem;
+}
+
+.navbar-icon{
+
+    height:1.5rem;
+    width:1.5rem;
+    object-fit:cover;
+}
+
+input{
+
+    border-radius: 0.7rem;
+    border:0.1rem solid black;
+    padding: 0.6rem;
+    width: 26rem;
+} */
+
+.navbar-wrapper {
+    display: flex;
+    justify-content: space-between; /* left, center, right layout */
+    align-items: center;
+    padding: 0.6rem 3rem;
+    background: linear-gradient(90deg, rgba(168, 255, 216, 1) 0%, rgba(62, 180, 136, 1) 76%);
+}
+
+.navbar-logo {
+    flex: 1;
+    font-size: 2rem;
+    font-weight: bold;
+    color:black;
+}
+
+input {
+    flex: 2;
+    max-width: 26rem;
+    margin: 0 auto;
+    border-radius: 0.7rem;
+    border:0.1rem solid black;
+    padding: 0.6rem;
+    width: 26rem;
+}
+
+.navbar-icon-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.navbar-icon{
+
+    height:1.5rem;
+    width:1.5rem;
+    object-fit:cover;
+}

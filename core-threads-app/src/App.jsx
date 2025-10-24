@@ -4,14 +4,15 @@
 
 import LoginComponent from './components/LoginComponent/LoginComponent'
 import RegisterComponent from './components/RegisterComponent/RegisterComponent'
-
+import DashboardComponent from './components/DashboardComponent/DashboardComponent'
 function App() {
 
 
   return (
     <>
       {/* <LoginComponent/> */}
-      <RegisterComponent/> 
+      {/* <RegisterComponent/>  */}
+      <DashboardComponent/>
         
     </>
   )

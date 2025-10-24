@@ -1,0 +1,14 @@
+.apparel-item-card{
+
+   display:flex;
+   flex-direction:row;
+   justify-content:space-around;
+   
+}
+.apparel-item-image-wrapper{
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}

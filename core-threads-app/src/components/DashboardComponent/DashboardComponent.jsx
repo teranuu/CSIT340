@@ -18,4 +18,4 @@ function DashboardComponent(){
 }
 
 
-export default DashboardComponent
+export default DashboardComponent;
