@@ -1,0 +1,32 @@
+.navbarWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* left, center, right layout */
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 3rem;
+    background: var(--color-primary-dark);
+}
+
+input {
+  
+    max-width: 30rem;
+    margin: 0 auto;
+    border-radius: 0.7rem;
+    border:0.1rem solid black;
+    padding: 0.6rem;
+    width: 26rem;
+}
+
+.navbarIconWrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* .navbar-icon{
+
+    height:1.5rem;
+    width:1.5rem;
+    object-fit:cover;
+} */

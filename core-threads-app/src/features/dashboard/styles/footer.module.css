@@ -1,0 +1,28 @@
+.dashboardFooterWrapper{
+
+background: var(--color-primary-dark);
+padding: 1.5rem 0;
+}
+
+.dealsWrapper{
+
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    gap: 2rem;
+    padding: 0.7rem 0;
+    
+}
+
+.dealsItemWrapper{
+
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+}
+
+.text{
+    font-size:1.2rem;
+    color:var(--color-accent);
+    font-weight:bold;
+}

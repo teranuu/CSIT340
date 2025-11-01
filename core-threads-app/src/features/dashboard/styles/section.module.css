@@ -1,0 +1,72 @@
+
+
+.dashboardSectionWrapper{
+
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+    padding: 5rem 0;
+    gap:2rem;
+    align-items:center;
+    background: var(--color-background);
+}
+
+.categorySidebarWrapper{
+
+    display:flex;
+    flex-direction:column;
+    gap:0;
+
+}
+
+
+.apparelDisplaySection{
+
+    display:flex;
+    flex-direction:column;
+    gap:3rem;
+    overflow-y: scroll;
+    max-height: 70vh; 
+    padding-right: 1rem;
+    width:40rem;
+    
+
+}
+
+.apparelItemRow{
+
+    display:flex;
+    flex-direction:row;
+    justify-content:space-around;
+    gap: 2rem;
+    
+}
+
+.rightDisplayWrapper{
+
+    display:flex;
+    flex-direction:column;
+    gap:9rem;
+
+
+}
+.rightSectionWrapper{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1rem;
+}
+
+@media (max-width: 768px) {
+  .dashboardSectionWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .categorySidebarWrapper,
+  .rightSectionWrapper {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+  }
+}   

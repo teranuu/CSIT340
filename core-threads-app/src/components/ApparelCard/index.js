@@ -1,0 +1,1 @@
+export { default as ApparelCard } from './ApparelCard.jsx'

@@ -1,0 +1,98 @@
+:root {
+  /* 🌿 Base brand palette */
+  --color-tea-green: #c5efcb;
+  --color-reseda-green: #647a67;
+  --color-black: #020402;
+  --color-eerie-black: #1f241f;
+  --color-black-olive: #3c433b;
+  --color-reseda-green-2: #758173;
+  --color-cambridge-blue: #8fa38a;
+  --color-celadon: #a9c5a0;
+  --color-celadon-2: #b8d2b3;
+  --color-tea-green-2: #c6dec6;
+
+  /* 🌈 Semantic roles (for easier reuse) */
+  --color-primary: var(--color-reseda-green);
+  --color-primary-light: var(--color-celadon);
+  --color-primary-dark: var(--color-black-olive);
+
+  --color-background: var(--color-tea-green-2);
+  --color-surface: var(--color-celadon-2);
+  --color-text: var(--color-eerie-black);
+  --color-text-muted: var(--color-cambridge-blue);
+
+  --color-accent: var(--color-tea-green);
+  --color-border: var(--color-reseda-green-2);
+
+  /* 🧱 Layout tokens */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+}
+
+
+@font-face {
+  font-family: "Harmond";
+  src: url("/src/assets/fonts/Harmond-ExtraBoldExpanded.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Harmond";
+  src: url("/src/assets/fonts/Harmond-ExtBdItalExp.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Harmond";
+  src: url("/src/assets/fonts/Harmond-SemiBoldCondensed.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Harmond";
+  src: url("/src/assets/fonts/Harmond-SemiBdItalCond.otf") format("opentype");
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Karrik";
+  src: url("/src/assets/fonts/Karrik-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Karrik";
+  src: url("/src/assets/fonts/Karrik-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Garet";
+  src: url("/src/assets/fonts/Garet-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Garet";
+  src: url("/src/assets/fonts/Garet-Heavy.woff2") format("woff2");
+  font-weight: 600;
+  font-style: bold;
+  font-display: swap;
+}

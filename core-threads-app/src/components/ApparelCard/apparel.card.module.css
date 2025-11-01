@@ -1,0 +1,14 @@
+.apparelItemCard{
+
+   display:flex;
+   flex-direction:row;
+   justify-content:space-around;
+   
+}
+.apparelItemImageWrapper{
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
