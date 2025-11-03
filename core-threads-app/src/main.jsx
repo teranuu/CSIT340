@@ -7,12 +7,20 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import './styles/base.css';
+import ReactDOM from 'react-dom/client';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
 
 library.add(fas, far, fab);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
+  <React.StrictMode>
+    <BrowserRouter>
     <App />
-  </StrictMode>,
+    </BrowserRouter>
+  </React.StrictMode>,
+
+
 )

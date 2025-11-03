@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import corethreads from '../../../assets/corethreads.png';
 import corethreads2 from '../../../assets/corethreads_2.png';
-function LoginSection(){
+function LoginSection({ onLogin, onRegister }){
 
 
     return(
@@ -16,7 +16,7 @@ function LoginSection(){
             
            
 
-                <form className={styles.loginForm}>
+                <form className={styles.loginForm} onSubmit={onLogin}>
 
                     <div className={styles.registerHeader}>
                     <span className="logo" style={{color:"var(--color-primary-dark)", fontSize:"2.3rem"}}>corethreads®</span>
@@ -59,7 +59,7 @@ function LoginSection(){
 
                     <div className={styles.buttonWrapper}>
                         <button type="submit" className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontWeight:400}}>Sign In</button>
-
+                        <button type="button" onClick={onRegister} className="button" style={{fontSize:"1.2rem", color:"white", fontWeight:400}}>Sign Up Using Email</button>
                         <span className={styles.text} style={{fontSize:"0.9rem", fontStyle:"italic"}}>or you can sign-in with</span>
 
                         <div className={styles.gfWrapper}>

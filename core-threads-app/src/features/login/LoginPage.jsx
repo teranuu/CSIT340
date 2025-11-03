@@ -1,13 +1,27 @@
 import { UserAuthNavbar } from '../../components/UserAuthNavbar/index.js';
-import LoginSection from './components/LoginSection.jsx'    
+import LoginSection from './components/LoginSection.jsx';
+import { useNavigate } from 'react-router-dom';
+
 function LoginPage(){
+
+    const navigate = useNavigate();
+    
+    const handleLogin = (e) => {
+        e.preventDefault();
+        navigate('/dashboardpage');
+    }
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+        navigate('/registerpage');
+    }
 
     return(
 
         <>
 
         <UserAuthNavbar/>
-        <LoginSection/>
+        <LoginSection onLogin={handleLogin} onRegister={handleRegister} />
 
         </>
 

@@ -1,7 +1,7 @@
 import styles from '../styles/section.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-function RegisterSection(){
+function RegisterSection({onRegister, onLogin}){
 
 
     return(
@@ -12,7 +12,7 @@ function RegisterSection(){
             
            
 
-                <form className={styles.registerForm}>
+                <form className={styles.registerForm} onSubmit={onRegister}>
 
                     <div className={styles.registerHeader}>
                     <span className={styles.text} style={{color:"var(--color-primary-dark)"}}>Hello New User, Sign Up Here</span>
@@ -108,7 +108,7 @@ function RegisterSection(){
 
                     <div className={styles.buttonWrapper}>
                         <button type="submit" className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontStyle:"italic"}}>Sign Up</button>
-                    <button type="submit" className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontStyle:"italic"}}>Go Back to Login</button>
+                    <button type="button" onClick={onLogin} className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontStyle:"italic"}}>Go Back to Login</button>
                     </div>
                     
                     <span className={styles.text} style={{fontSize:"0.9rem", fontWeight:400}}>Already have an account? Sign in here</span>
