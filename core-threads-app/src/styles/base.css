@@ -2,6 +2,7 @@
 
 html, body {
   margin: 0;
+  height: 100%;
   padding: 0;
   font-family: system-ui, sans-serif;
   background-color: var(--color-background);
@@ -11,16 +12,23 @@ html, body {
 .icon {
   font-size: 1.5rem; /* fine-tune */
 }
+.text{
+    font-family: "DM Sans", sans-serif;
+    color:var(--color-primary-dark);
+    font-weight: 500;
+}
 
 .button{
 
   width:100%;
   font-weight:600;
-  font-family:"Karrik", sans-serif;
   background-color:var(--color-primary);
   border:none;
   padding: 1.3rem 0;
   border-radius:0.3rem;
+  font-family: "DM Sans", sans-serif;
+  color:var(--color-accent);
+  font-weight: 500;
 }
 
 .button:hover{

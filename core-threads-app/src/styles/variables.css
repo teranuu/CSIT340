@@ -37,7 +37,7 @@
 }
 
 
-@font-face {
+/* @font-face {
   font-family: "Harmond";
   src: url("/src/assets/fonts/Harmond-ExtraBoldExpanded.otf") format("opentype");
   font-weight: 800;
@@ -63,7 +63,7 @@
   src: url("/src/assets/fonts/Harmond-SemiBdItalCond.otf") format("opentype");
   font-weight: 600;
   font-style: italic;
-}
+} */
 
 @font-face {
   font-family: "Karrik";
@@ -94,5 +94,21 @@
   src: url("/src/assets/fonts/Garet-Heavy.woff2") format("woff2");
   font-weight: 600;
   font-style: bold;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/src/assets/fonts/DMSans-VariableFont_opsz,wght.ttf") format("truetype-variations");
+  font-weight: 100 900; /* full weight range */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("/src/assets/fonts/DMSans-Italic-VariableFont_opsz,wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: italic;
   font-display: swap;
 }

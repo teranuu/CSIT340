@@ -8,12 +8,12 @@ function LoginPage(){
     
     const handleLogin = (e) => {
         e.preventDefault();
-        navigate('/dashboardpage');
+        navigate('/dashboard');
     }
 
     const handleRegister = (e) => {
         e.preventDefault();
-        navigate('/registerpage');
+        navigate('/register');
     }
 
     return(

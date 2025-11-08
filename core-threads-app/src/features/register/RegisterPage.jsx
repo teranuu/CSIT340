@@ -9,14 +9,14 @@ function RegisterPage(){
     const handleRegister = (e) => {
 
         e.preventDefault();
-        navigate('/');
+        navigate('/login');
 
     }
 
     const redirectLogin = (e) => {
 
         e.preventDefault();
-        navigate('/');
+        navigate('/login');
     }
 
     return(

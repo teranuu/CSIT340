@@ -1,0 +1,59 @@
+.accountWalletWrapper{
+
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* make it fill container */
+    gap: 3rem;
+
+
+}
+
+.balanceWrapper{
+
+    flex: 1; /* allow it to grow to fill available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* or space-between, if you prefer */
+    background-color: var(--color-primary-light);
+    padding: 2rem;
+    border-radius: 1rem;
+    
+}
+
+.addBalanceBtn{
+
+    flex:3;
+    width: 100%;
+    padding: 1.8rem 0;
+
+
+}
+
+.purchaseHistoryWrapper {
+  margin-top: 1.25rem;       /* 20px */
+  padding: 0.625rem;         /* 10px */
+  max-height: 15.625rem;     /* 250px */
+  overflow-y: auto;
+  border: 0.0625rem solid #ddd; /* 1px */
+  border-radius: 0.5rem;     /* 8px */
+  background-color: var(--color-primary-light);
+}
+
+/* optional: style the scrollbar */
+.purchaseHistoryWrapper::-webkit-scrollbar {
+  width: 0.5rem;             /* 8px */
+}
+
+.purchaseHistoryWrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0.5rem;     /* 8px */
+}
+
+.purchaseHistoryWrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 0.5rem;     /* 8px */
+}
+
+.purchaseHistoryWrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

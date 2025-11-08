@@ -1,0 +1,95 @@
+.accountSectionWrapper{
+
+    background:var(--color-background);
+    display:flex;
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    gap:6rem;
+    padding: 2.3rem 4rem;
+    height:100%;
+  
+}
+
+.list {
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    padding: 0;
+    gap:0.4rem;
+    
+}
+.list li{
+
+    list-style:none;
+    
+    font-weight:400;
+    font-size:1.4rem;
+    cursor:pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.list li:hover {
+    color: var(--color-primary); 
+    transform: translateX(5px);
+}
+
+.accountNavbarWrapper{
+
+    display: flex;
+    flex-direction: column;
+    gap:1.8rem;
+}
+
+.borderNavbar{
+
+    border: 0.1rem solid var(--color-border);
+
+}
+
+.accountNavbar{
+
+    border:none;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+    background-color:var(--color-primary-light);
+    border-radius: 1rem;
+    padding: 1rem 3rem 1rem 2rem;
+    min-width:30rem;
+    gap:1rem;
+    
+
+}
+
+.accountContentWrapper{
+    flex:3;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+.navButton {
+  all: unset; /* reset default button styles */
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.navButton:hover {
+  color: var(--color-primary);
+  transform: translateX(5px);
+}
+
+.active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+

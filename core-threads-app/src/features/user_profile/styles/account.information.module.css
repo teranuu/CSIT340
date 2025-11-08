@@ -1,0 +1,28 @@
+.accountInformationWrapper{
+
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    
+}
+
+.personalDetails{
+
+    padding: 2rem;
+    border-radius: 1rem;
+    background: var(--color-primary-light);
+
+}
+
+.buttonSection{
+
+    
+    margin-top: 2rem;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    padding: 1rem 0;
+    gap: 1rem;
+    
+}
+
