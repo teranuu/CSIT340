@@ -10,17 +10,6 @@ function Navbar(){
 
                 <div className="logo">corethreads®</div>
 
-                <ul className={styles.navList}>
-                
-
-                <li className={styles.text}>About Us</li>
-                <li className={styles.text}>Login</li>
-                <li className={styles.text}>Sign Up</li>
-
-
-                </ul>
-               
-
             </nav>
             
         </>

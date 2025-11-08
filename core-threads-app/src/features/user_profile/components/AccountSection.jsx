@@ -4,6 +4,7 @@ import AccountInformation from './AccountInformation';
 import AccountWallet from './AccountWallet';
 import AccountOrder from './AccountOrder';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MENU_ITEMS = [
   { id: 'info', label: 'Account Information' },
@@ -20,13 +21,26 @@ const MENU_ITEMS = [
 function AccountSection() {
   // 2️⃣ Local state for current section (placeholder for router)
   const [activeSection, setActiveSection] = useState('info');
+  const navigate = useNavigate();
 
+
+  const handleSectionClick = (id) => {
+    if (id === 'logout') {
+      // 1️⃣ Clear user session / token if any
+      localStorage.removeItem('token'); // or whatever auth storage you use
+      // 2️⃣ Redirect to login page
+      navigate('/login');
+    } else {
+      setActiveSection(id);
+    }
+  };
   // 3️⃣ Dynamic section rendering
   const renderSection = () => {
     switch (activeSection) {
       case 'info': return <AccountInformation />;
       case 'wallet': return <AccountWallet />;
       case 'orders': return <AccountOrder />;
+
       default: return <div>Coming soon...</div>;
     }
   };
@@ -49,7 +63,7 @@ function AccountSection() {
                 <li key={item.id}>
                 <button
                     className={`${styles.navButton} ${activeSection === item.id ? styles.active : ''}`}
-                    onClick={() => setActiveSection(item.id)}>
+                    onClick={() => handleSectionClick(item.id)}>
                     {item.label}
                 </button>
                 </li>
