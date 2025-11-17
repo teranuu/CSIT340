@@ -2,11 +2,42 @@ import styles from '../styles/section.module.css';
 import { FontAwesomeIcon  } from "@fortawesome/react-fontawesome";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Link } from "react-router-dom";
+import { useState } from 'react';
 
 import corethreads from '../../../assets/corethreads.png';
 import corethreads2 from '../../../assets/corethreads_2.png';
 function LoginSection({ onLogin, onRegister }){
 
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        // Validation
+        if (!formData.username.trim()) {
+            alert('Please enter your username');
+            return;
+        }
+        
+        if (!formData.password.trim()) {
+            alert('Please enter your password');
+            return;
+        }
+        
+        // If validation passes, call the onLogin function
+        onLogin(e);
+    };
 
     return(
 
@@ -16,7 +47,7 @@ function LoginSection({ onLogin, onRegister }){
             
            
 
-                <form className={styles.loginForm} onSubmit={onLogin}>
+                <form className={styles.loginForm} onSubmit={handleSubmit}>
 
                     <div className={styles.registerHeader}>
                     <span className="logo" style={{color:"var(--color-primary-dark)", fontSize:"2.3rem"}}>corethreads®</span>
@@ -28,15 +59,12 @@ function LoginSection({ onLogin, onRegister }){
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "circle-user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="username"
                             type="text"
                             placeholder="Username"
                             className={styles.inputUA}
+                            value={formData.username}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -44,16 +72,12 @@ function LoginSection({ onLogin, onRegister }){
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="password"
                             type="password"
                             placeholder="Password"
                             className={styles.inputUA}
-
+                            value={formData.password}
+                            onChange={handleChange}
                         />
                     </div>
 
