@@ -1,8 +1,76 @@
 import styles from '../styles/section.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { useState } from 'react';
+
 function RegisterSection({onRegister, onLogin}){
 
+    const [formData, setFormData] = useState({
+        username: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        // Validation
+        if (!formData.username.trim()) {
+            alert('Please enter a username');
+            return;
+        }
+        
+        if (!formData.firstName.trim()) {
+            alert('Please enter your first name');
+            return;
+        }
+        
+        if (!formData.lastName.trim()) {
+            alert('Please enter your last name');
+            return;
+        }
+        
+        if (!formData.email.trim()) {
+            alert('Please enter your email address');
+            return;
+        }
+        
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert('Please enter a valid email address');
+            return;
+        }
+        
+        if (!formData.password.trim()) {
+            alert('Please enter a password');
+            return;
+        }
+        
+        if (!formData.confirmPassword.trim()) {
+            alert('Please confirm your password');
+            return;
+        }
+        
+        if (formData.password !== formData.confirmPassword) {
+            alert('Passwords do not match');
+            return;
+        }
+        
+        // If validation passes, call the onRegister function
+        onRegister(e);
+    };
 
     return(
 
@@ -12,7 +80,7 @@ function RegisterSection({onRegister, onLogin}){
             
            
 
-                <form className={styles.registerForm} onSubmit={onRegister}>
+                <form className={styles.registerForm} onSubmit={handleSubmit}>
 
                     <div className={styles.registerHeader}>
                     <span className={styles.text} style={{color:"var(--color-primary-dark)"}}>Hello New User, Sign Up Here</span>
@@ -26,13 +94,11 @@ function RegisterSection({onRegister, onLogin}){
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "circle-user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="username"
+                            type="text"
                             placeholder="Username"
+                            value={formData.username}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -40,26 +106,22 @@ function RegisterSection({onRegister, onLogin}){
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="firstName"
+                            type="text"
                             placeholder="First Name"
+                            value={formData.firstName}
+                            onChange={handleChange}
                         />
                     </div>
 
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="lastName"
+                            type="text"
                             placeholder="Last Name"
+                            value={formData.lastName}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -69,26 +131,22 @@ function RegisterSection({onRegister, onLogin}){
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "envelope"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="email"
+                            type="email"
                             placeholder="Email Address"
+                            value={formData.email}
+                            onChange={handleChange}
                         />
                     </div>
 
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="password"
+                            type="password"
                             placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -96,13 +154,11 @@ function RegisterSection({onRegister, onLogin}){
 
                         <FontAwesomeIcon icon={["fas", "lock"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
-                            // id="email"
-                            // name="email"
-                            // type="email"
-                            // value={formData.email}
-                            // onChange={handleChange}
-                            // required
+                            name="confirmPassword"
+                            type="password"
                             placeholder="Confirm Password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
                         />
                     </div>
 
