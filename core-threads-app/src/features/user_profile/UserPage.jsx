@@ -9,6 +9,7 @@ function UserPage(){
     return(
 
         <>
+        <Marquee/>
         <MainNavbar/>
         <AccountSection/>
         

@@ -1,0 +1,32 @@
+.sectionWrapper{
+
+    display:flex;
+    flex-direction:row;
+    padding: 2rem 2rem;
+    margin: 3rem;
+    border: solid 0.1rem var(--color-primary-dark);
+    border-radius:1rem;
+
+}
+
+.leftContent{
+
+    display:flex;
+    flex-direction:column;
+}
+
+.cartHeader{
+
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap: 1rem;
+
+}
+
+.icon{
+
+    font-size:2rem;
+
+}
+

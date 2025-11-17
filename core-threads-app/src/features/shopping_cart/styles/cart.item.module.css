@@ -1,0 +1,56 @@
+.cartItemWrapper{
+
+    border: solid 0.1rem black;
+    border-radius:0.5rem;
+    display:flex;
+    flex-direction:row;
+
+}
+
+.cartImage{
+
+    flex:1;
+    display:flex;
+    align-items:center;
+}
+
+.cartContent{
+
+    flex:3;
+    display:flex;
+    flex-direction:column;
+
+}
+
+.contentHeader{
+
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+}
+.contentHeaderName{
+
+    flex:3;
+
+}
+
+.contentHeaderTrash{
+
+
+    flex:1;
+
+}
+.contentDesc{
+
+    display:flex;
+    flex-direction:column;
+
+}
+
+
+.contentFooter{
+
+    display:flex;
+    flex-direction:row; 
+    align-items:center;
+}
