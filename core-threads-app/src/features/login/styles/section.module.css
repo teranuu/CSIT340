@@ -73,18 +73,45 @@
     gap:1.3rem;
 }
 
-.inputUA{
+/* Ensure inputs look consistent on initial load and with autofill */
+.loginForm input,
+.loginForm input:autofill,
+.loginForm input:-webkit-autofill,
+.loginForm input:-webkit-autofill:hover,
+.loginForm input:-webkit-autofill:focus {
+    border:1px solid var(--color-border) !important;
+    padding: 0.8rem 1rem !important;
+    color:var(--color-text) !important;
+    background-color:var(--color-primary-light) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    -webkit-text-fill-color: var(--color-text) !important;
+    border-radius: var(--radius-sm);
+}
 
+.loginForm input:-moz-autofill {
+    box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    -moz-text-fill-color: var(--color-text) !important;
+}
+
+.inputUA{
+    width: 100%;
     border:1px solid var(--color-border);
+    border-radius: var(--radius-sm);
     padding: 0.8rem 1rem;
     color:var(--color-text);
     background-color:var(--color-primary-light);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.inputUA:focus {
+    border-color: var(--color-primary-dark);
+    outline: none;
 }
 
 .inputUA::placeholder{
-
     color: var(--color-text);
-    
 }
 
 .gfWrapper{

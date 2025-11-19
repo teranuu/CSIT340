@@ -14,62 +14,94 @@ function RegisterSection({onRegister, onLogin}){
         confirmPassword: ''
     });
 
+    const [passwordError, setPasswordError] = useState('');
+    const [serverError, setServerError] = useState('');
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: value
         }));
+        
+        // Clear password error when user starts typing again
+        if (name === 'password' && passwordError) {
+            setPasswordError('');
+        }
     };
 
-    const handleSubmit = (e) => {
+    const validatePassword = (password) => {
+        if (password.length < 6) {
+            return 'Password must be at least 6 characters long';
+        }
+        if (password.match(/^[A-Za-z]+$/)) {
+            return 'Password must include at least one number or symbol';
+        }
+        return '';
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Clear any previous server errors
+        setServerError('');
         
         // Validation
         if (!formData.username.trim()) {
-            alert('Please enter a username');
+            setServerError('Please enter a username');
             return;
         }
         
         if (!formData.firstName.trim()) {
-            alert('Please enter your first name');
+            setServerError('Please enter your first name');
             return;
         }
         
         if (!formData.lastName.trim()) {
-            alert('Please enter your last name');
+            setServerError('Please enter your last name');
             return;
         }
         
         if (!formData.email.trim()) {
-            alert('Please enter your email address');
+            setServerError('Please enter your email address');
             return;
         }
         
         // Basic email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
-            alert('Please enter a valid email address');
+            setServerError('Please enter a valid email address');
             return;
         }
         
         if (!formData.password.trim()) {
-            alert('Please enter a password');
+            setServerError('Please enter a password');
+            return;
+        }
+        
+        // Validate password strength
+        const pwdError = validatePassword(formData.password);
+        if (pwdError) {
+            setPasswordError(pwdError);
             return;
         }
         
         if (!formData.confirmPassword.trim()) {
-            alert('Please confirm your password');
+            setServerError('Please confirm your password');
             return;
         }
         
         if (formData.password !== formData.confirmPassword) {
-            alert('Passwords do not match');
+            setServerError('Passwords do not match');
             return;
         }
         
-        // If validation passes, call the onRegister function
-        onRegister(e);
+        // If validation passes, send data to backend (exclude confirmPassword)
+        const { confirmPassword, ...registrationData } = formData;
+        const error = await onRegister(registrationData);
+        if (error) {
+            setServerError(error);
+        }
     };
 
     return(
@@ -141,13 +173,21 @@ function RegisterSection({onRegister, onLogin}){
 
                     <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                        <input
-                            name="password"
-                            type="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
+                        <div style={{display: 'flex', flexDirection: 'column', flex: 1}}>
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                style={passwordError ? {borderColor: 'red', borderWidth: '2px'} : {}}
+                            />
+                            {passwordError && (
+                                <span style={{color: 'red', fontSize: '0.85rem', marginTop: '0.25rem'}}>
+                                    {passwordError}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className={styles.formGroup}>
@@ -163,6 +203,16 @@ function RegisterSection({onRegister, onLogin}){
                     </div>
 
                     <div className={styles.buttonWrapper}>
+                        {serverError && (
+                            <div style={{
+                                color: 'red', 
+                                fontSize: '0.9rem', 
+                                marginBottom: '0.5rem',
+                                textAlign: 'center'
+                            }}>
+                                {serverError}
+                            </div>
+                        )}
                         <button type="submit" className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontStyle:"italic"}}>Sign Up</button>
                     <button type="button" onClick={onLogin} className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontStyle:"italic"}}>Go Back to Login</button>
                     </div>

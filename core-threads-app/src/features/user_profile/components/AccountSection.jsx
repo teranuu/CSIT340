@@ -26,10 +26,15 @@ function AccountSection() {
 
   const handleSectionClick = (id) => {
     if (id === 'logout') {
-      // 1️⃣ Clear user session / token if any
-      localStorage.removeItem('token'); // or whatever auth storage you use
-      // 2️⃣ Redirect to login page
-      navigate('/login');
+      // Show confirmation prompt before logging out
+      const confirmLogout = window.confirm('Are you sure you want to log out?');
+      
+      if (confirmLogout) {
+        // 1️⃣ Clear user session / token if any
+        localStorage.removeItem('token'); // or whatever auth storage you use
+        // 2️⃣ Redirect to login page
+        navigate('/login');
+      }
     } else {
       setActiveSection(id);
     }

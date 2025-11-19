@@ -12,6 +12,7 @@ function LoginSection({ onLogin, onRegister }){
         username: '',
         password: ''
     });
+    const [serverError, setServerError] = useState('');
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,22 +22,21 @@ function LoginSection({ onLogin, onRegister }){
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // Validation
+        setServerError('');
+
         if (!formData.username.trim()) {
-            alert('Please enter your username');
+            setServerError('Please enter your username');
             return;
         }
-        
         if (!formData.password.trim()) {
-            alert('Please enter your password');
+            setServerError('Please enter your password');
             return;
         }
-        
-        // If validation passes, call the onLogin function
-        onLogin(e);
+
+        const err = await onLogin(formData);
+        if (err) setServerError(err);
     };
 
     return(
@@ -82,6 +82,11 @@ function LoginSection({ onLogin, onRegister }){
                     </div>
 
                     <div className={styles.buttonWrapper}>
+                        {serverError && (
+                            <div style={{ color:'red', fontSize:'0.9rem', marginBottom:'0.5rem', textAlign:'center' }}>
+                                {serverError}
+                            </div>
+                        )}
                         <button type="submit" className="button" style={{marginTop:"1rem", fontSize:"1.2rem", color:"white", fontWeight:400}}>Sign In</button>
                         <button type="button" onClick={onRegister} className="button" style={{fontSize:"1.2rem", color:"white", fontWeight:400}}>Sign Up Using Email</button>
                         <span className={styles.text} style={{fontSize:"0.9rem", fontStyle:"italic"}}>or you can sign-in with</span>
