@@ -122,8 +122,9 @@ function RegisterSection({onRegister, onLogin}){
                     <span className={styles.text} style={{fontSize:"1.1rem", fontStyle:"italic"}}>your essentials journey starts with us today</span>
                     
 
-                    
-                    <div className={styles.formGroup}>
+                    <div className={styles.formGroupWrapper}>
+
+                        <div className={styles.formGroup}>
                         <FontAwesomeIcon icon={["fas", "circle-user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
                         <input
                             name="username"
@@ -201,6 +202,10 @@ function RegisterSection({onRegister, onLogin}){
                             onChange={handleChange}
                         />
                     </div>
+
+
+                    </div>
+                    
 
                     <div className={styles.buttonWrapper}>
                         {serverError && (
