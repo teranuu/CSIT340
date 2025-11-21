@@ -34,6 +34,7 @@ function LoginPage(){
             console.error('Login error:', e);
             return 'Unable to reach server. Please try again.';
         }
+
     };
 
     const handleRegister = (e) => {
