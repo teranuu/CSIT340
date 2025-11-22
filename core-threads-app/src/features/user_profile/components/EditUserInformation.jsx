@@ -8,78 +8,79 @@ function EditUserInformation({onBack}) {
     return(
 
         <>
-            <div className={styles.editUserWrapper}>
+            <div className={styles.pageWrapper}>
 
-                <FontAwesomeIcon icon={["fas", "less-than"]} size="lg" color="var(--color-primary-dark)" className={styles.back} onClick={onBack}/>
-                
-                
-                <form className={styles.editUserForm}>
+                <div className={styles.editUserWrapper}>
 
-                    <div className={styles.formInputGroup}>
-                        <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                            <input
-                                name="username"
-                                type="text"
-                                placeholder="Username"
-                                // value={formData.username}
-                                // onChange={handleChange}
-                            />
+                    <div className={styles.headerWrapper}>
+
+                        <FontAwesomeIcon icon={["fas", "less-than"]} size="lg" color="var(--color-primary-dark)" className={styles.back} onClick={onBack}/>
+                        <h2>Edit Your Information</h2>
+
                     </div>
+                    
+                    
+                    
+                    <form className={styles.editUserForm}>
 
-                    <div className={styles.formInputGroup}>
-                        <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                            <input
-                                name="firstName"
-                                type="text"
-                                placeholder="First Name"
-                                // value={formData.firstName}
-                                // onChange={handleChange}
-                            />
-                    </div>
+                        <div className={styles.formInputGroup}>
+                            <FontAwesomeIcon icon={["fas", "circle-user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
+                                <input
+                                    name="username"
+                                    type="text"
+                                    placeholder="Username"
+                                    // value={formData.username}
+                                    // onChange={handleChange}
+                                />
+                        </div>
 
-                    <div className={styles.formInputGroup}>
-                        <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                            <input
-                                name="lastName"
-                                type="text"
-                                placeholder="Last Name"
-                                // value={formData.username}
-                                // onChange={handleChange}
-                            />
-                    </div>
+                        <div className={styles.formInputGroup}>
+                            <FontAwesomeIcon icon={["fas", "user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
+                                <input
+                                    name="firstName"
+                                    type="text"
+                                    placeholder="First Name"
+                                    // value={formData.firstName}
+                                    // onChange={handleChange}
+                                />
+                        </div>
 
+                        <div className={styles.formInputGroup}>
+                            <FontAwesomeIcon icon={["fas", "user"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
+                                <input
+                                    name="lastName"
+                                    type="text"
+                                    placeholder="Last Name"
+                                    // value={formData.username}
+                                    // onChange={handleChange}
+                                />
+                        </div>
 
-                    <div className={styles.formInputGroup}>
-                        <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                            <input
-                                name="password"
-                                type="password"
-                                placeholder="New Password"
-                                // className={styles.inputUA}
-                                // value={formData.password}
-                                // onChange={handleChange}
-                            />
-                    </div>
-
-                    <div className={styles.formInputGroup}>
-                        <FontAwesomeIcon icon={["fas", "key"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
-                            <input
-                                name="confirmPassword"
-                                type="password"
-                                placeholder="Confirm Password"
-                                // className={styles.inputUA}
-                                // value={formData.password}
-                                // onChange={handleChange}
-                            />
-                    </div>
+                        <div className={styles.formInputGroup}>
+                            <FontAwesomeIcon icon={["fas", "envelope"]} size="lg" color="var(--color-primary-dark)" className="icon"/>
+                                <input
+                                    name="emailAddress"
+                                    type="text"
+                                    placeholder="Email Address"
+                                    // value={formData.username}
+                                    // onChange={handleChange}
+                                />
+                        </div>
 
                             
+                    </form>
 
+                </div>
 
-                </form>
+                <div className={styles.buttonWrapper}>
+
+                    <button className="button" onClick={() => setActiveSection('edit')}>Confirm Changes</button>
+                    <button className="button" onClick={() => setActiveSection('change_pass')}>Reset Changes</button>
+
+                </div>
 
             </div>
-
+            
         </>
 
     );

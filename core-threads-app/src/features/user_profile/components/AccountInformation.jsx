@@ -1,13 +1,7 @@
 import styles from '../styles/account.information.module.css';
 import EditUserInformation from './EditUserInformation';
+import ChangePass from './ChangePass';
 import { useState } from 'react';
-
-    // const MENU_ITEMS = [
-    //     { id: 'info'},
-    //     { id: 'edit'},
-    //     { id: 'change_pass'},
-
-    // ];
 
 
 function AccountInformation(){
@@ -55,7 +49,8 @@ function AccountInformation(){
                 );
             case 'edit':
                 return <EditUserInformation onBack={goBackToInfo}/>;
-            // case 'info':
+            case 'change_pass':
+                return <ChangePass onBack={goBackToInfo}/>;
         
             default:
                 return null;
