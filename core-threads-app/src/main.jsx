@@ -10,15 +10,20 @@ import './styles/base.css';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-
-
+import ProductCatalogue from './features/catalogue/CataloguePage.jsx';
 library.add(fas, far, fab);
 
 createRoot(document.getElementById('root')).render(
 
+  // <React.StrictMode>
+  //   {/* <App /> */}
+  // </React.StrictMode>,
+
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <ProductCatalogue />
+  </BrowserRouter>
+  </React.StrictMode>
 
 
 )

@@ -1,0 +1,40 @@
+.catalogueCardWrapper {
+  border-radius: 0.6rem;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalogueCardWrapper:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.imageSection {
+  flex: 1;
+}
+
+.imageSection img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detailSection {
+  padding: 0.5rem 0.7rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.price {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}

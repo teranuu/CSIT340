@@ -67,9 +67,11 @@ function AccountSection() {
             {MENU_ITEMS.map(item => (
                 <li key={item.id}>
                 <button
-                    className={`${styles.navButton} ${activeSection === item.id ? styles.active : ''}`}
-                    onClick={() => handleSectionClick(item.id)}>
-                    {item.label}
+                  type="button"
+                  aria-current={activeSection === item.id ? 'true' : 'false'}
+                  className={`${styles.navButton} ${activeSection === item.id ? styles.active : ''}`}
+                  onClick={() => handleSectionClick(item.id)}>
+                  {item.label}
                 </button>
                 </li>
             ))}
