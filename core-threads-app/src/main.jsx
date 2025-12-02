@@ -9,21 +9,14 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import './styles/base.css';
 import ReactDOM from 'react-dom/client';
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import ProductCatalogue from './features/catalogue/CataloguePage.jsx';
+import { BrowserRouter } from 'react-router-dom'
 library.add(fas, far, fab);
 
 createRoot(document.getElementById('root')).render(
 
-  // <React.StrictMode>
-  //   {/* <App /> */}
-  // </React.StrictMode>,
-
   <React.StrictMode>
-  <BrowserRouter>
-    <ProductCatalogue />
-  </BrowserRouter>
-  </React.StrictMode>
+    {/* <App /> */}
+  </React.StrictMode>,
 
 
 )
