@@ -15,7 +15,7 @@ library.add(fas, far, fab);
 createRoot(document.getElementById('root')).render(
 
   <React.StrictMode>
-    {/* <App /> */}
+    <App />
   </React.StrictMode>,
 
 
