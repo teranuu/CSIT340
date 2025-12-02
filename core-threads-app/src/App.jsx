@@ -7,8 +7,9 @@ const Register = lazy(() => import("./features/register/RegisterPage"));
 const DashboardLayout = lazy(() => import("./features/dashboard/DashboardPage"));
 const DashboardSection = lazy(() => import("./features/dashboard/components/DashboardSection"));
 const UserLayout = lazy(() => import("./features/user_profile/UserPage"));
-
 const ShoppingCart = lazy(() => import("./features/shopping_cart/ShoppingCart"));
+const CatalogLayout = lazy(() => import("./features/catalogue/CataloguePage"));
+
 
 function App() {
 
@@ -23,9 +24,11 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>}/>
 
-            <Route path="/dashboard" element={<DashboardLayout/>}>
-            <Route index element={<DashboardSection />} />
-              </Route>
+            <Route path="/dashboard" element={<DashboardLayout/>}/>
+            {/* <Route index element={<DashboardSection />} />
+              </Route> */}
+
+            <Route path="/dashboard/catalog" element={<CatalogLayout/>}/>
            
            <Route path="/dashboard/settings" element={<UserLayout/>} />
 

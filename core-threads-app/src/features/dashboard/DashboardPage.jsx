@@ -12,8 +12,7 @@ function DashboardPage(){
 
         <Marquee/>
         <MainNavbar/>
-        {/* <DashboardSection/> */}
-        <Outlet/>
+        <DashboardSection/>
         <DashboardFooter/>
 
         </>
