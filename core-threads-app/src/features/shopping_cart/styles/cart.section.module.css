@@ -1,7 +1,12 @@
 .pageWrapper {
   background: var(--color-background);
-  min-height: 100vh;
+  /* Don't force a full viewport height here — this component is rendered
+     below site header (Marquee/MainNavbar). Using a fixed 100vh can create
+     extra blank space under the header. Let the wrapper size to content. */
+  min-height: auto;
   padding: 2rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
   font-family: "DM Sans", "Garet", "Karrik", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -13,8 +18,8 @@
   gap: 2rem;
   /* allow right column to stretch to fill available vertical space */
   align-items: stretch;
-  /* ensure container at least viewport height minus top UI */
-  min-height: calc(100vh - 8rem);
+  /* size based on content; avoid forcing a minimum height that ignores surrounding header */
+  min-height: auto;
 }
 
 /* Left Section: Cart Items */

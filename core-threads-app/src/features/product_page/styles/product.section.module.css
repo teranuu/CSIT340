@@ -2,6 +2,7 @@
   padding: 2rem 1rem;
   background: var(--color-background);
   min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .container {
@@ -71,8 +72,7 @@
 .productInfo {
   display: flex;
   flex-direction: column;
-  justify-content:center;
-  height:100%;
+  justify-content: flex-start;
   gap: 1.5rem;
 }
 
