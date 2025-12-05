@@ -1,81 +1,173 @@
 import styles from '../styles/account.information.module.css';
-import EditUserInformation from './EditUserInformation';
-import ChangePass from './ChangePass';
 import { useState } from 'react';
 
-
-function AccountInformation(){
-
-    const [activeSection, setActiveSection] = useState('info');
-
-    const user = {
+function AccountInformation() {
+    const [formData, setFormData] = useState({
         firstName: "John",
         lastName: "Doe",
         email: "john.doe@example.com",
         phone: "+1 234 567 890",
-        dateJoined: "2023-04-15",
-        language: "English (US)",
-        defaultAddress: "123 Street, City, ZIP, Country"
+        dateOfBirth: "1990-01-15",
+        gender: "male"
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
-    const goBackToInfo = () => setActiveSection('info');
+    const handleSave = (e) => {
+        e.preventDefault();
+        console.log('Saving details:', formData);
+        // Add save logic here
+    };
 
-    const renderSection = () => {
-
-        switch (activeSection) {
-            case 'info':
-                return(
-                <>
-                
-                <div className={styles.personalDetails}>
-
-                    <span>Personal Information</span>
-                    <p><strong>Full Name:</strong> {user.firstName} {user.lastName}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Phone:</strong> {user.phone}</p>
-                    <p><strong>Date Joined:</strong> {new Date(user.dateJoined).toLocaleDateString()}</p>
-                    <p><strong>Preferred Language:</strong> {user.language}</p>
-                    <p><strong>Default Address:</strong> {user.defaultAddress}</p>
-
-                </div>
-
-                <div className={styles.buttonSection}>
-
-                <button className="button" onClick={() => setActiveSection('edit')}>Edit User Information</button>
-                <button className="button" onClick={() => setActiveSection('change_pass')}>Change Password</button>
-
-                </div>
-                </>
-                );
-            case 'edit':
-                return <EditUserInformation onBack={goBackToInfo}/>;
-            case 'change_pass':
-                return <ChangePass onBack={goBackToInfo}/>;
-        
-            default:
-                return null;
-        }
-    }
-
-    return(
-
-        <>
-
+    return (
         <div className={styles.accountInformationWrapper}>
-        
-        <div className={styles.sectionContent}>
-                {renderSection()}
+            <h2 className={styles.sectionTitle}>Personal Details</h2>
+            
+            <form className={styles.detailsForm} onSubmit={handleSave}>
+                <div className={styles.formRow}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="firstName" className={styles.label}>
+                            First Name
+                        </label>
+                        <input
+                            type="text"
+                            id="firstName"
+                            name="firstName"
+                            className={styles.input}
+                            placeholder="First Name"
+                            value={formData.firstName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <label htmlFor="lastName" className={styles.label}>
+                            Last Name
+                        </label>
+                        <input
+                            type="text"
+                            id="lastName"
+                            name="lastName"
+                            className={styles.input}
+                            placeholder="Last Name"
+                            value={formData.lastName}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label htmlFor="email" className={styles.label}>
+                        Email Address
+                    </label>
+                    <div className={styles.fullWidthRow}>
+                        <div className={styles.inputWithAction}>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                className={styles.input}
+                                placeholder="Email Address"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                            />
+                            <button type="button" className={styles.changeBtn}>Change</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label htmlFor="phone" className={styles.label}>
+                        Phone Number
+                    </label>
+                    <div className={styles.fullWidthRow}>
+                        <div className={styles.inputWithAction}>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                className={styles.input}
+                                placeholder="Phone Number"
+                                value={formData.phone}
+                                onChange={handleInputChange}
+                            />
+                            <button type="button" className={styles.changeBtn}>Change</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label htmlFor="dateOfBirth" className={styles.label}>
+                        Date of Birth
+                    </label>
+                    <div className={styles.fullWidthRow}>
+                        <div className={styles.inputWithAction}>
+                            <input
+                                type="date"
+                                id="dateOfBirth"
+                                name="dateOfBirth"
+                                className={styles.input}
+                                value={formData.dateOfBirth}
+                                onChange={handleInputChange}
+                            />
+                            <button type="button" className={styles.changeBtn}>Change</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label className={styles.label}>Gender</label>
+                    <div className={styles.genderRow}>
+                        <div className={styles.radioGroup}>
+                            <label className={styles.radioLabel}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="male"
+                                    checked={formData.gender === 'male'}
+                                    onChange={handleInputChange}
+                                    className={styles.radioInput}
+                                />
+                                Male
+                            </label>
+                            <label className={styles.radioLabel}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="female"
+                                    checked={formData.gender === 'female'}
+                                    onChange={handleInputChange}
+                                    className={styles.radioInput}
+                                />
+                                Female
+                            </label>
+                            <label className={styles.radioLabel}>
+                                <input
+                                    type="radio"
+                                    name="gender"
+                                    value="other"
+                                    checked={formData.gender === 'other'}
+                                    onChange={handleInputChange}
+                                    className={styles.radioInput}
+                                />
+                                Other
+                            </label>
+                        </div>
+
+                        <button type="submit" className={styles.saveButton}>
+                            Save Details
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-
-
-        </div>
-        
-        
-        </>
-
     );
-
 }
 
 export default AccountInformation;
