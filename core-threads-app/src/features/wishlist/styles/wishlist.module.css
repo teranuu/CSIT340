@@ -1,0 +1,133 @@
+.pageWrapper {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  background: var(--color-background);
+}
+
+.card {
+  background: var(--color-surface);
+  width: 90%;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.title {
+  font-family: "Garet", sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 1.5rem;
+}
+
+/* SHARED GRID FOR HEADER & ROWS */
+.gridLayout {
+  display: grid;
+  grid-template-columns:
+    50px
+    90px
+    1.6fr
+    0.8fr
+    0.8fr
+    0.8fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* HEADER */
+.tableHeader {
+  padding-bottom: 0.7rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+
+/* DIVIDER */
+.divider {
+  margin-bottom: 0.7rem;
+}
+
+/* ROWS */
+.row {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* IMAGE */
+.imageBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #e5e5e5;
+}
+.imageBox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ICON */
+.trashBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-primary-dark);
+}
+.trashBtn:hover {
+  color: #e85c5c;
+}
+
+/* TEXT ALIGNMENT */
+.itemPrice,
+.itemStock,
+.addBtn {
+  justify-self: center;
+}
+
+.productName {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+/* BUTTON */
+.addBtn {
+  padding: 0.6rem 1rem;
+  background: var(--color-primary-dark);
+  color: white;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.addBtn:hover {
+  background: var(--color-black);
+}
+/* HEADER */
+.tableHeader {
+  padding-bottom: 0.7rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+/* ALIGN HEADER COLUMNS */
+.tableHeader span:nth-child(4),
+.tableHeader span:nth-child(5),
+.tableHeader span:nth-child(6) {
+  justify-self: center;
+}
+.productName {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text);
+  padding-left: 8rem;
+}
+.tableHeader span:nth-child(3) {
+  justify-self: start;
+  padding-left: 10rem;
+}

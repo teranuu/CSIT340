@@ -9,6 +9,8 @@ const DashboardSection = lazy(() => import("./features/dashboard/components/Dash
 const UserLayout = lazy(() => import("./features/user_profile/UserPage"));
 const ShoppingCart = lazy(() => import("./features/shopping_cart/ShoppingCart"));
 const CatalogLayout = lazy(() => import("./features/catalogue/CataloguePage"));
+const WishlistPage = lazy(() => import("./features/wishlist/WishlistPage"));
+
 
 
 function App() {
@@ -36,6 +38,9 @@ function App() {
           {/* default route upon startup */}
 
           <Route path="*" element={<Login/>}/>
+          <Route path="/dashboard/wishlist" element={<WishlistPage />} />
+
+
 
           </Routes>
 
