@@ -1,0 +1,304 @@
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 2.5rem 0;
+    letter-spacing: 0.5px;
+}
+
+.privacyContent {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.deleteCard {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 249, 249, 0.95) 100%);
+    border: 2px solid rgba(100, 122, 103, 0.15);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 
+        0 4px 12px rgba(31, 36, 31, 0.08),
+        0 1px 3px rgba(31, 36, 31, 0.06),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.deleteCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(197, 239, 203, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.deleteCard:hover::before {
+    left: 100%;
+}
+
+.deleteCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px rgba(31, 36, 31, 0.12),
+        0 2px 6px rgba(31, 36, 31, 0.08),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+    border-color: rgba(100, 122, 103, 0.25);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.iconWrapper {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(100, 122, 103, 0.3);
+}
+
+.warningIcon {
+    width: 28px;
+    height: 28px;
+    color: white;
+}
+
+.cardContent {
+    flex: 1;
+}
+
+.deleteTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-eerie-black);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.01em;
+}
+
+.deleteDescription {
+    font-size: 0.95rem;
+    color: var(--color-reseda-green-2);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.deleteBtn {
+    width: 100%;
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 12px rgba(220, 53, 69, 0.3),
+        0 1px 3px rgba(220, 53, 69, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.deleteBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px rgba(220, 53, 69, 0.4),
+        0 2px 6px rgba(220, 53, 69, 0.25);
+    background: linear-gradient(135deg, #e04555 0%, #d02a3a 100%);
+}
+
+.deleteBtn:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 8px rgba(220, 53, 69, 0.3),
+        0 1px 2px rgba(220, 53, 69, 0.2);
+}
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(31, 36, 31, 0.7) 0%, rgba(60, 67, 59, 0.75) 100%);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modalContent {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 249, 249, 0.98) 100%);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 
+        0 20px 60px rgba(31, 36, 31, 0.25),
+        0 4px 12px rgba(31, 36, 31, 0.15),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(197, 239, 203, 0.3);
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modalContent h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--color-eerie-black) 0%, var(--color-black-olive) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+}
+
+.modalContent p {
+    margin: 0 0 2rem 0;
+    color: var(--color-reseda-green-2);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.cancelBtn,
+.confirmDeleteBtn {
+    padding: 0.875rem 2rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    letter-spacing: 0.3px;
+}
+
+.cancelBtn {
+    background: linear-gradient(135deg, rgba(100, 122, 103, 0.1) 0%, rgba(117, 129, 115, 0.15) 100%);
+    color: var(--color-reseda-green);
+    border: 2px solid rgba(100, 122, 103, 0.2);
+}
+
+.cancelBtn:hover {
+    background: linear-gradient(135deg, rgba(100, 122, 103, 0.15) 0%, rgba(117, 129, 115, 0.2) 100%);
+    border-color: rgba(100, 122, 103, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(100, 122, 103, 0.15);
+}
+
+.confirmDeleteBtn {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.confirmDeleteBtn:hover {
+    background: linear-gradient(135deg, #e04555 0%, #d02a3a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sectionTitle {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .deleteCard {
+        padding: 1.5rem;
+        border-radius: 1rem;
+    }
+
+    .cardHeader {
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .iconWrapper {
+        width: 48px;
+        height: 48px;
+    }
+
+    .warningIcon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .deleteTitle {
+        font-size: 1.1rem;
+    }
+
+    .deleteDescription {
+        font-size: 0.9rem;
+    }
+
+    .deleteBtn {
+        font-size: 0.95rem;
+        padding: 0.875rem 1.5rem;
+    }
+
+    .modalContent {
+        padding: 2rem;
+        border-radius: 1.25rem;
+    }
+
+    .modalContent h3 {
+        font-size: 1.25rem;
+    }
+
+    .modalActions {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+    }
+
+    .cancelBtn,
+    .confirmDeleteBtn {
+        width: 100%;
+        padding: 1rem;
+    }
+}

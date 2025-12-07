@@ -4,32 +4,44 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    gap: 2rem;
+    gap: 0;
 }
 
 .sectionTitle {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--color-text);
-    margin: 0;
-    padding-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 2.5rem 0;
     font-family: 'Garet', 'DM Sans', sans-serif;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 .detailsForm {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 2rem;
     box-sizing: border-box;
     max-width: 100%;
     width: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 249, 249, 0.95) 100%);
+    border: 2px solid rgba(100, 122, 103, 0.15);
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+    box-shadow: 
+        0 4px 12px rgba(31, 36, 31, 0.08),
+        0 1px 3px rgba(31, 36, 31, 0.06),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .formRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
     width: 100%;
     box-sizing: border-box;
 }
@@ -45,45 +57,55 @@
     .formRow {
         grid-template-columns: 1fr;
     }
+    
+    .detailsForm {
+        padding: 1.75rem;
+        gap: 1.5rem;
+    }
 }
 
 .formGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.625rem;
+    gap: 0.75rem;
     min-width: 0;
     width: 100%;
     box-sizing: border-box;
 }
 
 .label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-reseda-green);
     font-family: 'Garet', 'DM Sans', sans-serif;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.125rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 0;
 }
 
 .input {
-    padding: 0.875rem 1rem;
-    border: 1px solid #e5e5e5;
-    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    border: 2px solid rgba(100, 122, 103, 0.2);
+    border-radius: 0.75rem;
     font-size: 0.95rem;
     color: var(--color-text);
-    background: #fafafa;
+    background: white;
     outline: none;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
     box-sizing: border-box;
     font-family: 'DM Sans', sans-serif;
     min-width: 0;
+    box-shadow: 0 1px 3px rgba(31, 36, 31, 0.04);
 }
 
 .input:focus {
-    border-color: var(--color-primary);
+    border-color: var(--color-reseda-green);
     background: white;
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 0, 0, 0), 0.1);
+    box-shadow: 
+        0 0 0 3px rgba(100, 122, 103, 0.1),
+        0 2px 6px rgba(31, 36, 31, 0.08);
+    transform: translateY(-1px);
 }
 
 .input::placeholder {
@@ -101,32 +123,39 @@
 
 .inputWithAction .input {
     flex: 1;
-    padding-right: 6rem;
+    padding-right: 7rem;
     min-width: 0;
 }
 
 .changeBtn {
     position: absolute;
-    right: 1rem;
-    background: none;
-    border: none;
-    color: var(--color-primary);
-    font-size: 0.875rem;
-    font-weight: 600;
+    right: 0.875rem;
+    background: linear-gradient(135deg, rgba(100, 122, 103, 0.1) 0%, rgba(117, 129, 115, 0.15) 100%);
+    border: 1.5px solid rgba(100, 122, 103, 0.25);
+    color: var(--color-reseda-green);
+    font-size: 0.8rem;
+    font-weight: 700;
     cursor: pointer;
-    padding: 0.5rem 0.75rem;
-    transition: color 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-family: 'DM Sans', sans-serif;
     white-space: nowrap;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
 .changeBtn:hover {
-    color: var(--color-primary-dark);
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    color: white;
+    border-color: var(--color-reseda-green);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(100, 122, 103, 0.25);
 }
 
 .radioGroup {
     display: flex;
-    gap: 2rem;
+    gap: 2.5rem;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -136,49 +165,65 @@
     justify-content: space-between;
     align-items: center;
     gap: 2rem;
-    padding-top: 0.5rem;
+    padding-top: 1rem;
     flex-wrap: wrap;
 }
 
 .radioLabel {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.625rem;
     font-size: 0.95rem;
     color: var(--color-text);
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.radioLabel:hover {
+    background: rgba(100, 122, 103, 0.05);
 }
 
 .radioInput {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
+    accent-color: var(--color-reseda-green);
 }
 
 .saveButton {
-    background: var(--color-primary-dark);
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
     color: white;
     border: none;
-    padding: 1rem 2.5rem;
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
+    padding: 1.125rem 3rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     font-family: 'Garet', 'DM Sans', sans-serif;
-    letter-spacing: -0.01em;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    box-shadow: 
+        0 4px 12px rgba(100, 122, 103, 0.3),
+        0 1px 3px rgba(100, 122, 103, 0.2);
 }
 
 .saveButton:hover {
-    background: var(--color-black);
+    background: linear-gradient(135deg, var(--color-black-olive) 0%, var(--color-eerie-black) 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 
+        0 8px 20px rgba(100, 122, 103, 0.4),
+        0 2px 6px rgba(100, 122, 103, 0.25);
 }
 
 .saveButton:active {
     transform: translateY(0);
+    box-shadow: 
+        0 2px 8px rgba(100, 122, 103, 0.3),
+        0 1px 2px rgba(100, 122, 103, 0.2);
 }
 

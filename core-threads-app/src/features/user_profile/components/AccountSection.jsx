@@ -5,6 +5,8 @@ import AccountWallet from './AccountWallet';
 import AccountOrder from './AccountOrder';
 import AccountAddress from './AccountAddress';
 import AccountPassword from './AccountPassword';
+import AccountPrivacy from './AccountPrivacy';
+import AccountPurchase from './AccountPurchase';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -72,7 +74,8 @@ function AccountSection() {
       case 'banks': return <AccountWallet />;
       case 'addresses': return <AccountAddress />;
       case 'password': return <AccountPassword />;
-      case 'purchase': return <AccountOrder />;
+      case 'privacy': return <AccountPrivacy />;
+      case 'purchase': return <AccountPurchase />;
       default: return <div>Coming soon...</div>;
     }
   };

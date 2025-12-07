@@ -1,0 +1,414 @@
+.purchaseWrapper {
+    width: 100%;
+    max-width: 100%;
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 2rem 0;
+    font-family: 'Garet', 'DM Sans', sans-serif;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Tab Navigation */
+.tabNav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 0;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(31, 36, 31, 0.08);
+    flex-wrap: wrap;
+}
+
+.tabButton {
+    flex: 1;
+    min-width: auto;
+    padding: 0.75rem 1rem;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--color-reseda-green-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.tabButton:not(:last-child) {
+    border-right: 1px solid rgba(100, 122, 103, 0.1);
+}
+
+.tabButton:first-child {
+    border-radius: 1rem 0 0 1rem;
+}
+
+.tabButton:last-child {
+    border-radius: 0 1rem 1rem 0;
+}
+
+.tabButton:hover {
+    background: rgba(100, 122, 103, 0.05);
+    color: var(--color-reseda-green);
+}
+
+.activeTab {
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    color: white !important;
+    box-shadow: inset 0 2px 8px rgba(100, 122, 103, 0.3);
+    border-color: var(--color-reseda-green);
+}
+
+/* Orders List */
+.ordersList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 1rem;
+    color: var(--color-reseda-green-2);
+}
+
+/* Order Card */
+.orderCard {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(249, 249, 249, 0.98) 100%);
+    border: 2px solid rgba(100, 122, 103, 0.15);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    box-shadow: 
+        0 4px 12px rgba(31, 36, 31, 0.08),
+        0 1px 3px rgba(31, 36, 31, 0.06),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.orderCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 20px rgba(31, 36, 31, 0.12),
+        0 2px 6px rgba(31, 36, 31, 0.08),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.9);
+    border-color: rgba(100, 122, 103, 0.25);
+}
+
+/* Order Header */
+.orderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(100, 122, 103, 0.15);
+}
+
+.orderMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.orderId {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-eerie-black);
+    font-family: 'Garet', sans-serif;
+}
+
+.orderDate {
+    font-size: 0.85rem;
+    color: var(--color-reseda-green-2);
+}
+
+.orderActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.statusBadge {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusPay {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+}
+
+.statusShip {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.statusReceive {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+}
+
+.statusCompleted {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.statusCancelled {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.statusReturn {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: white;
+}
+
+.moreBtn {
+    background: transparent;
+    border: none;
+    color: var(--color-reseda-green);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+}
+
+.moreBtn:hover {
+    background: rgba(100, 122, 103, 0.1);
+}
+
+/* Order Items */
+.orderItems {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.orderItem {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(100, 122, 103, 0.1);
+}
+
+.itemImage {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+
+.itemImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.itemDetails {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.itemName {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-eerie-black);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.itemSpecs {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--color-reseda-green-2);
+}
+
+.itemPrice {
+    display: flex;
+    align-items: center;
+}
+
+.price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-reseda-green);
+    font-family: 'Garet', sans-serif;
+}
+
+/* Order Footer */
+.orderFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(100, 122, 103, 0.05);
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.shippingInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-reseda-green-2);
+}
+
+.truckIcon {
+    color: var(--color-reseda-green);
+}
+
+.totalSection {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.totalLabel {
+    font-size: 0.9rem;
+    color: var(--color-reseda-green-2);
+}
+
+.totalAmount {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-eerie-black);
+    font-family: 'Garet', sans-serif;
+}
+
+/* Action Buttons */
+.orderButtons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn,
+.outlineBtn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.625rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.primaryBtn {
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(100, 122, 103, 0.3);
+}
+
+.primaryBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 122, 103, 0.4);
+}
+
+.secondaryBtn {
+    background: rgba(100, 122, 103, 0.1);
+    color: var(--color-reseda-green);
+    border: 2px solid rgba(100, 122, 103, 0.2);
+}
+
+.secondaryBtn:hover {
+    background: rgba(100, 122, 103, 0.15);
+    border-color: rgba(100, 122, 103, 0.3);
+}
+
+.outlineBtn {
+    background: transparent;
+    color: var(--color-reseda-green-2);
+    border: 2px solid rgba(100, 122, 103, 0.2);
+}
+
+.outlineBtn:hover {
+    background: rgba(100, 122, 103, 0.05);
+    color: var(--color-reseda-green);
+    border-color: rgba(100, 122, 103, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sectionTitle {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .tabNav {
+        padding: 0.375rem;
+    }
+
+    .tabButton {
+        padding: 0.625rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .orderCard {
+        padding: 1.25rem;
+    }
+
+    .orderHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .orderActions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .orderItem {
+        flex-direction: column;
+    }
+
+    .itemImage {
+        width: 100%;
+        height: 150px;
+    }
+
+    .orderFooter {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .orderButtons {
+        width: 100%;
+    }
+
+    .primaryBtn,
+    .secondaryBtn,
+    .outlineBtn {
+        flex: 1;
+        min-width: 120px;
+    }
+}

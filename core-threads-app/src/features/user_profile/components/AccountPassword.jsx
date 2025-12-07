@@ -106,33 +106,36 @@ function AccountPassword() {
                 </div>
 
                 {/* Confirm Password - Full Width */}
-                <div className={styles.formGroup}>
-                    <label htmlFor="confirmPassword" className={styles.label}>
-                        Confirm Password
-                    </label>
-                    <div className={styles.passwordInputWrapper}>
-                        <input
-                            type={showPasswords.confirmPassword ? 'text' : 'password'}
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            className={styles.input}
-                            placeholder="••••••••"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                        />
-                        <button
-                            type="button"
-                            className={styles.toggleBtn}
-                            onClick={() => togglePasswordVisibility('confirmPassword')}
-                            aria-label="Toggle password visibility"
-                        >
-                            <FontAwesomeIcon icon={showPasswords.confirmPassword ? faEyeSlash : faEye} />
-                        </button>
-                    </div>
-                </div>
+                <div className={styles.confirmPasswordRow}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="confirmPassword" className={styles.label}>
+                            Confirm Password
+                        </label>
+                        <div className={styles.passwordInputWrapperConfirm}>
+                            <input
+                                type={showPasswords.confirmPassword ? 'text' : 'password'}
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                className={styles.inputConfirm}
+                                placeholder="••••••••"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                            />
+                            <button
+                                type="button"
+                                className={styles.toggleBtnConfirm}
+                                onClick={() => togglePasswordVisibility('confirmPassword')}
+                                aria-label="Toggle password visibility"
+                            >
+                                <FontAwesomeIcon icon={showPasswords.confirmPassword ? faEyeSlash : faEye} />
+                            </button>
 
-                {/* Buttons */}
-                <div className={styles.buttonGroup}>
+                            
+                        </div>
+                        
+                    </div>
+
+                    <div className={styles.buttonGroup}>
                     <button type="submit" className={styles.saveBtn}>
                         Save Changes
                     </button>
@@ -140,6 +143,10 @@ function AccountPassword() {
                         Cancel
                     </button>
                 </div>
+                </div>
+
+                {/* Buttons */}
+                
             </form>
         </div>
     );
