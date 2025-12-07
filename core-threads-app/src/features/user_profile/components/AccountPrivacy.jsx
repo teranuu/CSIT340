@@ -1,8 +1,11 @@
 import styles from '../styles/account.privacy.module.css';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStore } from '@fortawesome/free-solid-svg-icons';
 
 function AccountPrivacy() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isSellerEnabled, setIsSellerEnabled] = useState(false);
 
     const handleDeleteAccount = () => {
         setShowDeleteModal(true);
@@ -18,11 +21,49 @@ function AccountPrivacy() {
         setShowDeleteModal(false);
     };
 
+    const toggleSellerStatus = () => {
+        setIsSellerEnabled(!isSellerEnabled);
+        console.log('Seller status toggled:', !isSellerEnabled);
+    };
+
     return (
         <>
             <h2 className={styles.sectionTitle}>Privacy Settings</h2>
             
             <div className={styles.privacyContent}>
+                {/* Seller Status Toggle Card */}
+                <div className={styles.deleteCard}>
+                    <div className={styles.cardHeader}>
+                        <div className={styles.iconWrapper}>
+                            <FontAwesomeIcon icon={faStore} className={styles.warningIcon} />
+                        </div>
+                        <div className={styles.cardContent}>
+                            <h3 className={styles.deleteTitle}>Seller Status</h3>
+                            <p className={styles.deleteDescription}>Enable or disable your seller account to start selling products on the platform.</p>
+                        </div>
+                    </div>
+                    <div className={styles.toggleContainer}>
+                        <label className={styles.toggleSwitch}>
+                            <input 
+                                type="checkbox" 
+                                checked={isSellerEnabled}
+                                onChange={toggleSellerStatus}
+                                className={styles.toggleInput}
+                            />
+                            <span className={styles.toggleSlider}></span>
+                        </label>
+                        <span className={styles.toggleLabel}>
+                            {isSellerEnabled ? 'Seller Enabled' : 'Seller Disabled'}
+                        </span>
+                        {isSellerEnabled && (
+                            <button className={styles.sellerDashboardBtn}>
+                                Go to Seller Dashboard
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {/* Delete Account Card */}
                 <div className={styles.deleteCard}>
                     <div className={styles.cardHeader}>
                         <div className={styles.iconWrapper}>

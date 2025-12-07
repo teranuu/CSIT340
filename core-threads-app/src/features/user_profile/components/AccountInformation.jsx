@@ -3,38 +3,32 @@ import { useState } from 'react';
 
 function AccountInformation() {
     const [formData, setFormData] = useState({
-        firstName: "John",
-        lastName: "Doe",
-        email: "john.doe@example.com",
-        phone: "+1 234 567 890",
-        dateOfBirth: "1990-01-15",
-        gender: "male"
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        phone: '+1 234 567 890',
+        dateOfBirth: '1990-01-15',
+        gender: 'male',
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSave = (e) => {
         e.preventDefault();
+        // Save logic here
         console.log('Saving details:', formData);
-        // Add save logic here
     };
 
     return (
         <div className={styles.accountInformationWrapper}>
             <h2 className={styles.sectionTitle}>Personal Details</h2>
-            
             <form className={styles.detailsForm} onSubmit={handleSave}>
-                <div className={styles.formRow}>
+                <div className={styles.gridRow}>
                     <div className={styles.formGroup}>
-                        <label htmlFor="firstName" className={styles.label}>
-                            First Name
-                        </label>
+                        <label htmlFor="firstName" className={styles.label}>First Name</label>
                         <input
                             type="text"
                             id="firstName"
@@ -45,11 +39,8 @@ function AccountInformation() {
                             onChange={handleInputChange}
                         />
                     </div>
-
                     <div className={styles.formGroup}>
-                        <label htmlFor="lastName" className={styles.label}>
-                            Last Name
-                        </label>
+                        <label htmlFor="lastName" className={styles.label}>Last Name</label>
                         <input
                             type="text"
                             id="lastName"
@@ -62,68 +53,47 @@ function AccountInformation() {
                     </div>
                 </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="email" className={styles.label}>
-                        Email Address
-                    </label>
-                    <div className={styles.fullWidthRow}>
-                        <div className={styles.inputWithAction}>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                className={styles.input}
-                                placeholder="Email Address"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                            />
-                            <button type="button" className={styles.changeBtn}>Change</button>
-                        </div>
+                <div className={styles.gridRow}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="email" className={styles.label}>Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            className={styles.input}
+                            placeholder="Email Address"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="phone" className={styles.label}>Phone Number</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            className={styles.input}
+                            placeholder="Phone Number"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                        />
                     </div>
                 </div>
 
-                <div className={styles.formGroup}>
-                    <label htmlFor="phone" className={styles.label}>
-                        Phone Number
-                    </label>
-                    <div className={styles.fullWidthRow}>
-                        <div className={styles.inputWithAction}>
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                className={styles.input}
-                                placeholder="Phone Number"
-                                value={formData.phone}
-                                onChange={handleInputChange}
-                            />
-                            <button type="button" className={styles.changeBtn}>Change</button>
-                        </div>
+                <div className={styles.gridRow}>
+                    <div className={styles.formGroup}>
+                        <label htmlFor="dateOfBirth" className={styles.label}>Date of Birth</label>
+                        <input
+                            type="date"
+                            id="dateOfBirth"
+                            name="dateOfBirth"
+                            className={styles.input}
+                            value={formData.dateOfBirth}
+                            onChange={handleInputChange}
+                        />
                     </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label htmlFor="dateOfBirth" className={styles.label}>
-                        Date of Birth
-                    </label>
-                    <div className={styles.fullWidthRow}>
-                        <div className={styles.inputWithAction}>
-                            <input
-                                type="date"
-                                id="dateOfBirth"
-                                name="dateOfBirth"
-                                className={styles.input}
-                                value={formData.dateOfBirth}
-                                onChange={handleInputChange}
-                            />
-                            <button type="button" className={styles.changeBtn}>Change</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={styles.formGroup}>
-                    <label className={styles.label}>Gender</label>
-                    <div className={styles.genderRow}>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>Gender</label>
                         <div className={styles.radioGroup}>
                             <label className={styles.radioLabel}>
                                 <input
@@ -159,11 +129,13 @@ function AccountInformation() {
                                 Other
                             </label>
                         </div>
-
-                        <button type="submit" className={styles.saveButton}>
-                            Save Details
-                        </button>
                     </div>
+                </div>
+
+                <div className={styles.buttonRow}>
+                    <button type="submit" className={styles.saveButton}>
+                        Save Details
+                    </button>
                 </div>
             </form>
         </div>

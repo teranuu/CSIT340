@@ -130,6 +130,98 @@
         0 1px 2px rgba(220, 53, 69, 0.2);
 }
 
+/* Toggle Switch Styles */
+.toggleContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggleSwitch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 56px;
+    height: 32px;
+    background: #e5e5e5;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggleInput {
+    display: none;
+}
+
+.toggleInput:checked + .toggleSlider {
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    box-shadow: 0 2px 8px rgba(100, 122, 103, 0.4);
+}
+
+.toggleInput:checked + .toggleSlider::before {
+    transform: translateX(24px);
+}
+
+.toggleSlider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #d5d5d5;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggleSlider::before {
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    left: 2px;
+    bottom: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.toggleLabel {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-reseda-green);
+    font-family: 'DM Sans', sans-serif;
+}
+
+.sellerDashboardBtn {
+    margin-left: auto;
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 12px rgba(100, 122, 103, 0.3);
+}
+
+.sellerDashboardBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 122, 103, 0.4);
+    background: linear-gradient(135deg, var(--color-black-olive) 0%, var(--color-eerie-black) 100%);
+}
+
+.sellerDashboardBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(100, 122, 103, 0.3);
+}
+
 /* Modal Styles */
 .modalOverlay {
     position: fixed;

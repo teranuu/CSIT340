@@ -264,6 +264,37 @@
     transform: none;
 }
 
+.deleteBtn {
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 0.625rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    font-family: 'Garet', 'DM Sans', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.deleteBtn:hover {
+    background: #dc3545;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.deleteBtn:active {
+    transform: translateY(0);
+}
+
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
@@ -297,5 +328,201 @@
     .defaultBadge {
         top: 1.5rem;
         left: 1rem;
+    }
+}
+
+/* Edit Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modalContent {
+    background: white;
+    border-radius: 0.75rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modalTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+    font-family: 'Garet', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+    background: #f5f5f5;
+    color: var(--color-text);
+}
+
+.modalBody {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formLabel {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-family: 'Garet', 'DM Sans', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.formInput {
+    padding: 0.875rem 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--color-text);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(33, 180, 131, 0.1);
+}
+
+.formInput::placeholder {
+    color: #999;
+}
+
+.modalFooter {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e5e5e5;
+    justify-content: flex-end;
+}
+
+.cancelBtn,
+.saveBtn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Garet', 'DM Sans', sans-serif;
+    letter-spacing: -0.01em;
+}
+
+.cancelBtn {
+    background: transparent;
+    color: #666;
+    border-color: #e5e5e5;
+}
+
+.cancelBtn:hover {
+    background: #f5f5f5;
+    border-color: #d5d5d5;
+}
+
+.saveBtn {
+    background: var(--color-primary-dark);
+    color: white;
+    border-color: var(--color-primary-dark);
+}
+
+.saveBtn:hover {
+    background: var(--color-black);
+    border-color: var(--color-black);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.saveBtn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .modalContent {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .modalHeader,
+    .modalBody,
+    .modalFooter {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modalFooter {
+        flex-direction: column;
+    }
+
+    .cancelBtn,
+    .saveBtn {
+        width: 100%;
     }
 }
