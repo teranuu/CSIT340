@@ -1,11 +1,13 @@
 import styles from '../styles/account.privacy.module.css';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
 
 function AccountPrivacy() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isSellerEnabled, setIsSellerEnabled] = useState(false);
+    const navigate = useNavigate();
 
     const handleDeleteAccount = () => {
         setShowDeleteModal(true);
@@ -24,6 +26,10 @@ function AccountPrivacy() {
     const toggleSellerStatus = () => {
         setIsSellerEnabled(!isSellerEnabled);
         console.log('Seller status toggled:', !isSellerEnabled);
+    };
+
+    const handleGoToSellerDashboard = () => {
+        navigate('/seller-dashboard');
     };
 
     return (
@@ -56,7 +62,7 @@ function AccountPrivacy() {
                             {isSellerEnabled ? 'Seller Enabled' : 'Seller Disabled'}
                         </span>
                         {isSellerEnabled && (
-                            <button className={styles.sellerDashboardBtn}>
+                            <button className={styles.sellerDashboardBtn} onClick={handleGoToSellerDashboard}>
                                 Go to Seller Dashboard
                             </button>
                         )}

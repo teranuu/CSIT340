@@ -10,6 +10,7 @@ const UserLayout = lazy(() => import("./features/user_profile/UserPage"));
 const ShoppingCart = lazy(() => import("./features/shopping_cart/ShoppingCart"));
 const CatalogLayout = lazy(() => import("./features/catalogue/CataloguePage"));
 const WishlistPage = lazy(() => import("./features/wishlist/WishlistPage"));
+const SellerDashboard = lazy(() => import("./features/seller_dashboard/SellerDashboard"));
 
 
 
@@ -33,12 +34,12 @@ function App() {
             <Route path="/dashboard/catalog" element={<CatalogLayout/>}/>
            
            <Route path="/dashboard/settings" element={<UserLayout/>} />
-
+              
+           <Route path="/dashboard/wishlist" element={<WishlistPage/>} />
            <Route path="/dashboard/cart" element={<ShoppingCart/>} />
           {/* default route upon startup */}
-
+          <Route path="/seller-dashboard" element={<SellerDashboard/>} />
           <Route path="*" element={<Login/>}/>
-          <Route path="/dashboard/wishlist" element={<WishlistPage />} />
 
 
 
