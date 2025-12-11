@@ -1,0 +1,201 @@
+@import '../../../styles/variables.css';
+
+.ordersWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tabNavigation {
+    display: flex;
+    gap: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 248, 245, 0.98) 100%);
+    border: 1.5px solid rgba(100, 122, 103, 0.18);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 12px 26px rgba(31, 36, 31, 0.1), 0 4px 10px rgba(31, 36, 31, 0.08);
+    flex-wrap: wrap;
+}
+
+.tabButton {
+    flex: 1;
+    min-width: 100px;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid rgba(100, 122, 103, 0.16);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-black-olive);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.tabButton:hover {
+    background: rgba(100, 122, 103, 0.08);
+    border-color: rgba(100, 122, 103, 0.3);
+}
+
+.tabButton.active {
+    background: linear-gradient(135deg, var(--color-reseda-green) 0%, var(--color-black-olive) 100%);
+    color: white;
+    border-color: var(--color-reseda-green);
+}
+
+.ordersList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.orderCard {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 248, 245, 0.98) 100%);
+    border: 1.5px solid rgba(100, 122, 103, 0.18);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 12px 26px rgba(31, 36, 31, 0.1), 0 4px 10px rgba(31, 36, 31, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.25s ease;
+}
+
+.orderCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(31, 36, 31, 0.12), 0 6px 14px rgba(31, 36, 31, 0.1);
+    border-color: rgba(100, 122, 103, 0.25);
+}
+
+.orderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 16px;
+}
+
+.orderInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.orderId {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-black-olive);
+}
+
+.customerName {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-reseda-green-2);
+    font-weight: 600;
+}
+
+.statusPending,
+.statusShipped,
+.statusReceive,
+.statusCompleted,
+.statusCancelled,
+.statusReturn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.statusPending {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(251, 140, 0, 0.15));
+    color: #f57c00;
+    border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.statusShipped {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.15), rgba(3, 155, 229, 0.15));
+    color: #1976d2;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.statusReceive {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.15), rgba(142, 36, 170, 0.15));
+    color: #7b1fa2;
+    border: 1px solid rgba(156, 39, 176, 0.3);
+}
+
+.statusCompleted {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(56, 142, 60, 0.15));
+    color: #388e3c;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.statusCancelled {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.15), rgba(211, 47, 47, 0.15));
+    color: #d32f2f;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.statusReturn {
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.15), rgba(230, 74, 25, 0.15));
+    color: #e64a19;
+    border: 1px solid rgba(255, 87, 34, 0.3);
+}
+
+.orderDetails {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: fit-content;
+}
+
+.orderDate {
+    font-size: 0.85rem;
+    color: var(--color-reseda-green-2);
+    font-weight: 600;
+}
+
+.orderTotal {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--color-black-olive);
+}
+
+.emptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--color-reseda-green-2);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .orderCard {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .orderHeader {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .orderDetails {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .tabNavigation {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tabButton {
+        flex-shrink: 0;
+    }
+}

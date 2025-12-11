@@ -1,0 +1,65 @@
+@import '../../../styles/variables.css';
+
+.sectionWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+}
+
+.statGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 14px;
+}
+
+.panel {
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(245, 248, 245, 0.98) 100%);
+	border: 1.5px solid rgba(100, 122, 103, 0.18);
+	border-radius: 14px;
+	padding: 16px 18px;
+	box-shadow: 0 12px 26px rgba(31, 36, 31, 0.1), 0 4px 10px rgba(31, 36, 31, 0.08);
+}
+
+.panelHeader {
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: var(--color-black-olive);
+	margin-bottom: 12px;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.listRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 12px;
+	border-radius: 10px;
+	background: rgba(100, 122, 103, 0.04);
+	border: 1px solid rgba(100, 122, 103, 0.08);
+	color: var(--color-text);
+	font-weight: 600;
+}
+
+.listValue {
+	color: var(--color-black-olive);
+	font-weight: 700;
+}
+
+.ordersSection {
+	margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+	.panel {
+		padding: 14px 14px;
+	}
+
+	.panelHeader {
+		font-size: 1rem;
+	}
+}
