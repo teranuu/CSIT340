@@ -1,0 +1,115 @@
+
+
+.loginSectionWrapper{
+
+    
+    flex-direction:row;
+    justify-content:center;
+    align-items:center;
+    display:flex;
+    border:none;
+    background-color:var(--color-background);
+    padding:2rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+    gap:6rem;
+
+    
+}
+
+
+
+.loginForm{
+
+    width: 40%;
+    min-width: 320px;
+    max-width:400px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:3rem;
+    border:1px solid var(--color-black-olive);
+    border-radius:0.8rem;
+    background-color:var(--color-surface);
+    gap:2rem;
+    box-shadow: 10px 10px 5px var(--color-black-olive);
+}
+
+.formGroup{
+
+    width:100%;
+    flex:1;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:0.8rem;
+
+}
+
+.text{
+
+    font-weight:400;
+    font-family:"Karrik", sans-serif;
+    font-size:2rem;
+    
+}
+
+.loginHeader{
+
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    gap:1rem;
+
+}
+
+.buttonWrapper{
+
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    gap:1.3rem;
+}
+
+/* Ensure inputs look consistent on initial load and with autofill */
+.loginForm input,
+.loginForm input:autofill,
+.loginForm input:-webkit-autofill,
+.loginForm input:-webkit-autofill:hover,
+.loginForm input:-webkit-autofill:focus {
+    border:1px solid var(--color-border) !important;
+    padding: 0.8rem 1rem !important;
+    color:var(--color-text) !important;
+    background-color:var(--color-primary-light) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    -webkit-text-fill-color: var(--color-text) !important;
+    border-radius: var(--radius-sm);
+}
+
+.loginForm input:-moz-autofill {
+    box-shadow: 0 0 0 1000px var(--color-primary-light) inset !important;
+    -moz-text-fill-color: var(--color-text) !important;
+}
+
+.inputUA{
+    width: 100%;
+    border:1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 1rem;
+    color:var(--color-text);
+    background-color:var(--color-primary-light);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.inputUA:focus {
+    border-color: var(--color-primary-dark);
+    outline: none;
+}
+
+.inputUA::placeholder{
+    color: var(--color-text);
+}
