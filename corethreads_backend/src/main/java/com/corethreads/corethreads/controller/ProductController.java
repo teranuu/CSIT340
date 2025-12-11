@@ -24,11 +24,33 @@ public class ProductController {
     }
 
     // --- Get product by ID ---
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        return productService.getProductById(id)
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long productId) {
+        return productService.getProductById(productId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    // --- Search products by keyword ---
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam(required = false) String keyword) {
+        return ResponseEntity.ok(productService.searchProducts(keyword));
+    }
+
+    // --- Get products by category ---
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable Long categoryId,
+                                                               @RequestParam(defaultValue = "false") boolean activeOnly) {
+        List<Product> products = activeOnly 
+            ? productService.getActiveProductsByCategory(categoryId)
+            : productService.getProductsByCategory(categoryId);
+        return ResponseEntity.ok(products);
+    }
+
+    // --- Get active products only ---
+    @GetMapping("/active")
+    public ResponseEntity<List<Product>> getActiveProducts() {
+        return ResponseEntity.ok(productService.getActiveProducts());
     }
 
     // --- Create product ---

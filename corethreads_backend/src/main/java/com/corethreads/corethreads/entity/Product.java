@@ -4,12 +4,21 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "products")
+@Table(name = "Product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "product_id")
+    private Long productId;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller;
+
+    @ManyToOne
+    @JoinColumn(name = "categories_id")
+    private Categories categories;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -17,12 +26,8 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "cat_id", nullable = false)
-    private Categories category;
-
-    @Column(name = "active", nullable = false)
-    private boolean active = true;
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -33,19 +38,28 @@ public class Product {
     // --- Constructors ---
     public Product() {}
 
-    public Product(String name, String description, Categories category) {
+    public Product(String name, String description, Categories categories, Seller seller) {
         this.name = name;
         this.description = description;
-        this.category = category;
+        this.categories = categories;
+        this.seller = seller;
     }
 
     // --- Getters and Setters ---
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public String getName() {
@@ -64,20 +78,20 @@ public class Product {
         this.description = description;
     }
 
-    public Categories getCategory() {
-        return category;
+    public Categories getCategories() {
+        return categories;
     }
 
-    public void setCategory(Categories category) {
-        this.category = category;
+    public void setCategories(Categories categories) {
+        this.categories = categories;
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        this.isActive = active;
     }
 
     public LocalDateTime getCreatedAt() {

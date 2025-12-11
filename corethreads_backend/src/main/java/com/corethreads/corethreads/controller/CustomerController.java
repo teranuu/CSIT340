@@ -33,7 +33,7 @@ public class CustomerController {
         Customer customer = customerService.login(request.username(), request.password());
         // Return a simple map to avoid exposing password
         return ResponseEntity.ok(java.util.Map.of(
-                "id", customer.getId(),
+                "customerId", customer.getCustomerId(),
                 "username", customer.getUsername(),
                 "email", customer.getEmail(),
                 "firstName", customer.getFirstName(),

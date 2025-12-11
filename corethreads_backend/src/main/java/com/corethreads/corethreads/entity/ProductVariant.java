@@ -1,14 +1,21 @@
 package com.corethreads.corethreads.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "product_variants")
+@Table(name = "ProductVariant")
 public class ProductVariant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "variant_id")
+    private Long variantId;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(name = "size")
     private String size;
@@ -20,30 +27,41 @@ public class ProductVariant {
     private String sku;
 
     @Column(name = "stock", nullable = false)
-    private int stock;
+    private Long stock = 0L;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    @Column(name = "price", nullable = false, precision = 12, scale = 2)
+    private BigDecimal price;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     // --- Constructors ---
     public ProductVariant() {}
 
-    public ProductVariant(String size, String color, String sku, int stock, Product product) {
+    public ProductVariant(String size, String color, String sku, Long stock, BigDecimal price, Product product) {
         this.size = size;
         this.color = color;
         this.sku = sku;
         this.stock = stock;
+        this.price = price;
         this.product = product;
     }
 
     // --- Getters and Setters ---
-    public Long getId() {
-        return id;
+    public Long getVariantId() {
+        return variantId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVariantId(Long variantId) {
+        this.variantId = variantId;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public String getSize() {
@@ -70,19 +88,27 @@ public class ProductVariant {
         this.sku = sku;
     }
 
-    public int getStock() {
+    public Long getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Long stock) {
         this.stock = stock;
     }
 
-    public Product getProduct() {
-        return product;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

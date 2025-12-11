@@ -35,4 +35,27 @@ public class ProductService {
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
+
+    // --- Get products by category ---
+    public List<Product> getProductsByCategory(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
+    // --- Search products by keyword ---
+    public List<Product> searchProducts(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllProducts();
+        }
+        return productRepository.searchByKeyword(keyword.trim());
+    }
+
+    // --- Get active products only ---
+    public List<Product> getActiveProducts() {
+        return productRepository.findByActiveTrue();
+    }
+
+    // --- Get active products by category ---
+    public List<Product> getActiveProductsByCategory(Long categoryId) {
+        return productRepository.findByCategoryIdAndActiveTrue(categoryId);
+    }
 }
