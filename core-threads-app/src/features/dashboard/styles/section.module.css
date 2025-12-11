@@ -11,6 +11,7 @@
     background: var(--color-background);
 }
 
+
 .categorySidebarWrapper{
 
     display:flex;
@@ -18,6 +19,7 @@
     gap:0;
 
 }
+
 
 
 .apparelDisplaySection{
@@ -41,6 +43,7 @@
     gap: 2rem;
     
 }
+
 
 .rightDisplayWrapper{
 

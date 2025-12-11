@@ -7,44 +7,13 @@ import {
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
 
-
-const WISHLIST_ITEMS = [
-  {
-    id: 1,
-    name: "Oversized Hoodie",
-    price: 2500,
-    inStock: true,
-    image: "/images/hoodie-charcoal.jpg",
-  },
-  {
-    id: 2,
-    name: "Premium Tee",
-    price: 1200,
-    inStock: true,
-    image: "/images/tee-obsidian.jpg",
-  },
-  {
-    id: 3,
-    name: "Cargo Pants",
-    price: 3500,
-    inStock: false,
-    image: "/images/cargo-tactical.jpg",
-  },
-  {
-    id: 4,
-    name: "Retro Kicks",
-    price: 8999,
-    inStock: true,
-    image: "/images/retro-kicks.jpg",
-  },
-];
+import { useCartState, useCartDispatch } from '../../../context/CartContext';
 
 function WishlistSection() {
-  const items = WISHLIST_ITEMS;
-  const total = useMemo(
-    () => items.reduce((sum, item) => sum + item.price, 0),
-    [items]
-  );
+  const { wishlist } = useCartState();
+  const dispatch = useCartDispatch();
+  const items = wishlist;
+  const total = useMemo(() => items.reduce((sum, item) => sum + (item.price || 0), 0), [items]);
 
   return (
     <div className={styles.pageWrapper}>
@@ -75,6 +44,7 @@ function WishlistSection() {
                 <button
                   className={styles.removeBtn}
                   aria-label={`Remove ${item.name} from wishlist`}
+                  onClick={() => dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item.id })}
                 >
                   <FontAwesomeIcon icon={faTrash} />
                 </button>
@@ -82,7 +52,12 @@ function WishlistSection() {
                 {/* Image */}
                 <div className={styles.itemImageWrapper}>
                   <div className={styles.itemImagePlaceholder}>
-                    <img src={item.image} alt={item.name} />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      loading="lazy"
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%239ca3af">No image</text></svg>'; }}
+                    />
                   </div>
                 </div>
 
@@ -111,10 +86,12 @@ function WishlistSection() {
                 {/* Action */}
                 <div className={styles.itemAction}>
                   <button
-                    className={`${styles.addBtn} ${
-                      !item.inStock ? styles.addBtnDisabled : ""
-                    }`}
+                    className={`${styles.addBtn} ${!item.inStock ? styles.addBtnDisabled : ""}`}
                     disabled={!item.inStock}
+                    onClick={() => {
+                      dispatch({ type: 'ADD_TO_CART', payload: { id: item.id, name: item.name, price: item.price, image: item.image, quantity: 1 } });
+                      dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: item.id });
+                    }}
                   >
                     <FontAwesomeIcon icon={faShoppingCart} />
                     <span>

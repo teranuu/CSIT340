@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useCartDispatch } from '../../../context/CartContext';
 import styles from '../styles/product.section.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons';
@@ -6,8 +8,11 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function ProductSection() {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [isFavorited, setIsFavorited] = useState(false);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const dispatch = useCartDispatch();
   const [selectedSize, setSelectedSize] = useState('M');
   const [selectedColor, setSelectedColor] = useState('Black');
 
@@ -31,7 +36,31 @@ function ProductSection() {
   };
 
   const toggleFavorite = () => {
+    const productPayload = {
+      id: id || Math.floor(Math.random() * 100000),
+      title: product.title,
+      price: product.price,
+      image: product.images[0]
+    };
+    dispatch({ type: 'TOGGLE_WISHLIST', payload: productPayload });
     setIsFavorited(!isFavorited);
+    // Go to wishlist page to display
+    navigate('/dashboard/wishlist');
+  };
+
+  const handleAddToCart = () => {
+    const productPayload = {
+      id: id || Math.floor(Math.random() * 100000),
+      name: product.title,
+      price: product.price,
+      image: product.images[0],
+      quantity,
+      size: selectedSize,
+      color: selectedColor
+    };
+    dispatch({ type: 'ADD_TO_CART', payload: productPayload });
+    // navigate to cart to show it
+    navigate('/dashboard/cart');
   };
 
   return (
@@ -133,7 +162,7 @@ function ProductSection() {
               </button>
             </div>
 
-            <button className={styles.addToCartBtn}>
+            <button className={styles.addToCartBtn} onClick={handleAddToCart}>
               Add to Cart
             </button>
           </div>

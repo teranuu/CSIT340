@@ -9,6 +9,7 @@ const DashboardSection = lazy(() => import("./features/dashboard/components/Dash
 const UserLayout = lazy(() => import("./features/user_profile/UserPage"));
 const ShoppingCart = lazy(() => import("./features/shopping_cart/ShoppingCart"));
 const CatalogLayout = lazy(() => import("./features/catalogue/CataloguePage"));
+const ProductLayout = lazy(() => import("./features/product_page/ProductPage"));
 const WishlistPage = lazy(() => import("./features/wishlist/WishlistPage"));
 const SellerDashboard = lazy(() => import("./features/seller_dashboard/SellerDashboard"));
 
@@ -32,6 +33,7 @@ function App() {
               </Route> */}
 
             <Route path="/dashboard/catalog" element={<CatalogLayout/>}/>
+            <Route path="/product/:id" element={<ProductLayout/>} />
            
            <Route path="/dashboard/settings" element={<UserLayout/>} />
               

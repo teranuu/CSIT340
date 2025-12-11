@@ -3,7 +3,6 @@ import { ItemCard } from '../../../components/ItemCard/index.js';
 import { ApparelCard } from '../../../components/ApparelCard/index.js';
 function DashboardSection(){
 
-
     const cards = Array.from({ length: 12 });
 
     return(
@@ -59,13 +58,11 @@ function DashboardSection(){
         
 
 
-        
         </>
 
 
     );
 
-
-}
+  }
 
 export default DashboardSection;

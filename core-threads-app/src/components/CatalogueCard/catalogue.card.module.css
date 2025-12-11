@@ -1,40 +1,76 @@
 .catalogueCardWrapper {
-  border-radius: 0.6rem;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  cursor: pointer;
   display: flex;
   flex-direction: column;
+  background: var(--color-background, #ffffff);
+  border-radius: 10px;
   overflow: hidden;
-  background: #fff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  border: 1px solid rgba(0,0,0,0.04);
 }
 
 .catalogueCardWrapper:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 .imageSection {
-  flex: 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .imageSection img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  transition: transform 220ms ease;
+}
+
+.catalogueCardWrapper:hover .imageSection img {
+  transform: scale(1.04);
 }
 
 .detailSection {
-  padding: 0.5rem 0.7rem;
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
 }
 
 .title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .price {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* link wrapper to remove default anchor styles and make full-card clickable */
+.link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* small utility */
+.muted {
+  color: var(--color-text-muted);
   font-size: 0.9rem;
-  opacity: 0.8;
 }

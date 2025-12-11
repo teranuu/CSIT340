@@ -9,7 +9,12 @@ function CartItem({ item, onQuantityChange, onRemove }) {
       {/* Image */}
       <div className={styles.imageContainer}>
         <div className={styles.imagePlaceholder}>
-          <img src={item.image} alt={item.name} />
+          <img
+            src={item.image}
+            alt={item.name}
+            loading="lazy"
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="14" fill="%239ca3af">No image</text></svg>'; }}
+          />
         </div>
       </div>
 

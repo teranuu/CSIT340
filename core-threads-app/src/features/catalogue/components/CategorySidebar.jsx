@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styles from '../styles/category.sidebar.module.css';
+import { useFilterState, useFilterDispatch } from '../../../context/FilterContext';
 
 function CategorySidebar() {
-  const [priceMin, setPriceMin] = useState(0);
-  const [priceMax, setPriceMax] = useState(500);
-  const [color, setColor] = useState('White');
+  const filterState = useFilterState();
+  const filterDispatch = useFilterDispatch();
+  const { priceMin, priceMax, color } = filterState;
   const PRICE_MAX = 1000;
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filtersOpen, setFiltersOpen] = useState({ price: true, color: true });
 
   const minPercent = Math.round((priceMin / PRICE_MAX) * 100);
   const maxPercent = Math.round((priceMax / PRICE_MAX) * 100);
@@ -14,10 +17,18 @@ function CategorySidebar() {
   const rangeBackground = `linear-gradient(to right, #d1d5db ${minPercent}%, var(--color-primary) ${minPercent}%, var(--color-primary) ${maxPercent}%, #d1d5db ${maxPercent}%)`;
 
   const handleClearFilters = () => {
-    setPriceMin(0);
-    setPriceMax(500);
-    setColor('White');
+    filterDispatch({ type: 'RESET_FILTERS' });
   };
+
+  const categories = useMemo(() => [
+    { name: 'All Products', count: 124 },
+    { name: 'Hoodies', count: 24 },
+    { name: 'Shirts', count: 36 },
+    { name: 'Jackets', count: 12 },
+    { name: 'Pants', count: 18 },
+  ], []);
+
+  const filteredCategories = categories.filter(c => c.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <>
@@ -25,13 +36,32 @@ function CategorySidebar() {
             <div className={styles.breadcrumb}>Dashboard / Catalog</div>
             <h1 className={styles.sidebarTitle}>Catalog</h1>
 
+            <div className={styles.searchRow}>
+              <input
+                type="search"
+                placeholder="Search categories"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchInput}
+                aria-label="Search categories"
+              />
+            </div>
+
             <nav>
               <ul className={styles.categoryList}>
-                  <li className={styles.categoryItem}>All Products</li>
-                  <li className={styles.categoryItem}>Hoodies</li>
-                  <li className={styles.categoryItem}>Shirts</li>
-                  <li className={styles.categoryItem}>Jackets</li>
-                  <li className={styles.categoryItem}>Pants</li>
+                {filteredCategories.map(c => (
+                  <li
+                    key={c.name}
+                    className={`${styles.categoryItem} ${filterState.category === c.name ? styles.active : ''}`}
+                    onClick={() => filterDispatch({ type: 'SET_CATEGORY', payload: c.name })}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => { if (e.key === 'Enter') filterDispatch({ type: 'SET_CATEGORY', payload: c.name }); }}
+                  >
+                    <span className={styles.categoryLabel}>{c.name}</span>
+                    <span className={styles.categoryBadge}>{c.count}</span>
+                  </li>
+                ))}
               </ul>
             </nav>
 
@@ -45,7 +75,7 @@ function CategorySidebar() {
                   min="0"
                   max={PRICE_MAX}
                   value={priceMin}
-                  onChange={(e) => setPriceMin(Math.min(Number(e.target.value), priceMax))}
+                  onChange={(e) => filterDispatch({ type: 'SET_PRICE_MIN', payload: Math.min(Number(e.target.value), priceMax) })}
                   className={styles.slider}
                   aria-label="Minimum price"
                   style={{ background: rangeBackground }}
@@ -55,7 +85,7 @@ function CategorySidebar() {
                   min="0"
                   max={PRICE_MAX}
                   value={priceMax}
-                  onChange={(e) => setPriceMax(Math.max(Number(e.target.value), priceMin))}
+                  onChange={(e) => filterDispatch({ type: 'SET_PRICE_MAX', payload: Math.max(Number(e.target.value), priceMin) })}
                   className={styles.slider}
                   aria-label="Maximum price"
                   style={{ background: rangeBackground }}
@@ -67,7 +97,7 @@ function CategorySidebar() {
                   <input
                     type="number"
                     value={priceMin}
-                    onChange={(e) => setPriceMin(Math.min(Number(e.target.value), priceMax))}
+                    onChange={(e) => filterDispatch({ type: 'SET_PRICE_MIN', payload: Math.min(Number(e.target.value || 0), priceMax) })}
                     className={styles.priceInput}
                     min="0"
                     max="1000"
@@ -79,7 +109,7 @@ function CategorySidebar() {
                   <input
                     type="number"
                     value={priceMax}
-                    onChange={(e) => setPriceMax(Math.max(Number(e.target.value), priceMin))}
+                    onChange={(e) => filterDispatch({ type: 'SET_PRICE_MAX', payload: Math.max(Number(e.target.value || 0), priceMin) })}
                     className={styles.priceInput}
                     min="0"
                     max="1000"
@@ -90,7 +120,8 @@ function CategorySidebar() {
 
             <div className={styles.filterSection}>
               <label className={styles.filterTitle}>Color</label>
-              <select value={color} onChange={(e) => setColor(e.target.value)} className={styles.colorSelect}>
+              <select value={color} onChange={(e) => filterDispatch({ type: 'SET_COLOR', payload: e.target.value })} className={styles.colorSelect}>
+                <option value="All">All</option>
                 <option value="White">White</option>
                 <option value="Black">Black</option>
                 <option value="Navy">Navy</option>

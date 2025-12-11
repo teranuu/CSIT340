@@ -2,7 +2,6 @@ import { ItemCard } from '../../../components/ItemCard/index.js';
 import styles from '../styles/footer.module.css';
 
 function DashboardFooter(){
-
     return(
 
 
