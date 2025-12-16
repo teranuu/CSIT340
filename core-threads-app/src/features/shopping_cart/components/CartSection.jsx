@@ -1,22 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/cart.section.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import CartItem from './CartItem';
 
 function CartSection() {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Nike Shoes', category: 'Shoes', price: 50.00, quantity: 0, image: '/shoe1.jpg' },
-    { id: 2, name: 'Classic Black Hoodie', category: 'Apparel', price: 45.00, quantity: 0, image: '/hoodie.jpg' },
-    { id: 3, name: 'Denim Jeans', category: 'Bottoms', price: 65.00, quantity: 0, image: '/jeans.jpg' },
-    { id: 4, name: 'White Crew Neck Tee', category: 'Apparel', price: 25.00, quantity: 0, image: '/tee.jpg' },
-    { id: 5, name: 'Canvas Backpack', category: 'Accessories', price: 75.00, quantity: 0, image: '/backpack.jpg' },
-    { id: 6, name: 'Wool Winter Beanie', category: 'Accessories', price: 30.00, quantity: 0, image: '/beanie.jpg' },
-    { id: 7, name: 'Athletic Socks Pack', category: 'Accessories', price: 15.00, quantity: 0, image: '/socks.jpg' },
-  ]);
-
+  const [cartItems, setCartItems] = useState([]);
   const [discountCode, setDiscountCode] = useState('');
   const [shippingDiscount, setShippingDiscount] = useState('');
+
+  // Load cart items from sessionStorage on component mount
+  useEffect(() => {
+    const storedItems = sessionStorage.getItem('cart_items');
+    if (storedItems) {
+      try {
+        const parsedItems = JSON.parse(storedItems);
+        // Transform to match cart item structure with quantity
+        const cartItemsWithQuantity = parsedItems.map((item, idx) => {
+          // Handle both catalog items (title, imageUrl) and deal items (name, image)
+          const itemName = item.title || item.name;
+          const itemImage = item.imageUrl || item.image;
+          const itemPrice = item.price ? parseFloat(item.price.replace('$', '')) : 0;
+          
+          return {
+            id: item.uniqueKey || item.id || `deal-${idx}`,
+            name: itemName,
+            category: item.category || 'Apparel',
+            price: itemPrice,
+            quantity: item.quantity || 1,
+            image: itemImage,
+            gender: item.gender,
+            originalPrice: item.originalPrice
+          };
+        });
+        setCartItems(cartItemsWithQuantity);
+      } catch (error) {
+        console.error('Error parsing cart items:', error);
+        setCartItems([]);
+      }
+    }
+  }, []);
+
+  // Sync cartItems to sessionStorage whenever cart changes
+  useEffect(() => {
+    sessionStorage.setItem('cart_items', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = 50.00;
@@ -44,14 +72,27 @@ function CartSection() {
           </div>
 
           <div className={styles.cartItemsList}>
-            {cartItems.map(item => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onQuantityChange={(delta) => handleQuantityChange(item.id, delta)}
-                onRemove={() => handleRemoveItem(item.id)}
-              />
-            ))}
+            {cartItems.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '60px 20px',
+                color: '#999',
+                fontSize: '16px'
+              }}>
+                <p style={{ fontSize: '48px', marginBottom: '10px' }}>🛒</p>
+                <p style={{ fontWeight: 600, marginBottom: '8px' }}>Your cart is empty</p>
+                <p>Add items from the catalog to get started</p>
+              </div>
+            ) : (
+              cartItems.map(item => (
+                <CartItem
+                  key={item.id}
+                  item={item}
+                  onQuantityChange={(delta) => handleQuantityChange(item.id, delta)}
+                  onRemove={() => handleRemoveItem(item.id)}
+                />
+              ))
+            )}
           </div>
         </div>
 

@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
-    List<Address> findByCustomerId(Long customerId);
-    List<Address> findByCustomerIdAndIsDefaultTrue(Long customerId);
+    List<Address> findByCustomerCustomerId(Long customerId);
+    List<Address> findByCustomerCustomerIdAndIsDefaultTrue(Long customerId);
 }

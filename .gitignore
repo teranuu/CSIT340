@@ -1,0 +1,15 @@
+# Documentation files
+DATABASE_SCHEMA_UPDATES.md
+OAUTH_SETUP_GUIDE.md
+SECURITY_FIXES_SUMMARY.md
+SECURITY_HARDENING_GUIDE.md
+SECURITY_MEASURES_APPLIED.md
+SECURITY_QUICK_REFERENCE.md
+SELLER_DASHBOARD_INTEGRATION.md
+VULNERABILITY_AUDIT.md
+
+# Environment files
+.env
+.env.local
+.env.*.local
+core-threads-app/.env.example

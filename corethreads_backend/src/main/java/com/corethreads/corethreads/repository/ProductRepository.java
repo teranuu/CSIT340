@@ -11,8 +11,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     
-    // Find products by category ID
-    List<Product> findByCategoryId(Long categoryId);
+    // Find products by category (Categories PK is categoriesId mapped to column `id`)
+    @Query("SELECT p FROM Product p WHERE p.categories.categoriesId = :categoryId")
+    List<Product> findByCategoryId(@Param("categoryId") Long categoryId);
     
     // Search products by name (case-insensitive)
     List<Product> findByNameContainingIgnoreCase(String name);
@@ -22,8 +23,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> searchByKeyword(@Param("keyword") String keyword);
     
     // Find active products
-    List<Product> findByActiveTrue();
+    List<Product> findByIsActiveTrue();
     
     // Find products by category and active status
-    List<Product> findByCategoryIdAndActiveTrue(Long categoryId);
+    @Query("SELECT p FROM Product p WHERE p.categories.categoriesId = :categoryId AND p.isActive = true")
+    List<Product> findByCategoryIdAndActiveTrue(@Param("categoryId") Long categoryId);
+    
+    // Find products by seller ID
+    List<Product> findBySeller_SellerId(Long sellerId);
 }

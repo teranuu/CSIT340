@@ -1,12 +1,12 @@
 import styles from './item.card.module.css';
 
-function ItemCard({name, style}){
+function ItemCard({name, style, onClick}){
 
 
     return(
 
         <>
-        <div className={styles.categoryItem} style={style}>{name}</div>
+        <div className={styles.categoryItem} style={style} onClick={onClick}>{name}</div>
         </>
 
 

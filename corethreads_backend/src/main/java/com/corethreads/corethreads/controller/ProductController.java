@@ -1,5 +1,6 @@
 package com.corethreads.corethreads.controller;
 
+import com.corethreads.corethreads.dto.ProductSummaryDto;
 import com.corethreads.corethreads.entity.Product;
 import com.corethreads.corethreads.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
@@ -21,6 +23,12 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    // --- Get product summaries with image and lowest price ---
+    @GetMapping("/summary")
+    public ResponseEntity<List<ProductSummaryDto>> getProductSummaries() {
+        return ResponseEntity.ok(productService.getProductSummaries());
     }
 
     // --- Get product by ID ---
@@ -60,22 +68,22 @@ public class ProductController {
     }
 
     // --- Update product ---
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.getProductById(id)
+    @PutMapping("/{productId}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long productId, @RequestBody Product product) {
+        return productService.getProductById(productId)
                 .map(existing -> {
                     existing.setName(product.getName());
                     existing.setDescription(product.getDescription());
-                    existing.setCategory(product.getCategory());
+                    existing.setCategories(product.getCategories());
                     existing.setActive(product.isActive());
                     return ResponseEntity.ok(productService.saveProduct(existing));
                 }).orElse(ResponseEntity.notFound().build());
     }
 
     // --- Delete product ---
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
         return ResponseEntity.noContent().build();
     }
 }

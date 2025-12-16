@@ -1,3 +1,4 @@
+/* i feel like the cards are too small, i wanted to adjust the width and length and base it on my liking */
 .catalogueMainWrapper {
   display:flex;
   flex-direction: row;
@@ -27,7 +28,7 @@
 .cardsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 3rem;
   align-items: start;
   width: 100%;
 }
@@ -35,6 +36,11 @@
 .catalogueCardWrapper {
   width: 100%;
   box-sizing: border-box;
+}
+
+/* Enlarge ApparelCard images in catalogue to fully show product */
+.cardsGrid :global(.apparelItemImageWrapper img) {
+  height: 600px !important;
 }
 
 /* Optional nicer scrollbars */
@@ -157,6 +163,74 @@
 
 .toggleCheckbox:checked + .toggleSlider:before {
   transform: translateX(20px);
+}
+
+/* Floating checkout bar */
+.checkoutBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #385040 0%, #2d4033 100%);
+  color: white;
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.checkoutInfo {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.selectedCount {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.totalPrice {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #bed2be;
+}
+
+.checkoutButton {
+  background: white;
+  color: #385040;
+  border: none;
+  padding: 0.85rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.checkoutButton:hover {
+  background: #bed2be;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.checkoutButton:active {
+  transform: translateY(0);
 }
 
 /* Responsive: hide sidebar on narrow screens and make layout stack */

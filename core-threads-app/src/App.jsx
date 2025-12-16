@@ -1,6 +1,7 @@
-
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from "react";
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const Login = lazy(() => import("./features/login/LoginPage"));
 const Register = lazy(() => import("./features/register/RegisterPage"));
@@ -8,52 +9,84 @@ const DashboardLayout = lazy(() => import("./features/dashboard/DashboardPage"))
 const UserLayout = lazy(() => import("./features/user_profile/UserPage"));
 const ShoppingCart = lazy(() => import("./features/shopping_cart/ShoppingCart"));
 const CatalogLayout = lazy(() => import("./features/catalogue/CataloguePage"));
+const ProductPage = lazy(() => import("./features/product_page/ProductPage"));
 const WishlistPage = lazy(() => import("./features/wishlist/WishlistPage"));
 const SellerDashboard = lazy(() => import("./features/seller_dashboard/SellerDashboard"));
 const AdminLogin = lazy(() => import("./features/admin_dashboard/pages/AdminLogin"));
 const AdminDashboard = lazy(() => import("./features/admin_dashboard/AdminDashboard"));
 
-
 function App() {
-
-
   return (
-    <>
-
+    <AuthProvider>
       <BrowserRouter>
         <Suspense fallback={<div>Loading...</div>}>
-
           <Routes>
-            <Route path="/login" element={<Login/>} />
-            <Route path="/register" element={<Register/>}/>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
 
-            <Route path="/dashboard" element={<DashboardLayout/>}/>
-            {/* <Route index element={<DashboardSection />} />
-              </Route> */}
+            {/* Protected Routes */}
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/catalog" 
+              element={
+                <ProtectedRoute>
+                  <CatalogLayout />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/product/:id" 
+              element={
+                <ProtectedRoute>
+                  <ProductPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/settings" 
+              element={
+                <ProtectedRoute>
+                  <UserLayout />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/cart" 
+              element={
+                <ProtectedRoute>
+                  <ShoppingCart />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/wishlist" 
+              element={
+                <ProtectedRoute>
+                  <WishlistPage />
+                </ProtectedRoute>
+              } 
+            />
 
-           <Route path="/dashboard/catalog" element={<CatalogLayout/>}/>
-           <Route path="/dashboard/settings" element={<UserLayout/>} />
-           <Route path="/dashboard/wishlist" element={<WishlistPage/>} />
-           <Route path="/dashboard/cart" element={<ShoppingCart/>} />
+            {/* Seller and Admin Routes */}
+            <Route path="/seller-dashboard" element={<SellerDashboard />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
-          {/* default route upon startup */}
-          <Route path="*" element={<Login/>}/>
-
-          <Route path="/seller-dashboard" element={<SellerDashboard/>} />
-          <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-          <Route path="/admin-login" element={<AdminLogin/>}/>
-
-
+            {/* Default Routes */}
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
-
         </Suspense>
-      
       </BrowserRouter>
-      
-
-
-
-    </>
+    </AuthProvider>
   )
 }
 

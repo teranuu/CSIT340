@@ -17,22 +17,22 @@ import {
 function AdminHome() {
 	// Sample metrics data
 	const [metrics] = useState({
-		activeSellers: 432,
-		pendingSellerApplications: 7,
-		activeProducts: 12921,
-		flaggedListings: 14,
-		ordersLast24h: 118,
-		pendingPayouts: 3,
-		totalOrdersWeek: 742,
-		totalRevenue: 125643.50,
+		activeSellers: 3,
+		pendingSellerApplications: 1,
+		activeProducts: 18,
+		flaggedListings: 1,
+		ordersLast24h: 4,
+		pendingPayouts: 1,
+		totalOrdersWeek: 9,
+		totalRevenue: 12450.50,
 	});
 
 	const [alerts] = useState([
 		{
 			id: "alert-1",
 			type: "pending_sellers",
-			message: "7 sellers waiting for verification",
-			count: 7,
+			message: "1 seller waiting for verification",
+			count: 1,
 			severity: "high",
 			action: "Review Applications",
 			actionPage: "sellers",
@@ -40,8 +40,8 @@ function AdminHome() {
 		{
 			id: "alert-2",
 			type: "flagged_products",
-			message: "14 products flagged for moderation",
-			count: 14,
+			message: "1 product flagged for moderation",
+			count: 1,
 			severity: "medium",
 			action: "Moderate Products",
 			actionPage: "products",
@@ -49,8 +49,8 @@ function AdminHome() {
 		{
 			id: "alert-3",
 			type: "disputes",
-			message: "2 escalated disputes awaiting decision",
-			count: 2,
+			message: "1 escalated dispute awaiting decision",
+			count: 1,
 			severity: "high",
 			action: "Review Disputes",
 			actionPage: "orders",
@@ -58,8 +58,8 @@ function AdminHome() {
 		{
 			id: "alert-4",
 			type: "pending_payouts",
-			message: "3 seller payout requests pending approval",
-			count: 3,
+			message: "1 seller payout request pending approval",
+			count: 1,
 			severity: "medium",
 			action: "Process Payouts",
 			actionPage: "payouts",

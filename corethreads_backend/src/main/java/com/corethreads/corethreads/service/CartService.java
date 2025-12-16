@@ -9,9 +9,7 @@ import com.corethreads.corethreads.repository.CartItemRepository;
 import com.corethreads.corethreads.repository.CustomerRepository;
 import com.corethreads.corethreads.repository.ProductVariantRepository;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CartService {
@@ -30,7 +28,7 @@ public class CartService {
     }
 
     public Cart getOrCreateCart(Long customerId) {
-        return cartRepository.findByCustomerId(customerId)
+        return cartRepository.findByCustomerCustomerId(customerId)
                 .orElseGet(() -> {
                     Customer customer = customerRepository.findById(customerId)
                             .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -45,7 +43,7 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Variant not found"));
 
         // Check if item already exists
-        List<CartItem> existingItems = cartItemRepository.findByCartId(cart.getCartId());
+        List<CartItem> existingItems = cartItemRepository.findByCartCartId(cart.getCartId());
         for (CartItem item : existingItems) {
             if (item.getVariant().getVariantId().equals(variantId)) {
                 item.setQuantity(item.getQuantity() + quantity);
@@ -71,13 +69,13 @@ public class CartService {
 
     public List<CartItem> getCartItems(Long customerId) {
         Cart cart = getOrCreateCart(customerId);
-        return cartItemRepository.findByCartId(cart.getCartId());
+        return cartItemRepository.findByCartCartId(cart.getCartId());
     }
 
     public void clearCart(Long customerId) {
-        Cart cart = cartRepository.findByCustomerId(customerId)
+        Cart cart = cartRepository.findByCustomerCustomerId(customerId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
-        cartItemRepository.findByCartId(cart.getCartId())
+        cartItemRepository.findByCartCartId(cart.getCartId())
                 .forEach(item -> cartItemRepository.deleteById(item.getCartItemId()));
     }
 }

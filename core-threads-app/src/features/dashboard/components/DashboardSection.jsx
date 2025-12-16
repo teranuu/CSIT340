@@ -1,37 +1,135 @@
 import styles from '../styles/section.module.css';
 import { ItemCard } from '../../../components/ItemCard/index.js';
 import { ApparelCard } from '../../../components/ApparelCard/index.js';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL, getImageUrl, STATIC_IMAGES } from '../../../config/api.js';
 
 function DashboardSection() {
+  const navigate = useNavigate();
+  const [featured, setFeatured] = useState([]);
+  const [recentlyViewed, setRecentlyViewed] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const RECENT_KEY = 'recently_viewed_products';
+
+  const categoryImages = {
+    All: getImageUrl('Categories_All.png'),
+    Hoodies: getImageUrl('Categories_Hoodies.png'),
+    Shirts: getImageUrl('Categories_Shirts.png'),
+    Pants: getImageUrl('Categories_Pants.png'),
+    Kicks: getImageUrl('Categories_Kicks.png'),
+  };
+
   const categories = [
-    { name: 'All', bg: 'linear-gradient(135deg, rgba(56,80,63,0.18), rgba(190,214,190,0.65))' },
-    { name: 'Hoodies', bg: 'url(https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80)' },
-    { name: 'Shirts', bg: 'url(https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80)' },
-    { name: 'Pants', bg: 'url(https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80)' },
-    { name: 'Kicks', bg: 'url(https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=400&q=80)' },
+    { name: 'All', bg: `url(${categoryImages.All})` },
+    { name: 'Hoodies', bg: `url(${categoryImages.Hoodies})` },
+    { name: 'Shirts', bg: `url(${categoryImages.Shirts})` },
+    { name: 'Pants', bg: `url(${categoryImages.Pants})` },
+    { name: 'Kicks', bg: `url(${categoryImages.Kicks})` },
   ];
 
-  const featured = [
-    { name: 'Urban Hoodie', price: '$49.99', image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Daily Tee', price: '$24.99', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Tapered Pants', price: '$39.99', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Court Sneakers', price: '$79.99', image: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Oversized Hoodie', price: '$54.99', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Classic Crew', price: '$19.99', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Utility Cargo', price: '$44.99', image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Low-top Canvas', price: '$59.99', image: 'https://images.unsplash.com/photo-1528702748617-c64d49f918af?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Coach Jacket', price: '$69.99', image: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=400&q=80' },
-  ];
+  // Fallback data if API fails (neutral placeholders, no Unsplash)
+  const placeholder = 'http://localhost:8081/api/images/Grey_sweatpants.png';
+  const fallbackFeatured = [];
+  const fallbackRecentlyViewed = [];
+  const fallbackSuggestions = [];
 
-  const recentlyViewed = [
-    { name: 'Minimal Hoodie', price: '$48.00', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Vintage Tee', price: '$22.00', image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80' },
-  ];
+  const buildImageUrl = (url) => {
+    if (!url) return 'http://localhost:8081/api/images/Grey_sweatpants.png';
+    return getImageUrl(url);
+  };
 
-  const suggestions = [
-    { name: 'Relaxed Sweatpants', price: '$35.00', image: 'https://images.unsplash.com/photo-1542293787938-4d273c37c5bf?auto=format&fit=crop&w=400&q=80' },
-    { name: 'Layered Jacket', price: '$85.00', image: 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=400&q=80' },
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${API_BASE_URL}/api/products/summary`);
+        if (!response.ok) throw new Error('Failed to fetch products');
+        const products = await response.json();
+
+        const normalized = products.map((p) => {
+          let image = buildImageUrl(p.imageUrl);
+          // Use static image for Grey Sweatpants
+          if (p.name === 'Grey Sweatpants') {
+            image = STATIC_IMAGES.GREY_SWEATPANTS;
+          }
+          return {
+            name: p.name,
+            price: p.price ? `$${Number(p.price).toFixed(2)}` : '$45.50',
+            image: image,
+          };
+        });
+
+        console.log('Dashboard: normalized products', normalized);
+
+        const ensureItems = (list, start, end) => {
+          const slice = list.slice(start, end);
+          if (slice.length) return slice;
+          return list.length ? list : [];
+        };
+
+        setFeatured(ensureItems(normalized, 0, 9));
+
+        // Load recently viewed from sessionStorage and fall back to server order if empty
+        const storedRecent = JSON.parse(sessionStorage.getItem(RECENT_KEY) || '[]');
+        const recentByName = storedRecent
+          .map((name) => normalized.find((n) => n.name === name))
+          .filter(Boolean)
+          .slice(0, 4);
+        const recentFallback = ensureItems(normalized, 9, 13);
+        setRecentlyViewed(recentByName.length ? recentByName : recentFallback);
+
+        setSuggestions(ensureItems(normalized, 11, 13));
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError(err.message);
+        setFeatured(fallbackFeatured);
+        setRecentlyViewed(fallbackRecentlyViewed);
+        setSuggestions(fallbackSuggestions);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleProductClick = (productName) => {
+    // Persist recently viewed list (most recent first, unique, max 6)
+    setRecentlyViewed((prev) => {
+      const currentNames = prev.map((p) => p.name);
+      if (currentNames.includes(productName)) {
+        const reordered = [productName, ...currentNames.filter((n) => n !== productName)];
+        sessionStorage.setItem(RECENT_KEY, JSON.stringify(reordered.slice(0, 6)));
+        return reordered
+          .map((name) => prev.find((p) => p.name === name))
+          .filter(Boolean)
+          .slice(0, 4);
+      }
+      const updated = [productName, ...currentNames].slice(0, 6);
+      sessionStorage.setItem(RECENT_KEY, JSON.stringify(updated));
+      // We only have productName; best-effort attach from featured/suggestions/recentlyViewed lists
+      const pool = [...featured, ...suggestions, ...prev];
+      const mapped = updated
+        .map((name) => pool.find((p) => p.name === name))
+        .filter(Boolean)
+        .slice(0, 4);
+      return mapped.length ? mapped : prev;
+    });
+
+    navigate('/dashboard/catalog', { state: { highlightProduct: productName } });
+  };
+
+  const handleCategoryClick = (categoryName) => {
+    navigate('/dashboard/catalog', { state: { selectedCategory: categoryName } });
+  };
+
+  if (error) {
+    console.warn('Using fallback data. API Error:', error);
+  }
 
   return (
     <div className={styles.dashboardSectionWrapper}>
@@ -40,25 +138,39 @@ function DashboardSection() {
           <ItemCard
             key={cat.name}
             name={cat.name}
+            onClick={() => handleCategoryClick(cat.name)}
             style={{
               height: '7rem',
-              backgroundImage: cat.bg,
+              backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), ${cat.bg}`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              color: '#1f241f',
-              fontWeight: 600,
+              color: '#fff',
+              fontWeight: 700,
+              textShadow: '0 1px 2px rgba(0,0,0,0.6)',
+              border: '0.1rem solid rgba(255,255,255,0.5)',
+              cursor: 'pointer',
             }}
           />
         ))}
       </div>
 
       <div className={styles.apparelDisplaySection}>
+        {/* Sanity check card using a known working static image */}
+        <ApparelCard
+          key="sanity-shoes"
+          image={STATIC_IMAGES.CORETHREADS_SHOES}
+          name="CoreThreads Shoes"
+          price={"$49.50"}
+          onClick={() => handleProductClick('CoreThreads Shoes')}
+        />
+
         {featured.map((item, idx) => (
           <ApparelCard
             key={`${item.name}-${idx}`}
             image={item.image}
             name={item.name}
             price={item.price}
+            onClick={() => handleProductClick(item.name)}
           />
         ))}
       </div>
@@ -73,6 +185,7 @@ function DashboardSection() {
                 image={item.image}
                 name={item.name}
                 price={item.price}
+                onClick={() => handleProductClick(item.name)}
               />
             ))}
           </div>
@@ -87,6 +200,7 @@ function DashboardSection() {
                 image={item.image}
                 name={item.name}
                 price={item.price}
+                onClick={() => handleProductClick(item.name)}
               />
             ))}
           </div>

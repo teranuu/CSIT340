@@ -1,8 +1,8 @@
 import styles from './catalogue.card.module.css';
 
-function CatalogueCard({ title, price, imageUrl }) {
+function CatalogueCard({ title, price, imageUrl, isHighlighted }) {
   return (
-    <div className={styles.catalogueCardWrapper}>
+    <div className={`${styles.catalogueCardWrapper} ${isHighlighted ? styles.highlighted : ''}`}>
       <div className={styles.imageSection}>
         <img src={imageUrl} alt={title} />
       </div>

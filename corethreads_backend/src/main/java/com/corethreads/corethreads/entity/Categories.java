@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "Categories")
+@Table(name = "categories")
 public class Categories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categories_id")
+    @Column(name = "id")
     private Long categoriesId;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -20,7 +20,7 @@ public class Categories {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
     private Categories parent;
 
     @Column(name = "created_at", nullable = false)

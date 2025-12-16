@@ -12,8 +12,14 @@ public class Address {
     private Long addressId;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", nullable = false)
     private Customer customer;
+
+    @Column(name = "contact_name")
+    private String contactName;
+
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "street_address", nullable = false)
     private String streetAddress;
@@ -61,6 +67,22 @@ public class Address {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getStreetAddress() {

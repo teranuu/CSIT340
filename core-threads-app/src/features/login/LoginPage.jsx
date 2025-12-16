@@ -1,40 +1,27 @@
 import { UserAuthNavbar } from '../../components/UserAuthNavbar/index.js';
 import LoginSection from './components/LoginSection.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useState } from 'react';
 
 function LoginPage(){
 
     const navigate = useNavigate();
+    const { login } = useAuth();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handleLogin = async ({ username, password }) => {
-        try {
-            const res = await fetch('http://localhost:8080/api/customers/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-                // Store a simple session indicator for now
-                localStorage.setItem('token', JSON.stringify({ user: data }));
+        const result = await login(username, password);
+        if (result.success) {
+            setShowSuccessModal(true);
+            setTimeout(() => {
+                setShowSuccessModal(false);
                 navigate('/dashboard');
-                return null;
-            } else {
-                // Attempt to parse JSON error
-                try {
-                    const err = await res.json();
-                    return err.error || 'Invalid username or password';
-                } catch {
-                    const txt = await res.text();
-                    return txt || 'Invalid username or password';
-                }
-            }
-        } catch (e) {
-            console.error('Login error:', e);
-            return 'Unable to reach server. Please try again.';
+            }, 2000);
+            return null;
+        } else {
+            return result.error;
         }
-
     };
 
     const handleRegister = (e) => {
@@ -43,17 +30,23 @@ function LoginPage(){
     }
 
     return(
-
         <>
-
-        <UserAuthNavbar/>
-        <LoginSection onLogin={handleLogin} onRegister={handleRegister} />
-
+            <UserAuthNavbar/>
+            {showSuccessModal && (
+                <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+                    <div style={{ background: '#fff', padding: '1.5rem', borderRadius: '12px', maxWidth: '400px', width: '90%', boxShadow: '0 12px 30px rgba(0,0,0,0.15)' }}>
+                        <h3 style={{ margin: '0 0 0.75rem', color: 'var(--color-primary-dark)' }}>Login Successful!</h3>
+                        <p style={{ margin: '0 0 1rem', color: '#333' }}>Redirecting to your dashboard...</p>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <div style={{ width: '40px', height: '40px', border: '4px solid #e0e0e0', borderTop: '4px solid var(--color-primary-dark)', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                        </div>
+                    </div>
+                </div>
+            )}
+            <LoginSection onLogin={handleLogin} onRegister={handleRegister} />
         </>
-
     );
-
 }
-
 
 export default LoginPage

@@ -1,20 +1,41 @@
 import styles from '../styles/seller.products.module.css';
 import SellerStatCard from '../components/SellerStatCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function SellerProducts() {
-    const [products, setProducts] = useState([
-        { id: 1, name: 'Eco Tote Bag', price: '$25.00', stock: 150, image: '🛍️', sales: 320 },
-        { id: 2, name: 'Bamboo Cutlery Set', price: '$18.00', stock: 89, image: '🍴', sales: 245 },
-        { id: 3, name: 'Organic Cotton Tee', price: '$35.00', stock: 200, image: '👕', sales: 180 }
-    ]);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editingProduct, setEditingProduct] = useState(null);
     const [formData, setFormData] = useState({ name: '', price: '', stock: '', image: '' });
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        try {
+            const res = await fetch('http://localhost:8080/api/sellers/products', {
+                credentials: 'include'
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setProducts(data.products || []);
+            } else {
+                setError('Failed to fetch products');
+            }
+            setLoading(false);
+        } catch (err) {
+            console.error('Error fetching products:', err);
+            setError('Failed to load products');
+            setLoading(false);
+        }
+    };
 
     const handleAddClick = () => {
         setFormData({ name: '', price: '', stock: '', image: '' });
@@ -27,9 +48,22 @@ function SellerProducts() {
         setShowEditModal(true);
     };
 
-    const handleDeleteClick = (id) => {
+    const handleDeleteClick = async (id) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
-            setProducts(products.filter(p => p.id !== id));
+            try {
+                const res = await fetch(`http://localhost:8080/api/products/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                if (res.ok) {
+                    setProducts(products.filter(p => p.productId !== id));
+                } else {
+                    alert('Failed to delete product');
+                }
+            } catch (err) {
+                console.error('Error deleting product:', err);
+                alert('Failed to delete product');
+            }
         }
     };
 
@@ -38,34 +72,48 @@ function SellerProducts() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSaveProduct = () => {
-        if (!formData.name || !formData.price || !formData.stock) {
-            alert('Please fill in all fields');
+    const handleSaveProduct = async () => {
+        if (!formData.name) {
+            alert('Product name is required');
             return;
         }
 
-        if (editingProduct) {
-            setProducts(products.map(p => 
-                p.id === editingProduct.id 
-                    ? { ...p, ...formData }
-                    : p
-            ));
-            setShowEditModal(false);
-        } else {
-            setProducts([...products, {
-                id: Math.max(...products.map(p => p.id), 0) + 1,
-                ...formData,
-                sales: 0
-            }]);
-            setShowAddModal(false);
-        }
+        // Note: Product creation via API requires POST /api/products
+        // This is a placeholder - implement when product POST endpoint is ready
+        alert('Product create/update requires backend product POST/PUT endpoint integration.');
+        
+        if (showAddModal) setShowAddModal(false);
+        if (showEditModal) setShowEditModal(false);
+        
+        // Refresh products list
+        await fetchProducts();
     };
 
     const statsData = [
         { title: 'Total Products', value: products.length },
-        { title: 'Total Sales', value: products.reduce((sum, p) => sum + p.sales, 0) },
-        { title: 'In Stock', value: products.reduce((sum, p) => sum + parseInt(p.stock), 0) }
+        { title: 'Total Sales', value: 0 }, // TODO: Calculate from order items
+        { title: 'In Stock', value: 0 } // TODO: Sum stock from variants
     ];
+
+    if (loading) {
+        return (
+            <div className={styles.productsWrapper}>
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
+                    <p>Loading products...</p>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className={styles.productsWrapper}>
+                <div style={{ textAlign: 'center', padding: '2rem', color: 'red' }}>
+                    <p>{error}</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.productsWrapper}>
@@ -83,31 +131,41 @@ function SellerProducts() {
             </div>
 
             <div className={styles.productsGrid}>
-                {products.map(product => (
-                    <div key={product.id} className={styles.productCard}>
-                        <div className={styles.imageSection}>
-                            <div className={styles.imagePlaceholder}>{product.image}</div>
-                        </div>
-                        <div className={styles.productInfo}>
-                            <h3 className={styles.productName}>{product.name}</h3>
-                            <div className={styles.detailsRow}>
-                                <span className={styles.price}>{product.price}</span>
-                                <span className={styles.stock}>Stock: {product.stock}</span>
+                {products.length > 0 ? (
+                    products.map(product => (
+                        <div key={product.productId} className={styles.productCard}>
+                            <div className={styles.imageSection}>
+                                <div className={styles.imagePlaceholder}>
+                                    📦
+                                </div>
                             </div>
-                            <div className={styles.salesRow}>
-                                <span className={styles.salesLabel}>Sales: {product.sales}</span>
+                            <div className={styles.productInfo}>
+                                <h3 className={styles.productName}>{product.name}</h3>
+                                <div className={styles.detailsRow}>
+                                    <span className={styles.price}>N/A</span>
+                                    <span className={styles.stock}>Stock: N/A</span>
+                                </div>
+                                <div className={styles.salesRow}>
+                                    <span className={styles.salesLabel}>
+                                        {product.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className={styles.actionButtons}>
+                                <button className={styles.editBtn} onClick={() => handleEditClick(product)}>
+                                    <FontAwesomeIcon icon={faPencil} /> Edit
+                                </button>
+                                <button className={styles.deleteBtn} onClick={() => handleDeleteClick(product.productId)}>
+                                    <FontAwesomeIcon icon={faTrash} /> Delete
+                                </button>
                             </div>
                         </div>
-                        <div className={styles.actionButtons}>
-                            <button className={styles.editBtn} onClick={() => handleEditClick(product)}>
-                                <FontAwesomeIcon icon={faPencil} /> Edit
-                            </button>
-                            <button className={styles.deleteBtn} onClick={() => handleDeleteClick(product.id)}>
-                                <FontAwesomeIcon icon={faTrash} /> Delete
-                            </button>
-                        </div>
+                    ))
+                ) : (
+                    <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '2rem', color: '#666' }}>
+                        No products yet. Click "Add Product" to create your first product.
                     </div>
-                ))}
+                )}
             </div>
 
             {showAddModal && (

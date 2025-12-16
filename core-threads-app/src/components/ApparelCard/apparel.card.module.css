@@ -18,9 +18,55 @@
    z-index: 2;
 }
 
+.selectCheckbox {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    z-index: 10;
+    accent-color: #385040;
+}
+
+.selected {
+    border: 3px solid #385040;
+    box-shadow: 0 8px 20px rgba(56, 80, 64, 0.3);
+}
+
 .apparelItemImageWrapper{
     width: 100%;
     display: block;
+    position: relative;
+}
+
+.wishlistBtn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    color: #9c9c9c;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transition: all 0.15s ease;
+    z-index: 11;
+}
+
+.wishlistBtn:hover {
+    transform: translateY(-1px) scale(1.02);
+    color: #c0392b;
+}
+
+.wishlistActive {
+    color: #c0392b;
+    background: #ffecec;
+    box-shadow: 0 6px 14px rgba(192, 57, 43, 0.2);
 }
 
 .apparelItemImageWrapper img{
@@ -28,6 +74,21 @@
     height: 180px;
     object-fit: cover;
     display: block;
+}
+
+.genderBadge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(56, 80, 64, 0.85);
+    color: white;
+    padding: 0.35rem 0.65rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
 }
 
 .apparelItemDetails{
@@ -50,4 +111,20 @@
     font-size: 0.95rem;
     color: #385040;
     line-height: 1.2;
+}
+
+.highlighted {
+    animation: highlightPulse 2s ease-in-out;
+    border: 3px solid #385040;
+}
+
+@keyframes highlightPulse {
+    0%, 100% {
+        border-color: #385040;
+        box-shadow: 0 0 0 rgba(56, 80, 64, 0);
+    }
+    50% {
+        border-color: #5a9d76;
+        box-shadow: 0 0 20px rgba(56, 80, 64, 0.4);
+    }
 }
