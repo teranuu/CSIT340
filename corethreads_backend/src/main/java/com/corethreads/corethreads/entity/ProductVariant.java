@@ -3,6 +3,7 @@ package com.corethreads.corethreads.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "ProductVariant")
@@ -15,6 +16,7 @@ public class ProductVariant {
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonManagedReference("product-variants")
     private Product product;
 
     @Column(name = "size")

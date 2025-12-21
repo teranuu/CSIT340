@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "../styles/admin.users.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShoppingBag, faExclamationTriangle, faEye, faBan, faTimes, faCheckCircle, faLock } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShoppingBag, faEye, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 function AdminUsers() {
 	const [users, setUsers] = useState([
@@ -10,6 +10,7 @@ function AdminUsers() {
 			name: "Sarah Chen",
 			email: "sarah.chen@email.com",
 			orderCount: 12,
+			productCount: 0,
 			disputeCount: 0,
 			joinedDate: "2024-08-15",
 			status: "active",
@@ -20,6 +21,7 @@ function AdminUsers() {
 			name: "Mike Johnson",
 			email: "mike.j@email.com",
 			orderCount: 8,
+			productCount: 0,
 			disputeCount: 1,
 			joinedDate: "2024-09-20",
 			status: "active",
@@ -30,6 +32,7 @@ function AdminUsers() {
 			name: "Emma Davis",
 			email: "emma.davis@email.com",
 			orderCount: 25,
+			productCount: 0,
 			disputeCount: 0,
 			joinedDate: "2024-07-10",
 			status: "active",
@@ -40,6 +43,7 @@ function AdminUsers() {
 			name: "Alex Rivera",
 			email: "alex.rivera@email.com",
 			orderCount: 5,
+			productCount: 0,
 			disputeCount: 3,
 			joinedDate: "2024-10-05",
 			status: "suspended",
@@ -51,6 +55,7 @@ function AdminUsers() {
 			name: "Lisa Wong",
 			email: "lisa.wong@email.com",
 			orderCount: 18,
+			productCount: 0,
 			disputeCount: 0,
 			joinedDate: "2024-08-30",
 			status: "active",
@@ -61,6 +66,7 @@ function AdminUsers() {
 			name: "James Martinez",
 			email: "james.m@email.com",
 			orderCount: 3,
+			productCount: 0,
 			disputeCount: 5,
 			joinedDate: "2024-11-01",
 			status: "suspended",
@@ -71,8 +77,6 @@ function AdminUsers() {
 
 	const [selectedUser, setSelectedUser] = useState(null);
 	const [showOrderHistory, setShowOrderHistory] = useState(false);
-	const [showSuspensionModal, setShowSuspensionModal] = useState(false);
-	const [suspensionReason, setSuspensionReason] = useState("");
 
 	// Sample order history for selected user
 	const [orderHistory] = useState({
@@ -105,42 +109,16 @@ function AdminUsers() {
 		setShowOrderHistory(true);
 	};
 
-	const handleSuspendAccount = () => {
-		if (suspensionReason.trim() && selectedUser) {
-			setUsers(
-				users.map(u =>
-					u.id === selectedUser.id
-						? { ...u, status: "suspended", suspensionReason: suspensionReason }
-						: u
-				)
-			);
-			setSelectedUser(null);
-			setShowSuspensionModal(false);
-			setSuspensionReason("");
-			setShowOrderHistory(false);
-		}
-	};
-
-	const handleReactivateAccount = (userId) => {
-		setUsers(
-			users.map(u =>
-				u.id === userId
-					? { ...u, status: "active", suspensionReason: undefined }
-					: u
-			)
-		);
-	};
-
 	const activeUsers = users.filter(u => u.status === "active").length;
-	const suspendedUsers = users.filter(u => u.status === "suspended").length;
-	const totalDisputes = users.reduce((sum, u) => sum + u.disputeCount, 0);
+	// removed: suspendedUsers summary metric
+	// removed: totalDisputes metric
 
 	return (
 		<div className={styles.wrapper}>
 			<header className={styles.header}>
 				<div>
 					<h2 className={styles.pageTitle}>User Management</h2>
-					<p className={styles.subtitle}>View and manage buyer accounts, monitor activity, and handle suspensions</p>
+					<p className={styles.subtitle}>View and manage buyer and seller accounts, as well as monitor their activity</p>
 				</div>
 				<div className={styles.summary}>
 					<div className={styles.summaryCard}>
@@ -157,88 +135,43 @@ function AdminUsers() {
 							<p className={styles.summaryValue}>{activeUsers}</p>
 						</div>
 					</div>
-					<div className={styles.summaryCard}>
-						<FontAwesomeIcon icon={faLock} className={styles.summaryIcon} />
-						<div>
-							<p className={styles.summaryLabel}>Suspended</p>
-							<p className={styles.summaryValue}>{suspendedUsers}</p>
-						</div>
-					</div>
-					<div className={styles.summaryCard}>
-						<FontAwesomeIcon icon={faExclamationTriangle} className={styles.summaryIcon} />
-						<div>
-							<p className={styles.summaryLabel}>Total Disputes</p>
-							<p className={styles.summaryValue}>{totalDisputes}</p>
-						</div>
-					</div>
-				</div>
-			</header>
+					{/* Removed Suspended summary card */}
+				{/* Removed Total Disputes summary card */}
+			</div>
+		</header>
 
-			<section className={styles.section}>
-				<div className={styles.listHeader}>
-					<span>User</span>
-					<span className={styles.metaHead}>Email</span>
-					<span className={styles.metaHead}>Orders</span>
-					<span className={styles.metaHead}>Disputes</span>
-					<span className={styles.metaHead}>Joined</span>
-					<span className={styles.metaHead}>Status</span>
-					<span className={styles.metaHead}>Actions</span>
-				</div>
+		<section className={styles.section}>
+			<div className={styles.listHeader}>
+				<span>First Name</span>
+				<span className={styles.metaHead}>Last Name</span>
+				<span className={styles.metaHead}>Email</span>
+				<span className={styles.metaHead}>Orders</span>
+				<span className={styles.metaHead}>Products</span>
+				<span className={styles.metaHead}>Status</span>
+			</div>
 				<div className={styles.listBody}>
 					{users.map(user => (
 						<div key={user.id} className={styles.row}>
-							<span className={styles.userName}>{user.name}</span>
-							<span className={styles.meta}>{user.email}</span>
-							<span className={styles.meta}>
-								<FontAwesomeIcon icon={faShoppingBag} className={styles.metaIcon} /> {user.orderCount}
-							</span>
-							<span className={`${styles.meta} ${user.disputeCount > 0 ? styles.disputeWarning : ""}`}>
-								{user.disputeCount > 0 && <FontAwesomeIcon icon={faExclamationTriangle} className={styles.metaIcon} />}
-								{user.disputeCount}
-							</span>
-							<span className={styles.meta}>{user.joinedDate}</span>
-							<span className={`${styles.status} ${
-								user.status === 'active' ? styles.statusActive :
-								styles.statusSuspended
-							}`}>
-								{user.status === 'active' ? 'Active' : 'Suspended'}
-							</span>
-							<div className={styles.actions}>
-								<button
-									className={styles.viewBtn}
-									onClick={() => handleViewDetails(user)}
-									title="View order history"
-								>
-									<FontAwesomeIcon icon={faEye} /> Details
-								</button>
-								{user.status === 'active' ? (
-									<button
-										className={styles.suspendBtn}
-										onClick={() => {
-											setSelectedUser(user);
-											setShowSuspensionModal(true);
-										}}
-										title="Suspend account for fraud, abuse, or fake payments"
-									>
-										<FontAwesomeIcon icon={faBan} /> Suspend
-									</button>
-								) : (
-									<button
-										className={styles.reactivateBtn}
-										onClick={() => handleReactivateAccount(user.id)}
-										title="Reactivate suspended account"
-									>
-										<FontAwesomeIcon icon={faCheckCircle} /> Reactivate
-									</button>
-								)}
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
+						<span className={styles.userName}>{user.name.split(' ')[0]}</span>
+						<span className={styles.meta}>{user.name.split(' ').slice(1).join(' ')}</span>
+						<span className={styles.meta}>{user.email}</span>
+						<span className={styles.meta}>
+							<FontAwesomeIcon icon={faShoppingBag} className={styles.metaIcon} /> {user.orderCount}
+						</span>
+						<span className={styles.meta}>0</span>
+						<span className={`${styles.status} ${
+						user.orderCount > 0 && user.productCount > 0 ? styles.statusActive :
+						styles.statusInactive
+					}`}>
+						{user.orderCount > 0 && user.productCount > 0 ? 'Active' : 'Non-Active'}
+						</span>
+					</div>
+				))}
+			</div>
+		</section>
 
-			{/* Order History Modal */}
-			{showOrderHistory && selectedUser && (
+		{/* Order History Modal */}
+		{showOrderHistory && selectedUser && (
 				<div className={styles.modal}>
 					<div className={styles.modalContent}>
 						<div className={styles.modalHeader}>
@@ -295,97 +228,11 @@ function AdminUsers() {
 							>
 								Close
 							</button>
-							{selectedUser.status === 'active' && (
-								<button
-									className={styles.suspendFromModal}
-									onClick={() => setShowSuspensionModal(true)}
-								>
-									<FontAwesomeIcon icon={faBan} /> Suspend Account
-								</button>
-							)}
 						</div>
 					</div>
 				</div>
 			)}
 
-			{/* Suspension Modal */}
-			{showSuspensionModal && selectedUser && (
-				<div className={styles.modal}>
-					<div className={styles.modalContent}>
-						<div className={styles.modalHeader}>
-							<div>
-								<h3>Suspend Account</h3>
-								<p className={styles.modalSubtitle}>{selectedUser.name}</p>
-							</div>
-							<button
-								className={styles.closeBtn}
-								onClick={() => {
-									setShowSuspensionModal(false);
-									setSuspensionReason("");
-								}}
-							>
-								<FontAwesomeIcon icon={faTimes} />
-							</button>
-						</div>
-						<div className={styles.modalBody}>
-							<div className={styles.warningBox}>
-								<FontAwesomeIcon icon={faExclamationTriangle} className={styles.warningIcon} />
-								<div>
-									<p><strong>Warning:</strong> Suspending an account will prevent this user from making purchases or placing orders. This action should only be taken in extreme cases of fraud, abuse, or fake payments.</p>
-								</div>
-							</div>
-
-							<label className={styles.formGroup}>
-								<span className={styles.label}>Suspension Reason (Required)</span>
-								<select
-									className={styles.select}
-									value={suspensionReason}
-									onChange={(e) => setSuspensionReason(e.target.value)}
-									autoFocus
-								>
-									<option value="">Select a reason...</option>
-									<option value="Fraudulent payment attempts">Fraudulent payment attempts</option>
-									<option value="Multiple chargebacks">Multiple chargebacks</option>
-									<option value="Abusive behavior towards sellers">Abusive behavior towards sellers</option>
-									<option value="Excessive disputes without merit">Excessive disputes without merit</option>
-									<option value="Fake account / Identity fraud">Fake account / Identity fraud</option>
-									<option value="Other (requires description)">Other (requires description)</option>
-								</select>
-							</label>
-
-							{suspensionReason === "Other (requires description)" && (
-								<label className={styles.formGroup}>
-									<span className={styles.label}>Please Describe the Issue</span>
-									<textarea
-										className={styles.textarea}
-										placeholder="Enter detailed reason for suspension..."
-										rows="4"
-										onChange={(e) => setSuspensionReason(`Other: ${e.target.value}`)}
-									/>
-								</label>
-							)}
-						</div>
-						<div className={styles.modalActions}>
-							<button
-								className={styles.cancelBtn}
-								onClick={() => {
-									setShowSuspensionModal(false);
-									setSuspensionReason("");
-								}}
-							>
-								Cancel
-							</button>
-							<button
-								className={styles.confirmBtn}
-								onClick={handleSuspendAccount}
-								disabled={!suspensionReason.trim()}
-							>
-								<FontAwesomeIcon icon={faBan} /> Confirm Suspension
-							</button>
-						</div>
-					</div>
-				</div>
-			)}
 		</div>
 	);
 }

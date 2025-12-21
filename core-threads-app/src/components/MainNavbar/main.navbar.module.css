@@ -9,19 +9,133 @@
 }
 
 input {
-  
-    max-width: 30rem;
+    max-width: 32rem;
+    width: 28rem;
     margin: 0 auto;
-    border-radius: 0.7rem;
-    border:0.1rem solid black;
-    padding: 0.6rem;
-    width: 26rem;
+    padding: 0.65rem 3.2rem 0.65rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: #FFFFFF;
+    color: #0f1f1a;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+}
+
+input::placeholder {
+    color: rgba(15, 31, 26, 0.55);
+    letter-spacing: 0.01em;
+}
+
+input:focus {
+    outline: none;
+    border-color: rgba(56, 80, 64, 0.7);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16), 0 0 0 3px rgba(56, 80, 64, 0.18);
+    
 }
 
 .navbarIconWrapper {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+}
+
+.iconLink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.iconLink:hover {
+    transform: translateY(-3px) scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.iconLink:active {
+    transform: translateY(0) scale(0.95);
+    transition: all 0.1s ease;
+}
+
+.iconLink.active {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Pulse animation on hover */
+.iconLink:hover::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    animation: pulse 1s ease-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Icon smooth transition */
+.iconLink .icon {
+    transition: transform 0.2s ease;
+}
+
+.iconLink:hover .icon {
+    transform: rotate(5deg);
+}
+
+/* User Badge Styles */
+.userBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.userBadge:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.userIcon {
+    color: var(--color-accent);
+    opacity: 0.9;
+}
+
+.userName {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    letter-spacing: 0.02rem;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* .navbar-icon{

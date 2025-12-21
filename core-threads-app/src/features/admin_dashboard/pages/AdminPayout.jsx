@@ -124,7 +124,7 @@ function AdminPayout() {
 
 	const totalPlatformCommission = sellerBalances.reduce((sum, s) => sum + s.platformCommission, 0);
 	const totalPendingPayouts = sellerBalances.reduce((sum, s) => sum + s.pendingPayout, 0);
-	const verifiedSellers = sellerBalances.filter(s => s.status === "verified").length;
+	// removed: verifiedSellers metric
 
 	return (
 		<div className={styles.wrapper}>
@@ -148,13 +148,7 @@ function AdminPayout() {
 							<p className={styles.summaryValue}>₱{totalPendingPayouts.toFixed(2)}</p>
 						</div>
 					</div>
-					<div className={styles.summaryCard}>
-						<FontAwesomeIcon icon={faCheckCircle} className={styles.summaryIcon} />
-						<div>
-							<p className={styles.summaryLabel}>Verified Sellers</p>
-							<p className={styles.summaryValue}>{verifiedSellers}</p>
-						</div>
-					</div>
+					{/* Removed Verified Sellers summary card */}
 				</div>
 			</header>
 
@@ -192,9 +186,7 @@ function AdminPayout() {
 						<span>Seller</span>
 						<span className={styles.metaHead}>Total Sales</span>
 						<span className={styles.metaHead}>Platform Commission (5%)</span>
-						<span className={styles.metaHead}>Pending Payout</span>
 						<span className={styles.metaHead}>Status</span>
-						<span className={styles.metaHead}>Payout Method</span>
 					</div>
 					<div className={styles.listBody}>
 						{sellerBalances.map(seller => (
@@ -202,14 +194,12 @@ function AdminPayout() {
 								<span className={styles.sellerName}>{seller.name}</span>
 								<span className={styles.amount}>₱{seller.totalSales.toFixed(2)}</span>
 								<span className={styles.commission}>₱{seller.platformCommission.toFixed(2)}</span>
-								<span className={`${styles.amount} ${styles.highlight}`}>₱{seller.pendingPayout.toFixed(2)}</span>
 								<span className={`${styles.status} ${
 									seller.status === 'verified' ? styles.statusVerified :
 									styles.statusPending
 								}`}>
 									{seller.status === 'verified' ? 'Verified' : 'Pending Verification'}
 								</span>
-								<span className={styles.method}>{seller.payoutMethod}</span>
 							</div>
 						))}
 					</div>

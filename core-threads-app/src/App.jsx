@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Suspense, lazy } from "react";
 import { AuthProvider } from './context/AuthContext';
+import { AdminAuthProvider } from './context/AdminAuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminProtectedRoute from './components/AdminProtectedRoute';
 
 const Login = lazy(() => import("./features/login/LoginPage"));
 const Register = lazy(() => import("./features/register/RegisterPage"));
@@ -18,9 +20,10 @@ const AdminDashboard = lazy(() => import("./features/admin_dashboard/AdminDashbo
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
+      <AdminAuthProvider>
+        <BrowserRouter>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
             {/* Public Routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -77,8 +80,22 @@ function App() {
             />
 
             {/* Seller and Admin Routes */}
-            <Route path="/seller-dashboard" element={<SellerDashboard />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route 
+              path="/seller-dashboard" 
+              element={
+                <ProtectedRoute>
+                  <SellerDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin-dashboard" 
+              element={
+                <AdminProtectedRoute>
+                  <AdminDashboard />
+                </AdminProtectedRoute>
+              } 
+            />
 
             {/* Default Routes */}
             <Route path="/" element={<Navigate to="/login" replace />} />
@@ -86,6 +103,7 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      </AdminAuthProvider>
     </AuthProvider>
   )
 }

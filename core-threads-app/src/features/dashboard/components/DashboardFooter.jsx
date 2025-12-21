@@ -19,10 +19,10 @@ function DashboardFooter(){
             discountedPrice: '$49.99',
         },
         {
-            name: 'White Tee',
-            image: getImageUrl('White_tee.png'),
-            originalPrice: '$34.99',
-            discountedPrice: '$19.99',
+            name: 'CoreThreads Shoes',
+            image: getImageUrl('corethreads_shoes.png'),
+            originalPrice: '$59.99',
+            discountedPrice: '$39.99',
         },
         {
             name: 'Jeans',

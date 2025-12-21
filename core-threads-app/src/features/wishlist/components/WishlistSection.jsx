@@ -91,7 +91,11 @@ function WishlistSection() {
                   {/* Name + variant */}
                   <div className={styles.itemInfo}>
                     <h2 className={styles.itemName}>{item.name}</h2>
-                    <p className={styles.itemVariant}>{item.category || item.color}</p>
+                    <p className={styles.itemVariant}>
+                      {item.category ? `${item.category}` : '—'}
+                      {item.color ? ` • ${item.color}` : ''}
+                      {item.size ? ` • Size ${item.size}` : ''}
+                    </p>
                   </div>
 
                   {/* Price */}

@@ -1,12 +1,13 @@
 import { UserAuthNavbar } from '../../components/UserAuthNavbar/index.js';
 import LoginSection from './components/LoginSection.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useState } from 'react';
 
 function LoginPage(){
 
     const navigate = useNavigate();
+    const location = useLocation();
     const { login } = useAuth();
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -14,9 +15,11 @@ function LoginPage(){
         const result = await login(username, password);
         if (result.success) {
             setShowSuccessModal(true);
+            // Redirect to the page they tried to access, or dashboard by default
+            const from = location.state?.from?.pathname || '/dashboard';
             setTimeout(() => {
                 setShowSuccessModal(false);
-                navigate('/dashboard');
+                navigate(from, { replace: true });
             }, 2000);
             return null;
         } else {

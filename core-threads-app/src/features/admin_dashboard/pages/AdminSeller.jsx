@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "../styles/admin.seller.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheckCircle, faTimesCircle, faEye, faBan, faUndo, faIdCard } from "@fortawesome/free-solid-svg-icons";
+import { faCheckCircle, faTimesCircle, faEye, faIdCard } from "@fortawesome/free-solid-svg-icons";
 
 function AdminSeller() {
 	const [sellers, setSellers] = useState([
@@ -50,20 +50,11 @@ function AdminSeller() {
 		setSellers((prev) => prev.map((s) => s.id === id ? { ...s, status: "rejected", rejectionReason: reason } : s));
 	};
 
-	const handleSuspend = (id, reason) => {
-		setSellers((prev) => prev.map((s) => s.id === id ? { ...s, status: "suspended", suspensionReason: reason } : s));
-	};
-
-	const handleUnsuspend = (id) => {
-		setSellers((prev) => prev.map((s) => s.id === id ? { ...s, status: "approved", suspensionReason: "" } : s));
-	};
-
 	const handleViewDocs = (docs) => {
 		window.alert(`Documents:\n- ${docs.join("\n- ")}`);
 	};
 
 	const pendingApplications = sellers.filter((s) => s.status === "pending");
-	const suspendedSellers = sellers.filter((s) => s.status === "suspended");
 	const activeSellers = sellers.filter((s) => s.status === "approved" || s.status === "active");
 
 	return (
@@ -76,7 +67,7 @@ function AdminSeller() {
 				<div className={styles.summary}>
 					<span>Pending: {pendingApplications.length}</span>
 					<span>Active: {activeSellers.length}</span>
-					<span>Suspended: {suspendedSellers.length}</span>
+					{/* Removed Suspended summary */}
 				</div>
 			</header>
 
@@ -113,49 +104,6 @@ function AdminSeller() {
 								</button>
 								<button className={styles.rejectBtn} onClick={() => handleReject(seller.id)}>
 									<FontAwesomeIcon icon={faTimesCircle} /> Reject
-								</button>
-							</div>
-						</div>
-					))}
-				</div>
-			</section>
-
-			<section className={styles.section}>
-				<div className={styles.sectionHeader}>
-					<h3>Suspend / Unsuspend Sellers</h3>
-					<p>Apply enforcement for rule violations, abuse, or illegal listings.</p>
-				</div>
-				<div className={styles.cardGrid}>
-					{activeSellers.length === 0 && <p className={styles.emptyText}>No active sellers.</p>}
-					{activeSellers.map((seller) => (
-						<div key={seller.id} className={styles.card}>
-							<div className={styles.cardHeader}>
-								<div>
-									<h4 className={styles.cardTitle}>{seller.name}</h4>
-									<p className={styles.meta}>{seller.email}</p>
-								</div>
-								<span className={styles.badgeActive}>Active</span>
-							</div>
-							<div className={styles.actionsRowWrap}>
-								<button className={styles.suspendBtn} onClick={() => handleSuspend(seller.id, "Rule violation")}>Rule violation</button>
-								<button className={styles.suspendBtn} onClick={() => handleSuspend(seller.id, "Abusive behavior")}>Abusive behavior</button>
-								<button className={styles.suspendBtn} onClick={() => handleSuspend(seller.id, "Illegal listings")}>Illegal listings</button>
-							</div>
-						</div>
-					))}
-					{suspendedSellers.map((seller) => (
-						<div key={seller.id} className={styles.card}>
-							<div className={styles.cardHeader}>
-								<div>
-									<h4 className={styles.cardTitle}>{seller.name}</h4>
-									<p className={styles.meta}>{seller.email}</p>
-								</div>
-								<span className={styles.badgeSuspended}>Suspended</span>
-							</div>
-							<p className={styles.meta}>Reason: {seller.suspensionReason || 'Not specified'}</p>
-							<div className={styles.actionsRow}>
-								<button className={styles.unsuspendBtn} onClick={() => handleUnsuspend(seller.id)}>
-									<FontAwesomeIcon icon={faUndo} /> Unsuspend
 								</button>
 							</div>
 						</div>

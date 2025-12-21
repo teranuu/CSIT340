@@ -3,19 +3,13 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { API_BASE_URL } from '../../../config/api.js';
+import { sanitizePassword } from '../../../utils/inputSanitizer.js';
 
 // Password validation regex - at least 8 characters, 1 uppercase, 1 lowercase, 1 number
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
 // Max password length
 const MAX_PASSWORD_LENGTH = 128;
-
-// Sanitization function to prevent XSS and injection attacks
-const sanitizePassword = (input) => {
-    if (typeof input !== 'string') return '';
-    // Remove null characters and control characters
-    return input.replace(/[\x00-\x1F\x7F]/g, '').slice(0, MAX_PASSWORD_LENGTH);
-};
 
 function AccountPassword() {
     const [formData, setFormData] = useState({
@@ -36,10 +30,51 @@ function AccountPassword() {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        
+        // 🔒 SECURITY: Real-time input sanitization - block dangerous characters immediately
+        // List of dangerous characters that can be used for XSS and injection attacks
+        const dangerousChars = ['<', '>', '"', "'", '&', ';', '|', '`', '$', '(', ')', '{', '}', '[', ']'];
+        
+        // Check if the input contains any dangerous characters
+        let sanitizedValue = value;
+        let hasDangerousChars = false;
+        
+        for (let char of dangerousChars) {
+            if (sanitizedValue.includes(char)) {
+                hasDangerousChars = true;
+                // Remove all instances of dangerous characters
+                sanitizedValue = sanitizedValue.replaceAll(char, '');
+            }
+        }
+        
+        // Also prevent null bytes and control characters
+        sanitizedValue = sanitizedValue.replace(/[\x00-\x1F\x7F]/g, '');
+        
+        // Enforce max length
+        if (sanitizedValue.length > MAX_PASSWORD_LENGTH) {
+            sanitizedValue = sanitizedValue.slice(0, MAX_PASSWORD_LENGTH);
+        }
+        
+        // Update form data with sanitized value
         setFormData(prev => ({
             ...prev,
-            [name]: value
+            [name]: sanitizedValue
         }));
+        
+        // 🔒 SECURITY: Provide visual feedback if dangerous characters were detected
+        if (hasDangerousChars) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: 'Special characters like < > " \' are not allowed'
+            }));
+            // Auto-clear error after 2 seconds
+            setTimeout(() => {
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: ''
+                }));
+            }, 2000);
+        }
     };
 
     const togglePasswordVisibility = (field) => {
@@ -56,12 +91,12 @@ function AccountPassword() {
 
         const newErrors = {};
 
-        // Sanitize inputs to prevent injection attacks
+        // 🔒 SECURITY: Sanitize inputs to prevent injection attacks (CWE-89, CWE-79)
         const sanitizedOldPassword = sanitizePassword(formData.oldPassword);
         const sanitizedNewPassword = sanitizePassword(formData.newPassword);
         const sanitizedConfirmPassword = sanitizePassword(formData.confirmPassword);
 
-        // Validation
+        // 🔒 SECURITY: Validation checks
         if (!sanitizedOldPassword.trim()) {
             newErrors.oldPassword = 'Old password is required';
         }
@@ -80,12 +115,23 @@ function AccountPassword() {
             newErrors.confirmPassword = 'Passwords do not match';
         }
 
+        // 🔒 SECURITY: Check for potential injection attempts
+        if (sanitizedOldPassword.includes('<') || sanitizedOldPassword.includes('>') || 
+            sanitizedOldPassword.includes('"') || sanitizedOldPassword.includes("'")) {
+            newErrors.oldPassword = 'Password contains invalid characters';
+        }
+
+        if (sanitizedNewPassword.includes('<') || sanitizedNewPassword.includes('>') || 
+            sanitizedNewPassword.includes('"') || sanitizedNewPassword.includes("'")) {
+            newErrors.newPassword = 'Password contains invalid characters';
+        }
+
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
         }
 
-        // If new password same as old password
+        // 🔒 SECURITY: Prevent same password reuse
         if (sanitizedOldPassword === sanitizedNewPassword) {
             setErrors({ newPassword: 'New password must be different from old password' });
             return;
@@ -93,6 +139,8 @@ function AccountPassword() {
 
         try {
             setLoading(true);
+            
+            // 🔒 SECURITY: Send sanitized credentials to backend
             const response = await fetch(`${API_BASE_URL}/api/customers/change-password`, {
                 method: 'POST',
                 headers: {
@@ -109,20 +157,29 @@ function AccountPassword() {
                 const errorData = await response.json();
                 if (response.status === 401) {
                     setErrors({ oldPassword: 'Current password is incorrect' });
+                } else if (response.status === 400) {
+                    // Generic error for invalid format (prevents info disclosure)
+                    setErrors({ general: errorData.error || 'Invalid password format' });
                 } else {
                     setErrors({ general: errorData.error || 'Failed to change password' });
                 }
                 return;
             }
 
+            // 🔒 SECURITY: Success - clear sensitive data
             setSuccessMessage('Password changed successfully!');
             setFormData({
                 oldPassword: '',
                 newPassword: '',
                 confirmPassword: ''
             });
+
+            // Auto-clear success message after 3 seconds
+            setTimeout(() => {
+                setSuccessMessage('');
+            }, 3000);
         } catch (err) {
-            setErrors({ general: err.message || 'An error occurred while changing password' });
+            setErrors({ general: 'Network error. Please try again.' });
             console.error('Error changing password:', err);
         } finally {
             setLoading(false);

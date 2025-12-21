@@ -19,6 +19,8 @@ function ApparelCard({
   onSelect,
   isWishlisted,
   onToggleWishlist,
+  ownerStoreName,
+  isOwner,
 }) {
   const navigate = useNavigate();
   const [src, setSrc] = useState(image || FALLBACK_IMG);
@@ -33,17 +35,23 @@ function ApparelCard({
   };
 
   const handleCardClick = (e) => {
-    // Don't trigger onClick if clicking checkbox
+    // Don't trigger onClick if clicking checkbox or wishlist button
     if (e.target.type === 'checkbox') return;
+
+    // Prevent navigation when the user owns this product
+    if (isOwner) return;
     
     // Navigate to product page if ID is available and valid
     if (id) {
-      // Validate ID to prevent directory traversal
       const safeId = String(id).replace(/[^0-9]/g, '');
       if (safeId && parseInt(safeId, 10) > 0) {
         navigate(`/dashboard/product/${safeId}`);
+        return;
       }
-    } else if (onClick) {
+    }
+    
+    // Fallback to onClick prop if no valid ID
+    if (onClick) {
       onClick(e);
     }
   };
@@ -55,12 +63,13 @@ function ApparelCard({
 
   const handleCheckboxChange = (e) => {
     e.stopPropagation();
+    if (isOwner) return;
     if (onSelect) onSelect();
   };
 
   return (
     <div 
-      className={`${styles.apparelItemCard} ${isHighlighted ? styles.highlighted : ''} ${isSelected ? styles.selected : ''}`}
+      className={`${styles.apparelItemCard} ${isHighlighted ? styles.highlighted : ''} ${isSelected ? styles.selected : ''} ${isOwner ? styles.owned : ''}`}
       onClick={handleCardClick}
     >
       {onSelect && (
@@ -73,7 +82,17 @@ function ApparelCard({
         />
       )}
       <div className={styles.apparelItemImageWrapper}>
-        <img src={src} alt={name} loading="lazy" onError={handleError} style={{ height: imageHeight }} />
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          onError={handleError}
+          style={{ height: imageHeight }}
+          className={isOwner ? styles.ownedImage : ''}
+        />
+        {isOwner && (
+          <div className={styles.ownerOverlay}>YOU OWN THIS PRODUCT</div>
+        )}
         {gender && (
           <div className={styles.genderBadge}>{gender}</div>
         )}
@@ -91,6 +110,9 @@ function ApparelCard({
       <div className={styles.apparelItemDetails}>
         <span className={styles.apparelItemName}>{name}</span>
         <span className={styles.apparelItemPrice}>{price}</span>
+        {ownerStoreName && (
+          <span className={styles.storeBadge}>Store: {ownerStoreName}</span>
+        )}
       </div>
     </div>
   );

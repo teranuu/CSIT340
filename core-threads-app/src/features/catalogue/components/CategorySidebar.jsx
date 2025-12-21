@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from '../styles/category.sidebar.module.css';
 
-function CategorySidebar({ initialCategory, onCategoryChange, onPriceRangeChange, onColorChange }) {
+function CategorySidebar({ initialCategory, onCategoryChange, onPriceRangeChange }) {
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(500);
-  const [color, setColor] = useState('All');
   const [activeCategory, setActiveCategory] = useState(initialCategory || 'All Products');
   const PRICE_MAX = 1000;
 
@@ -24,11 +23,9 @@ function CategorySidebar({ initialCategory, onCategoryChange, onPriceRangeChange
   const handleClearFilters = () => {
     setPriceMin(0);
     setPriceMax(500);
-    setColor('All');
     setActiveCategory('All Products');
     if (onCategoryChange) onCategoryChange('All Products');
     if (onPriceRangeChange) onPriceRangeChange({ min: 0, max: 500 });
-    if (onColorChange) onColorChange('All');
   };
 
   const handleCategoryClick = (category) => {
@@ -41,13 +38,6 @@ function CategorySidebar({ initialCategory, onCategoryChange, onPriceRangeChange
   const handlePriceChange = (min, max) => {
     if (onPriceRangeChange) {
       onPriceRangeChange({ min, max });
-    }
-  };
-
-  const handleColorChangeLocal = (newColor) => {
-    setColor(newColor);
-    if (onColorChange) {
-      onColorChange(newColor);
     }
   };
 
@@ -160,24 +150,6 @@ function CategorySidebar({ initialCategory, onCategoryChange, onPriceRangeChange
                 </div>
               </div>
             </div>
-
-            <div className={styles.filterSection}>
-              <label className={styles.filterTitle}>Color</label>
-              <select value={color} onChange={(e) => handleColorChangeLocal(e.target.value)} className={styles.colorSelect}>
-                <option value="All">All Colors</option>
-                <option value="White">White</option>
-                <option value="Black">Black</option>
-                <option value="Navy">Navy</option>
-                <option value="Red">Red</option>
-                <option value="Grey">Grey</option>
-                <option value="Blue">Blue</option>
-                <option value="Green">Green</option>
-              </select>
-            </div>
-
-            <button onClick={handleClearFilters} className={styles.clearButton}>
-              Clear Filters
-            </button>
 
         </aside>
         </>

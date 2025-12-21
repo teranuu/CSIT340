@@ -13,7 +13,7 @@ public class Seller {
     private Long sellerId;
 
     @OneToOne
-    @JoinColumn(name = "customer_id", nullable = false, unique = true)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id", nullable = false, unique = true)
     private Customer customer;
 
     @Column(name = "store_name", nullable = false)

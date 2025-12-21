@@ -43,8 +43,10 @@ function MainNavbar() {
   };
 
   const handleLogout = () => {
-    logout();
-    navigate('/login');
+    // Ensure server-side session is invalidated then replace history to prevent back-navigation
+    Promise.resolve(logout()).finally(() => {
+      navigate('/login', { replace: true });
+    });
   };
 
   return (
@@ -98,19 +100,14 @@ function MainNavbar() {
         
         {/* User info */}
         {user && (
-          <span style={{ 
-            fontSize: '0.9rem', 
-            color: 'var(--color-accent)',
-            maxWidth: '100px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            marginLeft: '15px',
-            paddingLeft: '15px',
-            borderLeft: '1px solid var(--color-accent)'
-          }} title={user.username}>
-            {user.firstName}
-          </span>
+          <div className={styles.userBadge} title={user.username}>
+            <FontAwesomeIcon 
+              icon={["fas", "user"]} 
+              size="sm" 
+              className={styles.userIcon}
+            />
+            <span className={styles.userName}>{user.firstName}</span>
+          </div>
         )}
       </div>
     </div>

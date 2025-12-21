@@ -10,23 +10,46 @@ export const AuthProvider = ({ children }) => {
 
   const validateSession = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/customers/validate-session`, {
+      console.log('🔍 Validating session...');
+      const response = await fetch(`${API_BASE_URL}/api/customers/validate-session?t=${Date.now()}`, {
         method: 'GET',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
       });
 
       if (response.ok) {
-        // Session is valid - no need to store user data in localStorage
+        // Session is valid - fetch user data including role
+        const userData = await response.json();
+        console.log('✅ Session valid, user data:', userData);
+        setUser(userData);
         setIsAuthenticated(true);
+        
+        // Try to enrich with seller profile (store name) if present
+        try {
+          const sellerRes = await fetch(`${API_BASE_URL}/api/sellers/me`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (sellerRes.ok) {
+            const seller = await sellerRes.json();
+            setUser((prev) => ({ ...prev, storeName: seller.storeName, sellerId: seller.sellerId }));
+          }
+        } catch (e) {
+          console.warn('Unable to fetch seller profile for session user');
+        }
         return true;
       } else {
         // Session is invalid, clear frontend state
+        console.log('❌ Session invalid - status:', response.status);
         setIsAuthenticated(false);
         setUser(null);
         return false;
       }
     } catch (error) {
-      console.error('Session validation error:', error);
+      console.error('❌ Session validation error:', error);
       setIsAuthenticated(false);
       setUser(null);
       return false;
@@ -36,7 +59,9 @@ export const AuthProvider = ({ children }) => {
   // Validate on app load
   useEffect(() => {
     const init = async () => {
+      console.log('🚀 App loading - validating session...');
       await validateSession();
+      console.log('📊 Setting loading to false');
       setLoading(false);
     };
     init();
@@ -61,7 +86,21 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         const data = await response.json();
-        // Do NOT store user data in localStorage - session is managed server-side
+        // Store user data including role
+        setUser(data);
+        // Enrich login payload with seller profile if available
+        try {
+          const sellerRes = await fetch(`${API_BASE_URL}/api/sellers/me`, {
+            method: 'GET',
+            credentials: 'include'
+          });
+          if (sellerRes.ok) {
+            const seller = await sellerRes.json();
+            setUser((prev) => ({ ...prev, storeName: seller.storeName, sellerId: seller.sellerId }));
+          }
+        } catch (e) {
+          console.warn('Unable to fetch seller profile after login');
+        }
         setIsAuthenticated(true);
         return { success: true };
       } else {
@@ -109,6 +148,13 @@ export const AuthProvider = ({ children }) => {
       // Clear frontend state - no localStorage to clean up
       setUser(null);
       setIsAuthenticated(false);
+      
+      // Security: Clear browser history to prevent back navigation to authenticated pages
+      // Replace all previous history entries with the login page
+      window.history.pushState(null, '', window.location.href);
+      window.addEventListener('popstate', () => {
+        window.history.pushState(null, '', window.location.href);
+      });
     }
   };
 
@@ -118,7 +164,8 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     register,
-    logout
+    logout,
+    validateSession
   };
 
   return (

@@ -210,8 +210,7 @@ function RegisterSection({onRegister, onLogin}){
             password: formData.password, // Don't sanitize password, just validate
             confirmPassword: formData.confirmPassword,
             dateOfBirth: formData.dateOfBirth,
-            gender: formData.gender,
-            phoneNumber: formData.phoneNumber // Include phone number
+            gender: formData.gender
         };
         
         // Validate username

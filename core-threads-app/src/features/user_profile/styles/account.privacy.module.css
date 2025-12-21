@@ -97,6 +97,14 @@
     margin: 0;
 }
 
+.warningNote {
+    font-size: 0.875rem;
+    color: #e65100;
+    font-weight: 600;
+    margin: 0.5rem 0 0 0;
+    line-height: 1.4;
+}
+
 .deleteBtn {
     width: 100%;
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);

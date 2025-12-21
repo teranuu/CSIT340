@@ -40,6 +40,19 @@ public class Customer {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private Role role = Role.USER; // Default role is USER
+
+    @Column(name = "balance", nullable = false)
+    private Double balance = 1000.0; // Default balance for new accounts
+
+    // Role enum
+    public enum Role {
+        USER,
+        ADMIN
+    }
+
     // Constructors
     public Customer() {}
 
@@ -158,10 +171,32 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
     @PrePersist
     protected void onCreate() {
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();
+        }
+        if (this.role == null) {
+            this.role = Role.USER; // Default to USER if not set
+        }
+        if (this.balance == null) {
+            this.balance = 1000.0; // Default balance for new accounts
         }
     }
 }

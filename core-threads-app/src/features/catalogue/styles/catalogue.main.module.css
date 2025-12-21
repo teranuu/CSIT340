@@ -38,11 +38,6 @@
   box-sizing: border-box;
 }
 
-/* Enlarge ApparelCard images in catalogue to fully show product */
-.cardsGrid :global(.apparelItemImageWrapper img) {
-  height: 600px !important;
-}
-
 /* Optional nicer scrollbars */
 .catalogueMainWrapper::-webkit-scrollbar {
     width: 8px;

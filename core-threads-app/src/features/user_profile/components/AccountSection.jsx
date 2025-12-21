@@ -9,6 +9,7 @@ import AccountPrivacy from './AccountPrivacy';
 import AccountPurchase from './AccountPurchase';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUser, 
@@ -50,6 +51,7 @@ function AccountSection() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   // Fetch user data from API
   useEffect(() => {
@@ -90,9 +92,12 @@ function AccountSection() {
   };
 
   const confirmLogout = () => {
-    localStorage.removeItem('token');
+    // Call logout from AuthContext to invalidate server-side session
+    Promise.resolve(logout()).finally(() => {
+      // Replace history entry to prevent back navigation to authenticated pages
+      navigate('/login', { replace: true });
+    });
     setShowLogoutModal(false);
-    navigate('/login');
   };
 
   const cancelLogout = () => {

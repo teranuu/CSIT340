@@ -4,9 +4,11 @@ import { ApparelCard } from '../../../components/ApparelCard/index.js';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL, getImageUrl, STATIC_IMAGES } from '../../../config/api.js';
+import { useAuth } from '../../../context/AuthContext.jsx';
 
 function DashboardSection() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [featured, setFeatured] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
@@ -31,14 +33,14 @@ function DashboardSection() {
     { name: 'Kicks', bg: `url(${categoryImages.Kicks})` },
   ];
 
-  // Fallback data if API fails (neutral placeholders, no Unsplash)
-  const placeholder = 'http://localhost:8081/api/images/Grey_sweatpants.png';
+  // Fallback data if API fails (neutral placeholders)
+  const placeholder = getImageUrl('Grey_sweatpants.png');
   const fallbackFeatured = [];
   const fallbackRecentlyViewed = [];
   const fallbackSuggestions = [];
 
   const buildImageUrl = (url) => {
-    if (!url) return 'http://localhost:8081/api/images/Grey_sweatpants.png';
+    if (!url) return getImageUrl('Grey_sweatpants.png');
     return getImageUrl(url);
   };
 
@@ -57,9 +59,13 @@ function DashboardSection() {
             image = STATIC_IMAGES.GREY_SWEATPANTS;
           }
           return {
+            id: p.productId,
             name: p.name,
             price: p.price ? `$${Number(p.price).toFixed(2)}` : '$45.50',
             image: image,
+            storeName: p.sellerStoreName || p.storeName || null,
+            ownerCustomerId: p.sellerCustomerId || null,
+            productCode: p.productCode || null,
           };
         });
 
@@ -78,11 +84,13 @@ function DashboardSection() {
         const recentByName = storedRecent
           .map((name) => normalized.find((n) => n.name === name))
           .filter(Boolean)
-          .slice(0, 4);
-        const recentFallback = ensureItems(normalized, 9, 13);
+          .slice(0, 3);
+        const recentFallback = ensureItems(normalized, 9, 12);
         setRecentlyViewed(recentByName.length ? recentByName : recentFallback);
 
-        setSuggestions(ensureItems(normalized, 11, 13));
+        // Randomize suggestions and limit to 3
+        const shuffled = [...normalized].sort(() => Math.random() - 0.5);
+        setSuggestions(shuffled.slice(0, 3));
       } catch (err) {
         console.error('Error fetching products:', err);
         setError(err.message);
@@ -96,32 +104,6 @@ function DashboardSection() {
 
     fetchProducts();
   }, []);
-
-  const handleProductClick = (productName) => {
-    // Persist recently viewed list (most recent first, unique, max 6)
-    setRecentlyViewed((prev) => {
-      const currentNames = prev.map((p) => p.name);
-      if (currentNames.includes(productName)) {
-        const reordered = [productName, ...currentNames.filter((n) => n !== productName)];
-        sessionStorage.setItem(RECENT_KEY, JSON.stringify(reordered.slice(0, 6)));
-        return reordered
-          .map((name) => prev.find((p) => p.name === name))
-          .filter(Boolean)
-          .slice(0, 4);
-      }
-      const updated = [productName, ...currentNames].slice(0, 6);
-      sessionStorage.setItem(RECENT_KEY, JSON.stringify(updated));
-      // We only have productName; best-effort attach from featured/suggestions/recentlyViewed lists
-      const pool = [...featured, ...suggestions, ...prev];
-      const mapped = updated
-        .map((name) => pool.find((p) => p.name === name))
-        .filter(Boolean)
-        .slice(0, 4);
-      return mapped.length ? mapped : prev;
-    });
-
-    navigate('/dashboard/catalog', { state: { highlightProduct: productName } });
-  };
 
   const handleCategoryClick = (categoryName) => {
     navigate('/dashboard/catalog', { state: { selectedCategory: categoryName } });
@@ -155,22 +137,18 @@ function DashboardSection() {
       </div>
 
       <div className={styles.apparelDisplaySection}>
-        {/* Sanity check card using a known working static image */}
-        <ApparelCard
-          key="sanity-shoes"
-          image={STATIC_IMAGES.CORETHREADS_SHOES}
-          name="CoreThreads Shoes"
-          price={"$49.50"}
-          onClick={() => handleProductClick('CoreThreads Shoes')}
-        />
-
         {featured.map((item, idx) => (
           <ApparelCard
             key={`${item.name}-${idx}`}
+            id={item.id}
             image={item.image}
             name={item.name}
             price={item.price}
-            onClick={() => handleProductClick(item.name)}
+            ownerStoreName={item.storeName}
+            isOwner={!!(
+              (user?.customerId && item?.ownerCustomerId && String(user.customerId) === String(item.ownerCustomerId)) ||
+              (user?.storeName && item?.storeName && String(user.storeName).toLowerCase() === String(item.storeName).toLowerCase())
+            )}
           />
         ))}
       </div>
@@ -182,10 +160,15 @@ function DashboardSection() {
             {recentlyViewed.map((item, idx) => (
               <ApparelCard
                 key={`recent-${idx}`}
+                id={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
-                onClick={() => handleProductClick(item.name)}
+                ownerStoreName={item.storeName}
+                isOwner={!!(
+                  (user?.customerId && item?.ownerCustomerId && String(user.customerId) === String(item.ownerCustomerId)) ||
+                  (user?.storeName && item?.storeName && String(user.storeName).toLowerCase() === String(item.storeName).toLowerCase())
+                )}
               />
             ))}
           </div>
@@ -197,10 +180,15 @@ function DashboardSection() {
             {suggestions.map((item, idx) => (
               <ApparelCard
                 key={`suggest-${idx}`}
+                id={item.id}
                 image={item.image}
                 name={item.name}
                 price={item.price}
-                onClick={() => handleProductClick(item.name)}
+                ownerStoreName={item.storeName}
+                isOwner={!!(
+                  (user?.customerId && item?.ownerCustomerId && String(user.customerId) === String(item.ownerCustomerId)) ||
+                  (user?.storeName && item?.storeName && String(user.storeName).toLowerCase() === String(item.storeName).toLowerCase())
+                )}
               />
             ))}
           </div>

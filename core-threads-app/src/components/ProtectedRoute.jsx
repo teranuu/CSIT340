@@ -1,25 +1,53 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useEffect, useState } from 'react';
 
 /**
- * ProtectedRoute component that checks if user is authenticated
- * If not authenticated, redirects to login page
- * If authenticated, renders the requested component
+ * ✅ SECURITY FIX: Enhanced ProtectedRoute component
+ * - Validates session on every route access
+ * - Prevents authentication bypass vulnerabilities
+ * - Redirects unauthenticated users to login with return URL
  */
 export const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, validateSession } = useAuth();
+  const location = useLocation();
+  const [isValidating, setIsValidating] = useState(true);
 
-  // Show loading while checking authentication
-  if (loading) {
-    return <div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>;
+  // Revalidate session when accessing protected route
+  useEffect(() => {
+    const revalidate = async () => {
+      console.log('🔒 ProtectedRoute: Revalidating session for', location.pathname);
+      setIsValidating(true);
+      await validateSession();
+      setIsValidating(false);
+    };
+    revalidate();
+  }, [location.pathname]);
+
+  // Show loading while initial auth check or revalidation is in progress
+  if (loading || isValidating) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '18px',
+        color: '#666'
+      }}>
+        🔐 Verifying authentication...
+      </div>
+    );
   }
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated, preserving intended destination
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    console.log('❌ ProtectedRoute: Not authenticated, redirecting to login');
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Render the protected component
+  console.log('✅ ProtectedRoute: Authenticated, rendering protected content');
   return children;
 };
 

@@ -5,17 +5,29 @@ import SellerOrders from "./pages/SellerOrders";
 import SellerProducts from "./pages/SellerProducts";
 import SellerEarnings from "./pages/SellerEarnings";
 import SellerSettings from "./pages/SellerSettings";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function SellerDashboard(){
     const [currentPage, setCurrentPage] = useState('home');
+    
+    // 🔒 SECURITY: Validate page navigation against whitelist
+    const validPages = ['home', 'products', 'orders', 'earnings', 'settings'];
 
     const handleNavigate = (pageId) => {
-        setCurrentPage(pageId);
+        // 🔒 SECURITY: Only allow navigation to whitelisted pages
+        if (validPages.includes(pageId)) {
+            setCurrentPage(pageId);
+        } else {
+            console.warn('⚠️ Security: Attempted navigation to invalid page:', pageId);
+            setCurrentPage('home');
+        }
     };
 
     const renderPage = () => {
-        switch(currentPage) {
+        // 🔒 SECURITY: Ensure currentPage is validated
+        const safePage = validPages.includes(currentPage) ? currentPage : 'home';
+        
+        switch(safePage) {
             case 'home':
                 return <SellerDashboardSection />;
             case 'products':

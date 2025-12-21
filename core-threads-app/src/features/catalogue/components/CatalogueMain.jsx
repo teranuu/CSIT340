@@ -6,12 +6,15 @@ import CatalogueToolbar from './CatalogueToolbar.jsx';
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { API_BASE_URL, getImageUrl, STATIC_IMAGES } from '../../../config/api.js';
+import { sanitizeSearchQuery, sanitizeText, sanitizeNumber, escapeHtml } from '../../../utils/inputSanitizer.js';
+import { useAuth } from '../../../context/AuthContext.jsx';
 
 const WISHLIST_STORAGE_KEY = 'wishlist_items';
 
 function CatalogueMain() {
     const location = useLocation();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [products, setProducts] = useState([]);
     const [wishlist, setWishlist] = useState(() => {
         try {
@@ -60,6 +63,10 @@ function CatalogueMain() {
     };
 
     const toggleProductSelection = (product, uniqueKey) => {
+        // Prevent selecting products owned by the current user by seller id or store name
+        const ownsBySeller = user?.customerId && product?.ownerCustomerId && String(user.customerId) === String(product.ownerCustomerId);
+        const ownsByStore = user?.storeName && product?.storeName && String(user.storeName).toLowerCase() === String(product.storeName).toLowerCase();
+        if (ownsBySeller || ownsByStore) return;
         setSelectedProducts(prev => {
             const isSelected = prev.some(p => p.uniqueKey === uniqueKey);
             if (isSelected) {
@@ -72,7 +79,8 @@ function CatalogueMain() {
 
     const handleCheckout = () => {
         // Store selected products in sessionStorage for cart page
-        sessionStorage.setItem('cart_items', JSON.stringify(selectedProducts));
+        const payload = JSON.stringify(selectedProducts);
+        sessionStorage.setItem('cart_items', payload);
         navigate('/dashboard/cart');
     };
 
@@ -103,7 +111,7 @@ function CatalogueMain() {
                         image = STATIC_IMAGES.CORETHREADS_SHOES;
                     }
                     return {
-                        id: p.id,
+                        id: p.productId || p.id,
                         title: p.name,
                         price: priceDisplay,
                         priceValue,
@@ -111,6 +119,9 @@ function CatalogueMain() {
                         gender: p.gender || 'Unisex',
                         category: p.category || 'Other',
                         color: p.color || 'Multi',
+                        storeName: p.sellerStoreName || p.storeName || null,
+                        ownerCustomerId: p.sellerCustomerId || null,
+                        productCode: p.productCode || null,
                     };
                 });
 
@@ -130,25 +141,22 @@ function CatalogueMain() {
     }, []);
 
     useEffect(() => {
-        // Get search query from navigation state or sessionStorage
+        // 🔒 SECURITY: Get search query from navigation state or sessionStorage with sanitization
         const queryFromState = location.state?.searchQuery || '';
         const queryFromSession = sessionStorage.getItem('apparel_search_query') || '';
-        // Sanitize query: only allow letters and spaces, trim, limit length
-        const sanitizeQuery = (q) => (q ? q.toString()
-            .replace(/[^a-zA-Z\s]/g, '') // Remove all non-letter characters except spaces
-            .replace(/\s+/g, ' ') // Normalize multiple spaces to single space
-            .trim()
-            .slice(0, 64) : '');
-        const currentQuery = sanitizeQuery(queryFromState || queryFromSession);
+        const rawQuery = queryFromState || queryFromSession;
         
-        // Get highlight product from navigation state
-        const productToHighlight = location.state?.highlightProduct || null;
+        // 🔒 Sanitize query to prevent XSS and injection attacks
+        const currentQuery = sanitizeSearchQuery(rawQuery, 100);
+        
+        // 🔒 SECURITY: Sanitize product highlight to prevent XSS
+        const productToHighlight = sanitizeText(location.state?.highlightProduct || '', 100) || null;
         setHighlightProduct(productToHighlight);
         
-        // Get selected category from navigation state (only set once)
+        // 🔒 SECURITY: Sanitize selected category to prevent injection
         const categoryFromState = location.state?.selectedCategory || null;
         if (categoryFromState && !initialCategory) {
-            // Map dashboard category names to catalog category names
+            // Map dashboard category names to catalog category names (whitelist approach)
             const categoryMapping = {
                 'All': 'All Products',
                 'Hoodies': 'Hoodies',
@@ -156,7 +164,8 @@ function CatalogueMain() {
                 'Pants': 'Pants',
                 'Kicks': 'Kicks'
             };
-            const mappedCategory = categoryMapping[categoryFromState] || 'All Products';
+            const sanitizedCategory = sanitizeText(categoryFromState, 50);
+            const mappedCategory = categoryMapping[sanitizedCategory] || 'All Products';
             setInitialCategory(mappedCategory);
             setCategoryFilter(mappedCategory);
         }
@@ -168,7 +177,7 @@ function CatalogueMain() {
 
         setSearchQuery(currentQuery);
 
-        // Filter products based on search query and gender
+        // 🔒 SECURITY: Filter products based on sanitized search query and gender
         let filtered = products;
         
         // Apply search filter (uses sanitized query)
@@ -179,39 +188,49 @@ function CatalogueMain() {
             );
         }
         
-        // Apply gender filter
-        if (genderFilter !== 'all') {
+        // 🔒 SECURITY: Validate gender filter against whitelist
+        const validGenders = ['all', 'male', 'female', 'unisex'];
+        const safeGenderFilter = validGenders.includes(genderFilter.toLowerCase()) ? genderFilter : 'all';
+        if (safeGenderFilter !== 'all') {
             filtered = filtered.filter(product =>
-                product.gender && product.gender.toLowerCase() === genderFilter.toLowerCase()
+                product.gender && product.gender.toLowerCase() === safeGenderFilter.toLowerCase()
             );
         }
         
-        // Apply category filter
-        if (categoryFilter !== 'All Products') {
+        // 🔒 SECURITY: Validate category filter against whitelist
+        const validCategories = ['All Products', 'Hoodies', 'Shirts', 'Pants', 'Kicks', 'Other'];
+        const safeCategoryFilter = validCategories.includes(categoryFilter) ? categoryFilter : 'All Products';
+        if (safeCategoryFilter !== 'All Products') {
             filtered = filtered.filter(product =>
-                product.category && product.category.toLowerCase() === categoryFilter.toLowerCase()
+                product.category && product.category.toLowerCase() === safeCategoryFilter.toLowerCase()
             );
         }
         
-        // Apply price range filter
+        // 🔒 SECURITY: Validate and sanitize price range to prevent injection
+        const minPrice = sanitizeNumber(priceRange.min, 0, 10000) ?? 0;
+        const maxPrice = sanitizeNumber(priceRange.max, 0, 10000) ?? 500;
         filtered = filtered.filter(product => {
             const price = parseFloat(product.price);
-            return price >= priceRange.min && price <= priceRange.max;
+            return price >= minPrice && price <= maxPrice;
         });
         
-        // Apply color filter
-        if (colorFilter !== 'All') {
+        // 🔒 SECURITY: Validate color filter against whitelist
+        const validColors = ['All', 'Red', 'Blue', 'Black', 'White', 'Green', 'Multi'];
+        const safeColorFilter = validColors.includes(colorFilter) ? colorFilter : 'All';
+        if (safeColorFilter !== 'All') {
             filtered = filtered.filter(product =>
-                product.color && product.color.toLowerCase().includes(colorFilter.toLowerCase())
+                product.color && product.color.toLowerCase().includes(safeColorFilter.toLowerCase())
             );
         }
         
-        // Apply sorting
-        if (sortBy === 'name') {
+        // 🔒 SECURITY: Validate sort option against whitelist
+        const validSortOptions = ['name', 'price-low', 'price-high'];
+        const safeSortBy = validSortOptions.includes(sortBy) ? sortBy : 'name';
+        if (safeSortBy === 'name') {
             filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title));
-        } else if (sortBy === 'price-low') {
+        } else if (safeSortBy === 'price-low') {
             filtered = [...filtered].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
-        } else if (sortBy === 'price-high') {
+        } else if (safeSortBy === 'price-high') {
             filtered = [...filtered].sort((a, b) => parseFloat(b.price) - parseFloat(a.price));
         }
         
@@ -295,7 +314,7 @@ function CatalogueMain() {
                                 borderBottom: '1px solid #eee',
                                 marginBottom: '15px'
                             }}>
-                                Search results for "<strong>{searchQuery}</strong>" ({filteredProducts.length} results)
+                                Search results for "<strong>{escapeHtml(searchQuery)}</strong>" ({filteredProducts.length} results)
                             </div>
                         )}
 
@@ -306,7 +325,7 @@ function CatalogueMain() {
                                 fontSize: '16px',
                                 color: '#999'
                             }}>
-                                No products found matching "{searchQuery}"
+                                No products found matching "{escapeHtml(searchQuery)}"
                             </div>
                         ) : (
                                                         <div className={styles.cardsGrid}>
@@ -314,6 +333,10 @@ function CatalogueMain() {
                                                                 const uniqueKey = `${item.id}-${item.title}-${idx}`;
                                                                 const itemKey = item.id ?? item.title;
                                                                 const wishlisted = itemKey ? wishlist.some((w) => String(w.key) === String(itemKey)) : false;
+                                                                const isOwner = !!(
+                                                                    (user?.customerId && item?.ownerCustomerId && String(user.customerId) === String(item.ownerCustomerId)) ||
+                                                                    (user?.storeName && item?.storeName && String(user.storeName).toLowerCase() === String(item.storeName).toLowerCase())
+                                                                );
                                                                 return (
                                                                     <ApparelCard
                                                                         key={uniqueKey}
@@ -328,6 +351,8 @@ function CatalogueMain() {
                                                                         onSelect={() => toggleProductSelection(item, uniqueKey)}
                                                                         isWishlisted={wishlisted}
                                                                         onToggleWishlist={() => toggleWishlistItem(item)}
+                                                                        ownerStoreName={item.storeName}
+                                                                        isOwner={!!isOwner}
                                                                     />
                                                                 );
                                                             })}
