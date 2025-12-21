@@ -1,17 +1,15 @@
 import styles from "../styles/seller.settings.module.css";
 import SellerStatCard from '../components/SellerStatCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStore, faImage, faToggleOn, faToggleOff, faSave, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faStore, faToggleOn, faToggleOff, faSave, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 function SellerSettings() {
     const navigate = useNavigate();
     const [storeData, setStoreData] = useState({
-        storeName: 'Green Threads Co.',
-        storeDescription: 'Your one-stop shop for sustainable and eco-friendly fashion. We believe in quality, comfort, and conscious living.',
-        storeLogo: '🌿',
-        storeBanner: '🍃',
+        storeName: '',
+        storeDescription: '',
         isActive: true
     });
 
@@ -19,6 +17,52 @@ function SellerSettings() {
         name: false,
         description: false
     });
+
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState(null);
+    const [modal, setModal] = useState({ open: false, title: '', message: '', variant: 'success' });
+
+    const openModal = (title, message, variant = 'success') => {
+        setModal({ open: true, title, message, variant });
+    };
+
+    const closeModal = () => setModal((m) => ({ ...m, open: false }));
+
+    useEffect(() => {
+        const fetchStoreData = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/api/sellers/me', {
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        setError('Seller profile not found. Please enable seller mode in Privacy Settings first.');
+                    } else {
+                        setError('Failed to load store settings');
+                    }
+                    setLoading(false);
+                    return;
+                }
+
+                const data = await response.json();
+                setStoreData(prev => ({
+                    ...prev,
+                    storeName: data.storeName || '',
+                    storeDescription: data.storeDescription || ''
+                }));
+                setError(null);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching store data:', err);
+                setError('Error loading store settings');
+                setLoading(false);
+            }
+        };
+
+        fetchStoreData();
+    }, []);
 
     const handleInputChange = (field, value) => {
         setStoreData(prev => ({ ...prev, [field]: value }));
@@ -28,10 +72,39 @@ function SellerSettings() {
         setIsEditing(prev => ({ ...prev, [field]: !prev[field] }));
     };
 
-    const handleSave = () => {
-        // Save logic would go here (API call)
-        alert('Store settings saved successfully!');
-        setIsEditing({ name: false, description: false });
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            const response = await fetch('http://localhost:8080/api/sellers/profile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    storeName: storeData.storeName,
+                    storeDescription: storeData.storeDescription
+                })
+            });
+
+            const data = await response.json();
+            console.log('Save response:', response.status, data);
+
+            if (response.ok) {
+                openModal('Success', 'Store settings saved successfully!', 'success');
+                setIsEditing({ name: false, description: false });
+                // Trigger a storage event so sidebar can refresh
+                window.dispatchEvent(new Event('storeNameUpdated'));
+            } else {
+                console.error('Save error:', data);
+                openModal('Save Failed', `Failed to save store settings: ${data.error || 'Unknown error'}`, 'error');
+            }
+        } catch (err) {
+            console.error('Error saving store data:', err);
+            openModal('Network Error', 'Error saving store settings', 'error');
+        } finally {
+            setSaving(false);
+        }
     };
 
     const handleToggleVisibility = () => {
@@ -44,6 +117,19 @@ function SellerSettings() {
 
     return (
         <div className={styles.settingsWrapper}>
+            {modal.open && (
+                <div className={styles.modalOverlay} onClick={closeModal}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <div className={`${styles.modalHeader} ${modal.variant === 'success' ? styles.success : styles.error}`}>
+                            {modal.title}
+                        </div>
+                        <div className={styles.modalBody}>{modal.message}</div>
+                        <div className={styles.modalActions}>
+                            <button type="button" className={styles.modalButton} onClick={closeModal}>OK</button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <header className={styles.header}>
                 <div>
                     <h2 className={styles.pageTitle}>Shop Settings</h2>
@@ -54,13 +140,24 @@ function SellerSettings() {
                         <FontAwesomeIcon icon={faSignOutAlt} />
                         Logout
                     </button>
-                    <button type="button" className={styles.saveBtn} onClick={handleSave}>
+                    <button type="button" className={styles.saveBtn} onClick={handleSave} disabled={saving}>
                         <FontAwesomeIcon icon={faSave} />
-                        Save Changes
+                        {saving ? 'Saving...' : 'Save Changes'}
                     </button>
                 </div>
             </header>
 
+            {loading ? (
+                <p style={{ textAlign: 'center', padding: '2rem' }}>Loading settings...</p>
+            ) : error ? (
+                <div style={{ textAlign: 'center', padding: '2rem', backgroundColor: '#f8d7da', color: '#721c24', borderRadius: '8px', marginTop: '1rem' }}>
+                    <p><strong>⚠️ {error}</strong></p>
+                    <p style={{ marginTop: '1rem', fontSize: '0.95rem' }}>
+                        Go to your profile → Privacy Settings → Enable Seller Status to get started.
+                    </p>
+                </div>
+            ) : (
+                <>
             <div className={styles.statusCard}>
                 <SellerStatCard 
                     title="Store Status" 
@@ -130,59 +227,7 @@ function SellerSettings() {
                     </div>
                 </div>
 
-                {/* Store Logo Section */}
-                <div className={styles.settingCard}>
-                    <div className={styles.cardHeader}>
-                        <div className={styles.cardTitleGroup}>
-                            <FontAwesomeIcon icon={faImage} className={styles.cardIcon} />
-                            <h3 className={styles.cardTitle}>Store Logo</h3>
-                        </div>
-                    </div>
-                    <div className={styles.cardBody}>
-                        <div className={styles.uploadSection}>
-                            <div className={styles.imagePreview}>
-                                <span className={styles.emojiPreview}>{storeData.storeLogo}</span>
-                            </div>
-                            <div className={styles.uploadInfo}>
-                                <input
-                                    type="text"
-                                    className={styles.input}
-                                    value={storeData.storeLogo}
-                                    onChange={(e) => handleInputChange('storeLogo', e.target.value)}
-                                    placeholder="Enter emoji or upload image"
-                                />
-                                <p className={styles.uploadHint}>Recommended: 200x200px, PNG or JPG</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Store Banner Section */}
-                <div className={styles.settingCard}>
-                    <div className={styles.cardHeader}>
-                        <div className={styles.cardTitleGroup}>
-                            <FontAwesomeIcon icon={faImage} className={styles.cardIcon} />
-                            <h3 className={styles.cardTitle}>Store Banner</h3>
-                        </div>
-                    </div>
-                    <div className={styles.cardBody}>
-                        <div className={styles.uploadSection}>
-                            <div className={`${styles.imagePreview} ${styles.bannerPreview}`}>
-                                <span className={styles.emojiPreview}>{storeData.storeBanner}</span>
-                            </div>
-                            <div className={styles.uploadInfo}>
-                                <input
-                                    type="text"
-                                    className={styles.input}
-                                    value={storeData.storeBanner}
-                                    onChange={(e) => handleInputChange('storeBanner', e.target.value)}
-                                    placeholder="Enter emoji or upload image"
-                                />
-                                <p className={styles.uploadHint}>Recommended: 1200x400px, PNG or JPG</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {/* Store Banner section removed as requested */}
 
                 {/* Store Visibility Section */}
                 <div className={`${styles.settingCard} ${styles.fullWidth}`}>
@@ -212,6 +257,8 @@ function SellerSettings() {
                     </div>
                 </div>
             </div>
+            </>
+            )}
         </div>
     );
 }

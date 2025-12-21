@@ -6,68 +6,12 @@ import { faBox, faTruck, faCheckCircle, faTimesCircle, faUndo, faEllipsisV } fro
 function AccountPurchase() {
     const [activeTab, setActiveTab] = useState('all');
 
-    const orders = [
-        {
-            id: 'ORD-2024-001',
-            date: '2024-11-15',
-            items: [
-                { name: 'Premium Cotton T-Shirt', size: 'L', color: 'Black', quantity: 2, price: 29.99, image: 'https://via.placeholder.com/60' },
-                { name: 'Denim Jeans', size: '32', color: 'Blue', quantity: 1, price: 79.99, image: 'https://via.placeholder.com/60' }
-            ],
-            total: 139.97,
-            status: 'completed',
-            shippingMethod: 'Express Delivery'
-        },
-        {
-            id: 'ORD-2024-002',
-            date: '2024-11-20',
-            items: [
-                { name: 'Leather Jacket', size: 'M', color: 'Brown', quantity: 1, price: 199.99, image: 'https://via.placeholder.com/60' }
-            ],
-            total: 199.99,
-            status: 'ship',
-            shippingMethod: 'Standard Shipping'
-        },
-        {
-            id: 'ORD-2024-003',
-            date: '2024-11-25',
-            items: [
-                { name: 'Running Shoes', size: '10', color: 'White', quantity: 1, price: 89.99, image: 'https://via.placeholder.com/60' }
-            ],
-            total: 89.99,
-            status: 'receive',
-            shippingMethod: 'Express Delivery'
-        },
-        {
-            id: 'ORD-2024-004',
-            date: '2024-10-10',
-            items: [
-                { name: 'Wool Sweater', size: 'L', color: 'Grey', quantity: 1, price: 59.99, image: 'https://via.placeholder.com/60' }
-            ],
-            total: 59.99,
-            status: 'cancelled',
-            shippingMethod: 'Standard Shipping'
-        },
-        {
-            id: 'ORD-2024-005',
-            date: '2024-12-01',
-            items: [
-                { name: 'Sports Cap', size: 'One Size', color: 'Black', quantity: 3, price: 19.99, image: 'https://via.placeholder.com/60' }
-            ],
-            total: 59.97,
-            status: 'pay',
-            shippingMethod: 'Express Delivery'
-        }
-    ];
+    const orders = [];
 
     const tabs = [
         { id: 'all', label: 'All', icon: faBox },
         { id: 'pay', label: 'Pay', icon: faBox },
-        { id: 'ship', label: 'Ship', icon: faTruck },
-        { id: 'receive', label: 'Receive', icon: faBox },
-        { id: 'completed', label: 'Completed', icon: faCheckCircle },
-        { id: 'cancelled', label: 'Cancelled', icon: faTimesCircle },
-        { id: 'return', label: 'Return Refund', icon: faUndo }
+        { id: 'completed', label: 'Completed', icon: faCheckCircle }
     ];
 
     const getStatusBadge = (status) => {

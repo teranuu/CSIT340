@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+### Security - DO NOT COMMIT ###
+# Exclude application.properties containing sensitive credentials
+src/main/resources/application.properties
+# Keep the template file
+!src/main/resources/application.properties.template

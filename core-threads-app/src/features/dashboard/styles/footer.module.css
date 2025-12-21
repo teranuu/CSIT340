@@ -1,28 +1,121 @@
 .dashboardFooterWrapper{
-
 background: var(--color-primary-dark);
-padding: 1.5rem 0;
+padding: 0 0 0;
+margin-bottom: 0;
 }
 
 .dealsWrapper{
-
     display:flex;
     flex-direction:row;
     justify-content:center;
-    gap: 2rem;
-    padding: 0.7rem 0;
-    
+    gap: 1.5rem;
+    padding: 0.5rem 0;
 }
 
 .dealsItemWrapper{
-
     display:flex;
     flex-direction:row;
-    justify-content:space-around;
+    justify-content:center;
+    gap: 3.5rem;
 }
 
 .text{
     font-size:1.2rem;
     color:var(--color-accent);
     font-weight:bold;
+}
+
+.copyrightSection{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 0.5rem 0.5rem;
+    border-top: 2.5px solid rgba(223, 46, 46, 0.12);
+    margin-top: 1.5rem;
+    background: #c8dcc5;
+}
+
+.copyrightText{
+    font-size: 0.85rem;
+    color: var(--color-primary-dark);
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    transition: color 0.3s ease;
+}
+
+.copyrightText:hover{
+    color: #9db19a;
+}
+
+.dealCardContainer {
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 9rem;
+    border: 2.5px solid var(--color-accent);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    transition: all 300ms ease;
+}
+
+.dealCardContainer:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dealCardImage {
+    width: 100%;
+    height: 55%;
+    overflow: hidden;
+    background: #f6f9f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dealCardImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 300ms ease;
+}
+
+.dealCardContainer:hover .dealCardImage img {
+    transform: scale(1.05);
+}
+
+.dealCardInfo {
+    padding: 0.5rem 0.75rem;
+    height: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dealCardName {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin: 0;
+    line-height: 1;
+}
+
+.priceSection {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.originalPrice {
+    font-size: 0.75rem;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.discountedPrice {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #e63946;
 }

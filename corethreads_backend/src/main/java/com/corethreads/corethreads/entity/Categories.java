@@ -10,13 +10,18 @@ public class Categories {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id")
+    private Long categoriesId;
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Categories parent;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -25,7 +30,7 @@ public class Categories {
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     // --- Optional: one-to-many back-reference to products ---
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "categories", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 
     // --- Constructors ---
@@ -36,13 +41,19 @@ public class Categories {
         this.description = description;
     }
 
-    // --- Getters and Setters ---
-    public Long getId() {
-        return id;
+    public Categories(String name, String description, Categories parent) {
+        this.name = name;
+        this.description = description;
+        this.parent = parent;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // --- Getters and Setters ---
+    public Long getCategoriesId() {
+        return categoriesId;
+    }
+
+    public void setCategoriesId(Long categoriesId) {
+        this.categoriesId = categoriesId;
     }
 
     public String getName() {
@@ -59,6 +70,14 @@ public class Categories {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Categories getParent() {
+        return parent;
+    }
+
+    public void setParent(Categories parent) {
+        this.parent = parent;
     }
 
     public LocalDateTime getCreatedAt() {

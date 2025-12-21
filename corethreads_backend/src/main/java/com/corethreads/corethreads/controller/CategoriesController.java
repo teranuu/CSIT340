@@ -24,9 +24,9 @@ public class CategoriesController {
     }
 
     // --- Get category by ID ---
-    @GetMapping("/{id}")
-    public ResponseEntity<Categories> getCategoryById(@PathVariable Long id) {
-        return categoriesService.getCategoryById(id)
+    @GetMapping("/{categoriesId}")
+    public ResponseEntity<Categories> getCategoryById(@PathVariable Long categoriesId) {
+        return categoriesService.getCategoryById(categoriesId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -38,12 +38,13 @@ public class CategoriesController {
     }
 
     // --- Update category ---
-    @PutMapping("/{id}")
-    public ResponseEntity<Categories> updateCategory(@PathVariable Long id, @RequestBody Categories category) {
-        return categoriesService.getCategoryById(id)
+    @PutMapping("/{categoriesId}")
+    public ResponseEntity<Categories> updateCategory(@PathVariable Long categoriesId, @RequestBody Categories category) {
+        return categoriesService.getCategoryById(categoriesId)
                 .map(existing -> {
                     existing.setName(category.getName());
                     existing.setDescription(category.getDescription());
+                    existing.setParent(category.getParent());
                     return ResponseEntity.ok(categoriesService.saveCategory(existing));
                 }).orElse(ResponseEntity.notFound().build());
     }

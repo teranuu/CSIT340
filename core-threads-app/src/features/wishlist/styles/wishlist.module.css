@@ -134,19 +134,20 @@
 }
 
 .itemImagePlaceholder {
-  width: 74px;
-  height: 74px;
+  width: 96px;
+  height: 96px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--color-surface);
-  padding-left: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .itemImagePlaceholder img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-
+  object-fit: contain;
 }
 
 .itemInfo {

@@ -1,5 +1,5 @@
 import styles from '../styles/account.privacy.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
@@ -7,7 +7,29 @@ import { faStore } from '@fortawesome/free-solid-svg-icons';
 function AccountPrivacy() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isSellerEnabled, setIsSellerEnabled] = useState(false);
+    const [isTogglingStatus, setIsTogglingStatus] = useState(false);
     const navigate = useNavigate();
+
+    // Initialize seller status on mount so it persists across sessions/logins
+    useEffect(() => {
+        const fetchSellerStatus = async () => {
+            try {
+                const res = await fetch('http://localhost:8080/api/sellers/me', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                if (res.ok) {
+                    setIsSellerEnabled(true);
+                } else {
+                    // 404 means not a seller yet; keep disabled
+                    setIsSellerEnabled(false);
+                }
+            } catch (e) {
+                console.error('Failed to check seller status:', e);
+            }
+        };
+        fetchSellerStatus();
+    }, []);
 
     const handleDeleteAccount = () => {
         setShowDeleteModal(true);
@@ -23,9 +45,53 @@ function AccountPrivacy() {
         setShowDeleteModal(false);
     };
 
-    const toggleSellerStatus = () => {
-        setIsSellerEnabled(!isSellerEnabled);
-        console.log('Seller status toggled:', !isSellerEnabled);
+    const toggleSellerStatus = async () => {
+        if (isTogglingStatus) return; // Prevent double-click
+
+        // Once enabled, keep it enabled; do not allow turning off from here
+        if (isSellerEnabled) {
+            return; // ignore attempts to disable per requirements
+        }
+
+        if (!isSellerEnabled) {
+            // Enable seller
+            setIsTogglingStatus(true);
+            try {
+                const response = await fetch('http://localhost:8080/api/sellers/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        storeName: 'My Store',
+                        storeDescription: 'Welcome to my store!'
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Seller registered:', data);
+                    setIsSellerEnabled(true);
+                    alert('Seller account enabled successfully!');
+                } else {
+                    // If backend says already a seller, just reflect enabled state silently
+                    const error = await response.json().catch(() => ({}));
+                    console.error('Registration error:', error);
+                    if (response.status === 409 || (error?.error && /already registered/i.test(error.error))) {
+                        setIsSellerEnabled(true);
+                        // No alert needed; user is already a seller
+                    } else {
+                        alert(`Failed to enable seller account: ${error.error || 'Unknown error'}`);
+                    }
+                }
+            } catch (err) {
+                console.error('Error enabling seller:', err);
+                alert('Error enabling seller account');
+            } finally {
+                setIsTogglingStatus(false);
+            }
+        }
     };
 
     const handleGoToSellerDashboard = () => {
@@ -46,6 +112,7 @@ function AccountPrivacy() {
                         <div className={styles.cardContent}>
                             <h3 className={styles.deleteTitle}>Seller Status</h3>
                             <p className={styles.deleteDescription}>Enable or disable your seller account to start selling products on the platform.</p>
+                            <p className={styles.warningNote}>⚠️ Note: Once enabled, seller status cannot be disabled.</p>
                         </div>
                     </div>
                     <div className={styles.toggleContainer}>
@@ -55,6 +122,7 @@ function AccountPrivacy() {
                                 checked={isSellerEnabled}
                                 onChange={toggleSellerStatus}
                                 className={styles.toggleInput}
+                                disabled={isSellerEnabled || isTogglingStatus}
                             />
                             <span className={styles.toggleSlider}></span>
                         </label>
@@ -62,7 +130,7 @@ function AccountPrivacy() {
                             {isSellerEnabled ? 'Seller Enabled' : 'Seller Disabled'}
                         </span>
                         {isSellerEnabled && (
-                            <button className={styles.sellerDashboardBtn} onClick={handleGoToSellerDashboard}>
+                            <button className={styles.sellerDashboardBtn} onClick={handleGoToSellerDashboard} disabled={isTogglingStatus}>
                                 Go to Seller Dashboard
                             </button>
                         )}

@@ -3,15 +3,34 @@ import AdminNavbar from "./components/AdminNavbar";
 import AdminSidebar from "./components/AdminSidebar";
 import AdminHome from "./pages/AdminHome";
 import AdminSeller from "./pages/AdminSeller";
-import AdminProduct from "./pages/AdminProduct";
-import AdminOrders from "./pages/AdminOrders";
 import AdminPayout from "./pages/AdminPayout";
 import AdminCategories from "./pages/AdminCategories";
 import AdminUsers from "./pages/AdminUsers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAdminAuth } from "../../context/AdminAuthContext";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
     const [currentPage, setCurrentPage] = useState('home');
+    const { adminUser, adminIsAuthenticated, adminLoading } = useAdminAuth();
+    const navigate = useNavigate();
+
+    // 🔒 SECURITY: Verify admin is authenticated and has ADMIN role
+    useEffect(() => {
+        console.log('📋 AdminDashboard - Verifying user access:', {
+            isAuthenticated: adminIsAuthenticated,
+            userRole: adminUser?.role,
+            loading: adminLoading
+        });
+
+        // While loading, don't redirect to avoid race conditions
+        if (adminLoading) return;
+
+        if (!adminIsAuthenticated || adminUser?.role !== 'ADMIN') {
+            console.error('❌ Unauthorized access attempt - not an admin!');
+            navigate('/admin-login', { replace: true });
+        }
+    }, [adminIsAuthenticated, adminUser, adminLoading, navigate]);
 
     const handleNavigate = (pageId) => {
         setCurrentPage(pageId);
@@ -23,10 +42,6 @@ function AdminDashboard() {
                 return <AdminHome />;
             case 'sellers':
                 return <AdminSeller />;
-            case 'products':
-                return <AdminProduct />;
-            case 'orders':
-                return <AdminOrders />;
             case 'payouts':
                 return <AdminPayout />;
             case 'categories':

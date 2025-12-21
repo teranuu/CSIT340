@@ -7,8 +7,9 @@ import AccountAddress from './AccountAddress';
 import AccountPassword from './AccountPassword';
 import AccountPrivacy from './AccountPrivacy';
 import AccountPurchase from './AccountPurchase';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUser, 
@@ -16,6 +17,7 @@ import {
   faBell,
   faPencil
 } from '@fortawesome/free-solid-svg-icons';
+import { API_BASE_URL } from '../../../config/api.js';
 
 const MENU_SECTIONS = [
   {
@@ -46,7 +48,31 @@ const MENU_SECTIONS = [
 
 function AccountSection() {
   const [activeSection, setActiveSection] = useState('profile');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  // Fetch user data from API
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/customers/me`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserName(data.firstName || data.username || '');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleSectionClick = (id) => {
     setActiveSection(id);
@@ -61,12 +87,21 @@ function AccountSection() {
     } else if (sectionId === 'notifications') {
       setActiveSection('notifications');
     } else if (sectionId === 'logout') {
-      const confirmLogout = window.confirm('Are you sure you want to log out?');
-      if (confirmLogout) {
-        localStorage.removeItem('token');
-        navigate('/login');
-      }
+      setShowLogoutModal(true);
     }
+  };
+
+  const confirmLogout = () => {
+    // Call logout from AuthContext to invalidate server-side session
+    Promise.resolve(logout()).finally(() => {
+      // Replace history entry to prevent back navigation to authenticated pages
+      navigate('/login', { replace: true });
+    });
+    setShowLogoutModal(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutModal(false);
   };
   const renderSection = () => {
     switch (activeSection) {
@@ -89,7 +124,7 @@ function AccountSection() {
             <FontAwesomeIcon icon={faUser} className={styles.avatarIcon} />
           </div>
           <div className={styles.profileInfo}>
-            <div className={styles.username}>dcayacap123</div>
+            <div className={styles.username}>{userName || 'User'}</div>
             <button className={styles.editProfileBtn}>
               <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
               Edit Profile
@@ -137,6 +172,19 @@ function AccountSection() {
       <section className={styles.accountContentWrapper}>
         {renderSection()}
       </section>
+
+      {showLogoutModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalCard}>
+            <h3 className={styles.modalTitle}>Log out of your account?</h3>
+            <p className={styles.modalText}>You will need to sign in again to continue shopping.</p>
+            <div className={styles.modalActions}>
+              <button className={styles.secondaryButton} onClick={cancelLogout}>Cancel</button>
+              <button className={styles.primaryButton} onClick={confirmLogout}>Log out</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

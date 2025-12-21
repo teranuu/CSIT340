@@ -2,14 +2,24 @@ package com.corethreads.corethreads.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "product_id")
+    private Long productId;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id", nullable = true)
+    private Seller seller;
+
+    @ManyToOne
+    @JoinColumn(name = "categories_id", referencedColumnName = "id")
+    private Categories categories;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -17,12 +27,24 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "cat_id", nullable = false)
-    private Categories category;
+    @Column(name = "price", precision = 12, scale = 2)
+    private BigDecimal price;
 
-    @Column(name = "active", nullable = false)
-    private boolean active = true;
+    @Column(name = "stock")
+    private Long stock = 0L;
+
+    @Column(name = "category")
+    private String category;
+
+    @Column(name = "product_code", unique = true)
+    private String productCode;
+
+    // Comma-separated list of colors, e.g., "black,white,grey"
+    @Column(name = "colors", length = 255)
+    private String colors;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -33,19 +55,28 @@ public class Product {
     // --- Constructors ---
     public Product() {}
 
-    public Product(String name, String description, Categories category) {
+    public Product(String name, String description, Categories categories, Seller seller) {
         this.name = name;
         this.description = description;
-        this.category = category;
+        this.categories = categories;
+        this.seller = seller;
     }
 
     // --- Getters and Setters ---
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public String getName() {
@@ -64,20 +95,60 @@ public class Product {
         this.description = description;
     }
 
-    public Categories getCategory() {
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Long getStock() {
+        return stock;
+    }
+
+    public void setStock(Long stock) {
+        this.stock = stock;
+    }
+
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Categories category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getColors() {
+        return colors;
+    }
+
+    public void setColors(String colors) {
+        this.colors = colors;
+    }
+
+    public Categories getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Categories categories) {
+        this.categories = categories;
+    }
+
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        this.isActive = active;
     }
 
     public LocalDateTime getCreatedAt() {
